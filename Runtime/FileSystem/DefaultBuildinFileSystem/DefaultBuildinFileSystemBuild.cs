@@ -7,7 +7,10 @@ namespace YooAsset
 {
     public class DefaultBuildinFileSystemBuild : UnityEditor.Build.IPreprocessBuildWithReport
     {
-        public int callbackOrder { get { return 0; } }
+        public int callbackOrder
+        {
+            get { return 0; }
+        }
 
         /// <summary>
         /// 在构建应用程序前自动生成内置资源目录文件。

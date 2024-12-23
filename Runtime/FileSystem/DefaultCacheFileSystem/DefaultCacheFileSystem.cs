@@ -50,10 +50,7 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get
-            {
-                return _packageRoot;
-            }
+            get { return _packageRoot; }
         }
 
         /// <summary>
@@ -61,13 +58,11 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get
-            {
-                return _wrappers.Count;
-            }
+            get { return _wrappers.Count; }
         }
 
         #region 自定义参数
+
         /// <summary>
         /// 自定义参数：远程服务接口
         /// </summary>
@@ -102,42 +97,49 @@ namespace YooAsset
         ///  自定义参数：解密方法类
         /// </summary>
         public IDecryptionServices DecryptionServices { private set; get; }
+
         #endregion
 
-
+        [UnityEngine.Scripting.Preserve]
         public DefaultCacheFileSystem()
         {
         }
+
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DCFSInitializeOperation(this);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DCFSLoadPackageManifestOperation(this, packageVersion, timeout);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DCFSRequestPackageVersionOperation(this, appendTimeTicks, timeout);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new DCFSClearAllBundleFilesOperation(this);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new DCFSClearUnusedBundleFilesOperation(this, manifest);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
             // 查询旧的下载器
@@ -179,6 +181,7 @@ namespace YooAsset
                 }
             }
         }
+
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             if (RawFileBuildPipeline)
@@ -194,6 +197,7 @@ namespace YooAsset
                 return operation;
             }
         }
+
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
             AssetBundle assetBundle = result as AssetBundle;
@@ -210,6 +214,7 @@ namespace YooAsset
                     managedStream.Close();
                     managedStream.Dispose();
                 }
+
                 _loadedStream.Remove(bundle.BundleGUID);
             }
         }
@@ -249,6 +254,7 @@ namespace YooAsset
                 YooLogger.Warning($"Invalid parameter : {name}");
             }
         }
+
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
@@ -261,6 +267,7 @@ namespace YooAsset
             _tempFileRoot = PathUtility.Combine(_packageRoot, DefaultCacheFileSystemDefine.TempFilesFolderName);
             _manifestFileRoot = PathUtility.Combine(_packageRoot, DefaultCacheFileSystemDefine.ManifestFilesFolderName);
         }
+
         public virtual void OnUpdate()
         {
             _removeList.Clear();
@@ -292,10 +299,12 @@ namespace YooAsset
             // 注意：缓存文件系统保底加载！
             return true;
         }
+
         public virtual bool Exists(PackageBundle bundle)
         {
             return _wrappers.ContainsKey(bundle.BundleGUID);
         }
+
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             if (Belong(bundle) == false)
@@ -303,10 +312,12 @@ namespace YooAsset
 
             return Exists(bundle) == false;
         }
+
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
+
         public virtual bool NeedImport(PackageBundle bundle)
         {
             if (Belong(bundle) == false)
@@ -343,6 +354,7 @@ namespace YooAsset
                 return FileUtility.ReadAllBytes(filePath);
             }
         }
+
         public virtual string ReadFileText(PackageBundle bundle)
         {
             if (Exists(bundle) == false)
@@ -373,7 +385,9 @@ namespace YooAsset
         }
 
         #region 内部方法
+
         private readonly BufferWriter _sharedBuffer = new BufferWriter(1024);
+
         public void WriteInfoFile(string filePath, string dataFileCRC, long dataFileSize)
         {
             using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read))
@@ -385,6 +399,7 @@ namespace YooAsset
                 fs.Flush();
             }
         }
+
         public void ReadInfoFile(string filePath, out string dataFileCRC, out long dataFileSize)
         {
             byte[] binaryData = FileUtility.ReadAllBytes(filePath);
@@ -403,9 +418,10 @@ namespace YooAsset
 #elif UNITY_STANDALONE
             return PathUtility.Combine(UnityEngine.Application.dataPath, YooAssetSettingsData.Setting.DefaultYooFolderName);
 #else
-            return PathUtility.Combine(UnityEngine.Application.persistentDataPath, YooAssetSettingsData.Setting.DefaultYooFolderName);	
+            return PathUtility.Combine(UnityEngine.Application.persistentDataPath, YooAssetSettingsData.Setting.DefaultYooFolderName);
 #endif
         }
+
         protected string GetDataFilePath(PackageBundle bundle)
         {
             if (_dataFilePaths.TryGetValue(bundle.BundleGUID, out string filePath) == false)
@@ -416,8 +432,10 @@ namespace YooAsset
                     filePath += bundle.FileExtension;
                 _dataFilePaths.Add(bundle.BundleGUID, filePath);
             }
+
             return filePath;
         }
+
         protected string GetInfoFilePath(PackageBundle bundle)
         {
             if (_infoFilePaths.TryGetValue(bundle.BundleGUID, out string filePath) == false)
@@ -426,8 +444,10 @@ namespace YooAsset
                 filePath = PathUtility.Combine(_saveFileRoot, folderName, bundle.BundleGUID, DefaultCacheFileSystemDefine.SaveBundleInfoFileName);
                 _infoFilePaths.Add(bundle.BundleGUID, filePath);
             }
+
             return filePath;
         }
+
         public string GetTempFilePath(PackageBundle bundle)
         {
             if (_tempFilePaths.TryGetValue(bundle.BundleGUID, out string filePath) == false)
@@ -435,26 +455,32 @@ namespace YooAsset
                 filePath = PathUtility.Combine(_tempFileRoot, bundle.BundleGUID);
                 _tempFilePaths.Add(bundle.BundleGUID, filePath);
             }
+
             return filePath;
         }
+
         public string GetCacheFileLoadPath(PackageBundle bundle)
         {
             return GetDataFilePath(bundle);
         }
+
         public string GetCacheFilesRoot()
         {
             return _saveFileRoot;
         }
+
         public string GetCachePackageHashFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(_manifestFileRoot, fileName);
         }
+
         public string GetCachePackageManifestFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
             return PathUtility.Combine(_manifestFileRoot, fileName);
         }
+
         public string GetSandboxAppFootPrintFilePath()
         {
             return PathUtility.Combine(_manifestFileRoot, DefaultCacheFileSystemDefine.AppFootPrintFileName);
@@ -616,6 +642,7 @@ namespace YooAsset
             _loadedStream.Add(bundle.BundleGUID, managedStream);
             return createRequest;
         }
+
         #endregion
     }
 }

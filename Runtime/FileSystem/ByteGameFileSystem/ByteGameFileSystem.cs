@@ -5,6 +5,7 @@ using YooAsset;
 using StarkSDKSpace;
 using UnityEngine.Scripting;
 
+[UnityEngine.Scripting.Preserve]
 public static class ByteGameFileSystemCreater
 {
     public static FileSystemParameters CreateByteGameFileSystemParameters(IRemoteServices remoteServices = null)
@@ -31,6 +32,7 @@ public static class ByteGameFileSystemCreater
 /// </summary>
 internal class ByteGameFileSystem : IFileSystem
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class WebRemoteServices : IRemoteServices
     {
         private readonly string _webPackageRoot;

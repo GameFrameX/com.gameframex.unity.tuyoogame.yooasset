@@ -34,10 +34,7 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get
-            {
-                return _webPackageRoot;
-            }
+            get { return _webPackageRoot; }
         }
 
         /// <summary>
@@ -45,63 +42,70 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         #region 自定义参数
+
         /// <summary>
         /// 禁用Unity的网络缓存
         /// </summary>
         public bool DisableUnityWebCache { private set; get; } = false;
+
         #endregion
 
-
+        [UnityEngine.Scripting.Preserve]
         public DefaultWebFileSystem()
         {
         }
+
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DWFSInitializeOperation(this);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DWFSLoadPackageManifestOperation(this, timeout);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DWFSRequestPackageVersionOperation(this, timeout);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new FSClearAllBundleFilesCompleteOperation();
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new FSClearUnusedBundleFilesCompleteOperation();
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
             throw new System.NotImplementedException();
         }
+
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             var operation = new DWFSLoadAssetBundleOperation(this, bundle);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
+
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
             AssetBundle assetBundle = result as AssetBundle;
@@ -123,6 +127,7 @@ namespace YooAsset
                 YooLogger.Warning($"Invalid parameter : {name}");
             }
         }
+
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
@@ -132,6 +137,7 @@ namespace YooAsset
 
             _webPackageRoot = PathUtility.Combine(rootDirectory, packageName);
         }
+
         public virtual void OnUpdate()
         {
         }
@@ -140,18 +146,22 @@ namespace YooAsset
         {
             return true;
         }
+
         public virtual bool Exists(PackageBundle bundle)
         {
             return true;
         }
+
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
+
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
+
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
@@ -161,17 +171,20 @@ namespace YooAsset
         {
             throw new System.NotImplementedException();
         }
+
         public virtual string ReadFileText(PackageBundle bundle)
         {
             throw new System.NotImplementedException();
         }
 
         #region 内部方法
+
         protected string GetDefaultWebRoot()
         {
             string path = PathUtility.Combine(UnityEngine.Application.streamingAssetsPath, YooAssetSettingsData.Setting.DefaultYooFolderName);
             return path;
         }
+
         public string GetWebFileLoadPath(PackageBundle bundle)
         {
             if (_webFilePaths.TryGetValue(bundle.BundleGUID, out string filePath) == false)
@@ -179,28 +192,34 @@ namespace YooAsset
                 filePath = PathUtility.Combine(_webPackageRoot, bundle.FileName);
                 _webFilePaths.Add(bundle.BundleGUID, filePath);
             }
+
             return filePath;
         }
+
         public string GetCatalogFileLoadPath()
         {
             string fileName = Path.GetFileNameWithoutExtension(DefaultBuildinFileSystemDefine.BuildinCatalogFileName);
             return PathUtility.Combine(YooAssetSettingsData.Setting.DefaultYooFolderName, PackageName, fileName);
         }
+
         public string GetWebPackageVersionFilePath()
         {
             string fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
             return PathUtility.Combine(FileRoot, fileName);
         }
+
         public string GetWebPackageHashFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
+
         public string GetWebPackageManifestFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
+
         public string GetStreamingAssetsPackageRoot()
         {
             string rootPath = PathUtility.Combine(Application.dataPath, "StreamingAssets", YooAssetSettingsData.Setting.DefaultYooFolderName);
@@ -221,6 +240,7 @@ namespace YooAsset
             _wrappers.Add(bundleGUID, wrapper);
             return true;
         }
+
         #endregion
     }
 }
