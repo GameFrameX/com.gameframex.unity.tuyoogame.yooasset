@@ -4,6 +4,7 @@ using UnityEngine;
 using YooAsset;
 using WeChatWASM;
 
+[UnityEngine.Scripting.Preserve]
 public static class WechatFileSystemCreater
 {
     public static FileSystemParameters CreateWechatFileSystemParameters(IRemoteServices remoteServices = null)
@@ -30,6 +31,7 @@ public static class WechatFileSystemCreater
 /// </summary>
 internal class WechatFileSystem : IFileSystem
 {
+    [UnityEngine.Scripting.Preserve]
     public class WebRemoteServices : IRemoteServices
     {
         private readonly string _webPackageRoot;
@@ -97,7 +99,7 @@ internal class WechatFileSystem : IFileSystem
 
     #endregion
 
-
+    [UnityEngine.Scripting.Preserve]
     public WechatFileSystem()
     {
     }
