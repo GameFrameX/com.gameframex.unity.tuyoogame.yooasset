@@ -14,7 +14,7 @@ namespace YooAsset.Editor
         public static string GetDefaultBuildOutputRoot()
         {
             string projectPath = EditorTools.GetProjectPath();
-			return $"{projectPath}/Bundles/{Application.identifier}/{Application.version}";
+			return $"{projectPath}/Bundles/{Application.identifier}";
         }
 
         /// <summary>
