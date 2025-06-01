@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections;
@@ -17,3 +18,4 @@ namespace YooAsset.Editor
         }
     }
 }
+#endif

@@ -1,4 +1,5 @@
 #if UNITY_2019_4_OR_NEWER
+#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
 using System;
 using System.IO;
 using System.Linq;
@@ -59,4 +60,5 @@ namespace YooAsset.Editor
         }
     }
 }
+#endif
 #endif

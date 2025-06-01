@@ -30,6 +30,7 @@ namespace YooAsset.Editor
                 BuiltinBuildPipeline pipeline = new BuiltinBuildPipeline();
                 buildResult = pipeline.Run(buildParameters, false);
             }
+#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
             else if (buildPipelineName == EBuildPipeline.ScriptableBuildPipeline.ToString())
             {
                 ScriptableBuildParameters buildParameters = new ScriptableBuildParameters();
@@ -47,6 +48,7 @@ namespace YooAsset.Editor
                 ScriptableBuildPipeline pipeline = new ScriptableBuildPipeline();
                 buildResult = pipeline.Run(buildParameters, true);
             }
+#endif
             else if (buildPipelineName == EBuildPipeline.RawFileBuildPipeline.ToString())
             {
                 RawFileBuildParameters buildParameters = new RawFileBuildParameters();

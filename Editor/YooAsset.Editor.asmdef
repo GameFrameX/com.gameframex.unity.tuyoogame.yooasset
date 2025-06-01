@@ -15,6 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.scriptablebuildpipeline",
+            "expression": "",
+            "define": "ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE"
+        }
+    ],
     "noEngineReferences": false
 }

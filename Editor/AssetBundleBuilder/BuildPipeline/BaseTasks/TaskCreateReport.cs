@@ -51,6 +51,7 @@ namespace YooAsset.Editor
                     buildReport.Summary.DisableWriteTypeTree = builtinBuildParameters.DisableWriteTypeTree;
                     buildReport.Summary.IgnoreTypeTreeChanges = builtinBuildParameters.IgnoreTypeTreeChanges;
                 }
+#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
                 else if (buildParameters.BuildPipeline == nameof(ScriptableBuildPipeline))
                 {
                     var scriptableBuildParameters = buildParameters as ScriptableBuildParameters;
@@ -59,6 +60,7 @@ namespace YooAsset.Editor
                     buildReport.Summary.DisableWriteTypeTree = scriptableBuildParameters.DisableWriteTypeTree;
                     buildReport.Summary.IgnoreTypeTreeChanges = scriptableBuildParameters.IgnoreTypeTreeChanges;
                 }
+#endif
                 else
                 {
                     buildReport.Summary.FileNameStyle = buildParameters.FileNameStyle;
@@ -130,6 +132,7 @@ namespace YooAsset.Editor
                 string dependBundleName = manifest.BundleList[index].BundleName;
                 dependBundles.Add(dependBundleName);
             }
+
             return dependBundles;
         }
 
@@ -150,10 +153,12 @@ namespace YooAsset.Editor
                         break;
                     }
                 }
+
                 if (findAssetInfo == null)
                 {
                     throw new Exception($"Should never get here ! Not found asset {assetPath} in bunlde {bundleName}");
                 }
+
                 foreach (var dependAssetInfo in findAssetInfo.AllDependAssetInfos)
                 {
                     result.Add(dependAssetInfo.AssetInfo.AssetPath);
@@ -175,10 +180,12 @@ namespace YooAsset.Editor
         {
             return manifest.AssetList.Count;
         }
+
         private int GetAllBundleCount(PackageManifest manifest)
         {
             return manifest.BundleList.Count;
         }
+
         private long GetAllBundleSize(PackageManifest manifest)
         {
             long fileBytes = 0;
@@ -186,8 +193,10 @@ namespace YooAsset.Editor
             {
                 fileBytes += packageBundle.FileSize;
             }
+
             return fileBytes;
         }
+
         private int GetEncryptedBundleCount(PackageManifest manifest)
         {
             int fileCount = 0;
@@ -196,8 +205,10 @@ namespace YooAsset.Editor
                 if (packageBundle.Encrypted)
                     fileCount++;
             }
+
             return fileCount;
         }
+
         private long GetEncryptedBundleSize(PackageManifest manifest)
         {
             long fileBytes = 0;
@@ -206,6 +217,7 @@ namespace YooAsset.Editor
                 if (packageBundle.Encrypted)
                     fileBytes += packageBundle.FileSize;
             }
+
             return fileBytes;
         }
     }

@@ -1,4 +1,4 @@
-﻿
+﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
 namespace YooAsset.Editor
 {
     public class TaskEncryption_SBP : TaskEncryption, IBuildTask
@@ -16,3 +16,4 @@ namespace YooAsset.Editor
         }
     }
 }
+#endif

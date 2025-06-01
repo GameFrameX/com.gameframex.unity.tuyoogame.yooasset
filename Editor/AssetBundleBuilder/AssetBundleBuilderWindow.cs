@@ -97,10 +97,12 @@ namespace YooAsset.Editor
             {
                 var viewer = new BuiltinBuildPipelineViewer(_buildPackage, buildTarget, _container);
             }
+#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
             else if (_buildPipeline == EBuildPipeline.ScriptableBuildPipeline)
             {
                 var viewer = new ScriptableBuildPipelineViewer(_buildPackage, buildTarget, _container);
             }
+#endif
             else if (_buildPipeline == EBuildPipeline.RawFileBuildPipeline)
             {
                 var viewer = new RawfileBuildpipelineViewer(_buildPackage, buildTarget, _container);
