@@ -17,14 +17,23 @@ namespace YooAsset.Editor
         public const string RawFileExtension = "rawfile";
 
         /// <summary>
-        /// Unity着色器资源包名称
+        /// 默认的Unity着色器资源包名称
         /// </summary>
         public const string ShadersBundleName = "unityshaders";
 
+        /// <summary>
+        /// 默认的Unity脚本资源包名称
+        /// </summary>
+        public const string MonosBundleName = "unitymonos";
 
         public static PackRuleResult CreateShadersPackRuleResult()
         {
             PackRuleResult result = new PackRuleResult(ShadersBundleName, AssetBundleFileExtension);
+            return result;
+        }
+        public static PackRuleResult CreateMonosPackRuleResult()
+        {
+            PackRuleResult result = new PackRuleResult(MonosBundleName, AssetBundleFileExtension);
             return result;
         }
     }
@@ -148,25 +157,18 @@ namespace YooAsset.Editor
     }
 
     /// <summary>
-    /// FairyGUI描述文件和资源文件
+    /// 打包视频文件
     /// </summary>
-    [DisplayName("资源包名: FairyGUI描述文件和资源文件")]
-    public class FairyGUIPackage : IPackRule
+    [DisplayName("打包视频文件")]
+    public class PackVideoFile : IPackRule
     {
         PackRuleResult IPackRule.GetPackRuleResult(PackRuleData data)
         {
-            if (data.AssetPath.EndsWith("_fui.bytes"))
-            {
-                string bundleName = Path.GetDirectoryName(data.AssetPath) + "_fui";
-                PackRuleResult result = new PackRuleResult(bundleName, DefaultPackRule.AssetBundleFileExtension);
-                return result;
-            }
-            else
-            {
-                string bundleName = Path.GetDirectoryName(data.AssetPath) + "_res";
-                PackRuleResult result = new PackRuleResult(bundleName, DefaultPackRule.AssetBundleFileExtension);
-                return result;
-            }
+            string bundleName = data.AssetPath;
+            string fileExtension = Path.GetExtension(data.AssetPath);
+            fileExtension = fileExtension.Remove(0, 1);
+            PackRuleResult result = new PackRuleResult(bundleName, fileExtension);
+            return result;
         }
     }
 

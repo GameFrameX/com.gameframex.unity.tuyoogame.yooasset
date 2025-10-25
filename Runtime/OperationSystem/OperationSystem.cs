@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -6,8 +7,18 @@ namespace YooAsset
 {
     internal class OperationSystem
     {
+#if UNITY_EDITOR
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void OnRuntimeInitialize()
+        {
+            DestroyAll();
+        }
+#endif
+
         private static readonly List<AsyncOperationBase> _operations = new List<AsyncOperationBase>(1000);
         private static readonly List<AsyncOperationBase> _newList = new List<AsyncOperationBase>(1000);
+        private static Action<string, AsyncOperationBase> _startCallback = null;
+        private static Action<string, AsyncOperationBase> _finishCallback = null;
 
         // 计时器相关
         private static Stopwatch _watch;
@@ -25,6 +36,10 @@ namespace YooAsset
         {
             get
             {
+                if (_watch == null)
+                    return false;
+
+                // NOTE : 单次调用开销约1微秒
                 return _watch.ElapsedMilliseconds - _frameTime >= MaxTimeSlice;
             }
         }
@@ -43,7 +58,19 @@ namespace YooAsset
         /// </summary>
         public static void Update()
         {
-            _frameTime = _watch.ElapsedMilliseconds;
+            // 移除已经完成的异步操作
+            // 注意：移除上一帧完成的异步操作，方便调试器接收到完整的信息！
+            for (int i = _operations.Count - 1; i >= 0; i--)
+            {
+                var operation = _operations[i];
+                if (operation.IsFinish)
+                {
+                    _operations.RemoveAt(i);
+
+                    if (_finishCallback != null)
+                        _finishCallback.Invoke(operation.PackageName, operation);
+                }
+            }
 
             // 添加新增的异步操作
             if (_newList.Count > 0)
@@ -67,28 +94,18 @@ namespace YooAsset
             }
 
             // 更新进行中的异步操作
+            bool checkBusy = MaxTimeSlice < long.MaxValue;
+            _frameTime = _watch.ElapsedMilliseconds;
             for (int i = 0; i < _operations.Count; i++)
             {
-                if (IsBusy)
+                if (checkBusy && IsBusy)
                     break;
 
                 var operation = _operations[i];
                 if (operation.IsFinish)
                     continue;
 
-                if (operation.IsDone == false)
-                    operation.InternalOnUpdate();
-
-                if (operation.IsDone)
-                    operation.SetFinish();
-            }
-
-            // 移除已经完成的异步操作
-            for (int i = _operations.Count - 1; i >= 0; i--)
-            {
-                var operation = _operations[i];
-                if (operation.IsFinish)
-                    _operations.RemoveAt(i);
+                operation.UpdateOperation();
             }
         }
 
@@ -99,6 +116,8 @@ namespace YooAsset
         {
             _operations.Clear();
             _newList.Clear();
+            _startCallback = null;
+            _finishCallback = null;
             _watch = null;
             _frameTime = 0;
             MaxTimeSlice = long.MaxValue;
@@ -112,18 +131,18 @@ namespace YooAsset
             // 终止临时队列里的任务
             foreach (var operation in _newList)
             {
-                if (operation.GetPackageName() == packageName)
+                if (operation.PackageName == packageName)
                 {
-                    operation.SetAbort();
+                    operation.AbortOperation();
                 }
             }
 
             // 终止正在进行的任务
             foreach (var operation in _operations)
             {
-                if (operation.GetPackageName() == packageName)
+                if (operation.PackageName == packageName)
                 {
-                    operation.SetAbort();
+                    operation.AbortOperation();
                 }
             }
         }
@@ -135,7 +154,60 @@ namespace YooAsset
         {
             _newList.Add(operation);
             operation.SetPackageName(packageName);
-            operation.SetStart();
+            operation.StartOperation();
+
+            if (_startCallback != null)
+                _startCallback.Invoke(packageName, operation);
         }
+
+        /// <summary>
+        /// 监听任务开始
+        /// </summary>
+        public static void RegisterStartCallback(Action<string, AsyncOperationBase> callback)
+        {
+            _startCallback = callback;
+        }
+
+        /// <summary>
+        /// 监听任务结束
+        /// </summary>
+        public static void RegisterFinishCallback(Action<string, AsyncOperationBase> callback)
+        {
+            _finishCallback = callback;
+        }
+
+        #region 调试信息
+        internal static List<DebugOperationInfo> GetDebugOperationInfos(string packageName)
+        {
+            List<DebugOperationInfo> result = new List<DebugOperationInfo>(_operations.Count);
+            foreach (var operation in _operations)
+            {
+                if (operation.PackageName == packageName)
+                {
+                    var operationInfo = GetDebugOperationInfo(operation);
+                    result.Add(operationInfo);
+                }
+            }
+            return result;
+        }
+        internal static DebugOperationInfo GetDebugOperationInfo(AsyncOperationBase operation)
+        {
+            var operationInfo = new DebugOperationInfo();
+            operationInfo.OperationName = operation.GetType().Name;
+            operationInfo.OperationDesc = operation.GetOperationDesc();
+            operationInfo.Priority = operation.Priority;
+            operationInfo.Progress = operation.Progress;
+            operationInfo.BeginTime = operation.BeginTime;
+            operationInfo.ProcessTime = operation.ProcessTime;
+            operationInfo.Status = operation.Status.ToString();
+            operationInfo.Childs = new List<DebugOperationInfo>(operation.Childs.Count);
+            foreach (var child in operation.Childs)
+            {
+                var childInfo = GetDebugOperationInfo(child);
+                operationInfo.Childs.Add(childInfo);
+            }
+            return operationInfo;
+        }
+        #endregion
     }
 }

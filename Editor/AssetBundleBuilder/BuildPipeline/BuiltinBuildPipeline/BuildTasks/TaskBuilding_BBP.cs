@@ -20,29 +20,23 @@ namespace YooAsset.Editor
             var buildMapContext = context.GetContextObject<BuildMapContext>();
             var builtinBuildParameters = buildParametersContext.Parameters as BuiltinBuildParameters;
 
-            // 模拟构建模式下跳过引擎构建
-            var buildMode = buildParametersContext.Parameters.BuildMode;
-            if (buildMode == EBuildMode.SimulateBuild)
-                return;
-
             // 开始构建
             string pipelineOutputDirectory = buildParametersContext.GetPipelineOutputDirectory();
             BuildAssetBundleOptions buildOptions = builtinBuildParameters.GetBundleBuildOptions();
-            AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(pipelineOutputDirectory, buildMapContext.GetPipelineBuilds(), buildOptions, buildParametersContext.Parameters.BuildTarget);
+            var bundleBuilds = buildMapContext.GetPipelineBuilds(builtinBuildParameters.ReplaceAssetPathWithAddress);
+            AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(pipelineOutputDirectory, bundleBuilds, buildOptions, buildParametersContext.Parameters.BuildTarget);
             if (unityManifest == null)
             {
                 string message = BuildLogger.GetErrorMessage(ErrorCode.UnityEngineBuildFailed, "UnityEngine build failed !");
                 throw new Exception(message);
             }
 
-            if (buildMode == EBuildMode.ForceRebuild || buildMode == EBuildMode.IncrementalBuild)
+            // 检测输出目录
+            string unityOutputManifestFilePath = $"{pipelineOutputDirectory}/{YooAssetSettings.OutputFolderName}";
+            if (System.IO.File.Exists(unityOutputManifestFilePath) == false)
             {
-                string unityOutputManifestFilePath = $"{pipelineOutputDirectory}/{YooAssetSettings.OutputFolderName}";
-                if (System.IO.File.Exists(unityOutputManifestFilePath) == false)
-                {
-                    string message = BuildLogger.GetErrorMessage(ErrorCode.UnityEngineBuildFatal, $"Not found output {nameof(AssetBundleManifest)} file : {unityOutputManifestFilePath}");
-                    throw new Exception(message);
-                }
+                string message = BuildLogger.GetErrorMessage(ErrorCode.UnityEngineBuildFatal, $"Not found output {nameof(AssetBundleManifest)} file : {unityOutputManifestFilePath}");
+                throw new Exception(message);
             }
 
             BuildLogger.Log("UnityEngine build success !");

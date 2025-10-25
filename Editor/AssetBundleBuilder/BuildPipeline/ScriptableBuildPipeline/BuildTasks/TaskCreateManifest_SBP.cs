@@ -1,5 +1,4 @@
-﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +13,10 @@ namespace YooAsset.Editor
 
         void IBuildTask.Run(BuildContext context)
         {
-            CreateManifestFile(context);
+            var buildParametersContext = context.GetContextObject<BuildParametersContext>();
+            var scriptableBuildParameters = buildParametersContext.Parameters as ScriptableBuildParameters;
+            bool replaceAssetPathWithAddress = scriptableBuildParameters.ReplaceAssetPathWithAddress;
+            CreateManifestFile(true, true, replaceAssetPathWithAddress, context);
         }
 
         protected override string[] GetBundleDepends(BuildContext context, string bundleName)
@@ -31,4 +33,3 @@ namespace YooAsset.Editor
         }
     }
 }
-#endif

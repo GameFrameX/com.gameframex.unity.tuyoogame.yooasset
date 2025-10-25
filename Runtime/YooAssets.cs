@@ -2,12 +2,23 @@ using System;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace YooAsset
 {
     public static partial class YooAssets
     {
+#if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void OnRuntimeInitialize()
+        {
+            _isInitialize = false;
+            _packages.Clear();
+            _defaultPackage = null;
+        }
+#endif
+
         private static bool _isInitialize = false;
         private static GameObject _driver = null;
         private static readonly List<ResourcePackage> _packages = new List<ResourcePackage>();
@@ -53,6 +64,29 @@ namespace YooAsset
         }
 
         /// <summary>
+        /// 销毁资源系统
+        /// </summary>
+        public static void Destroy()
+        {
+            if (_isInitialize)
+            {
+                _isInitialize = false;
+
+                if (_driver != null)
+                    GameObject.Destroy(_driver);
+
+                // 终止并清空所有包裹的异步操作
+                ClearAllPackageOperation();
+
+                // 卸载所有AssetBundle
+                AssetBundle.UnloadAllAssetBundles(true);
+
+                // 清空资源包裹列表
+                _packages.Clear();
+            }
+        }
+
+        /// <summary>
         /// 更新资源系统
         /// </summary>
         internal static void Update()
@@ -60,20 +94,14 @@ namespace YooAsset
             if (_isInitialize)
             {
                 OperationSystem.Update();
-
-                for (int i = 0; i < _packages.Count; i++)
-                {
-                    _packages[i].UpdatePackage();
-                }
             }
         }
 
         /// <summary>
-        /// 应用程序退出处理
+        /// 终止并清空所有包裹的异步操作
         /// </summary>
-        internal static void OnApplicationQuit()
+        internal static void ClearAllPackageOperation()
         {
-            // 说明：在编辑器下确保播放被停止时IO类操作被终止。
             foreach (var package in _packages)
             {
                 OperationSystem.ClearPackageOperation(package.PackageName);
@@ -82,9 +110,9 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 创建资源包
+        /// 创建资源包裹
         /// </summary>
-        /// <param name="packageName">资源包名称</param>
+        /// <param name="packageName">包裹名称</param>
         public static ResourcePackage CreatePackage(string packageName)
         {
             CheckException(packageName);
@@ -98,9 +126,9 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 获取资源包
+        /// 获取资源包裹
         /// </summary>
-        /// <param name="packageName">资源包名称</param>
+        /// <param name="packageName">包裹名称</param>
         public static ResourcePackage GetPackage(string packageName)
         {
             CheckException(packageName);
@@ -111,9 +139,9 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 尝试获取资源包
+        /// 尝试获取资源包裹
         /// </summary>
-        /// <param name="packageName">资源包名称</param>
+        /// <param name="packageName">包裹名称</param>
         public static ResourcePackage TryGetPackage(string packageName)
         {
             CheckException(packageName);
@@ -121,9 +149,17 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 移除资源包
+        /// 获取所有资源包裹
         /// </summary>
-        /// <param name="packageName">资源包名称</param>
+        public static List<ResourcePackage> GetAllPackages()
+        {
+            return _packages.ToList();
+        }
+
+        /// <summary>
+        /// 移除资源包裹
+        /// </summary>
+        /// <param name="packageName">包裹名称</param>
         public static bool RemovePackage(string packageName)
         {
             CheckException(packageName);
@@ -131,6 +167,17 @@ namespace YooAsset
             if (package == null)
                 return false;
 
+            return RemovePackage(package);
+        }
+
+        /// <summary>
+        /// 移除资源包裹
+        /// </summary>
+        /// <param name="package">包裹实例对象</param>
+        public static bool RemovePackage(ResourcePackage package)
+        {
+            CheckException(package);
+            string packageName = package.PackageName;
             if (package.InitializeStatus != EOperationStatus.None)
             {
                 YooLogger.Error($"The resource package {packageName} has not been destroyed, please call the method {nameof(ResourcePackage.DestroyAsync)} to destroy!");
@@ -143,9 +190,9 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 检测资源包是否存在
+        /// 检测资源包裹是否存在
         /// </summary>
-        /// <param name="packageName">资源包名称</param>
+        /// <param name="packageName">包裹名称</param>
         public static bool ContainsPackage(string packageName)
         {
             CheckException(packageName);
@@ -180,6 +227,14 @@ namespace YooAsset
 
             if (string.IsNullOrEmpty(packageName))
                 throw new Exception("Package name is null or empty !");
+        }
+        private static void CheckException(ResourcePackage package)
+        {
+            if (_isInitialize == false)
+                throw new Exception($"{nameof(YooAssets)} not initialize !");
+
+            if (package == null)
+                throw new Exception("Package instance is null !");
         }
 
         #region 系统参数

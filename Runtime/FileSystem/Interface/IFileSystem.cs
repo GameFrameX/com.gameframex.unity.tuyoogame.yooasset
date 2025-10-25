@@ -20,7 +20,7 @@ namespace YooAsset
 
 
         /// <summary>
-        /// 初始化缓存系统
+        /// 初始化文件系统
         /// </summary>
         FSInitializeFileSystemOperation InitializeFileSystemAsync();
 
@@ -30,34 +30,24 @@ namespace YooAsset
         FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout);
 
         /// <summary>
-        /// 查询最新的版本
+        /// 查询包裹版本
         /// </summary>
         FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout);
 
         /// <summary>
-        /// 清空所有的文件
+        /// 清理缓存文件
         /// </summary>
-        FSClearAllBundleFilesOperation ClearAllBundleFilesAsync();
+        FSClearCacheFilesOperation ClearCacheFilesAsync(PackageManifest manifest, ClearCacheFilesOptions options);
 
         /// <summary>
-        /// 清空未使用的文件
+        /// 下载Bundle文件
         /// </summary>
-        FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest);
-
-        /// <summary>
-        /// 下载远端文件
-        /// </summary>
-        FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param);
-
+        FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadFileOptions options);
+        
         /// <summary>
         /// 加载Bundle文件
         /// </summary>
         FSLoadBundleOperation LoadBundleFile(PackageBundle bundle);
-
-        /// <summary>
-        /// 卸载Bundle文件
-        /// </summary>
-        void UnloadBundleFile(PackageBundle bundle, object result);
 
 
         /// <summary>
@@ -66,14 +56,14 @@ namespace YooAsset
         void SetParameter(string name, object value);
 
         /// <summary>
-        /// 创建缓存系统
+        /// 创建文件系统
         /// </summary>
-        void OnCreate(string packageName, string rootDirectory);
+        void OnCreate(string packageName, string packageRoot);
 
         /// <summary>
-        /// 更新文件系统
+        /// 销毁文件系统
         /// </summary>
-        void OnUpdate();
+        void OnDestroy();
 
 
         /// <summary>
@@ -103,13 +93,18 @@ namespace YooAsset
 
 
         /// <summary>
-        /// 读取文件二进制数据
+        /// 获取Bundle文件路径
         /// </summary>
-        byte[] ReadFileData(PackageBundle bundle);
+        string GetBundleFilePath(PackageBundle bundle);
 
         /// <summary>
-        /// 读取文件文本数据
+        /// 读取Bundle文件的二进制数据
         /// </summary>
-        string ReadFileText(PackageBundle bundle);
+        byte[] ReadBundleFileData(PackageBundle bundle);
+
+        /// <summary>
+        /// 读取Bundle文件的文本数据
+        /// </summary>
+        string ReadBundleFileText(PackageBundle bundle);
     }
 }

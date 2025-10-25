@@ -1,5 +1,4 @@
-﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections;
@@ -13,9 +12,8 @@ namespace YooAsset.Editor
         void IBuildTask.Run(BuildContext context)
         {
             var buildParametersContext = context.GetContextObject<BuildParametersContext>();
-            var buildMapContext = CreateBuildMap(buildParametersContext.Parameters);
+            var buildMapContext = CreateBuildMap(false, buildParametersContext.Parameters);
             context.SetContextObject(buildMapContext);
         }
     }
 }
-#endif

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System;
 
 namespace YooAsset
@@ -10,9 +11,9 @@ namespace YooAsset
         protected enum ESteps
         {
             None = 0,
-            CheckBundle,
-            Loading,
-            Checking,
+            StartBundleLoader,
+            WaitBundleLoader,
+            ProcessBundleResult,
             Done,
         }
 
@@ -20,11 +21,6 @@ namespace YooAsset
         /// 资源提供者唯一标识符
         /// </summary>
         public string ProviderGUID { private set; get; }
-
-        /// <summary>
-        /// 所属资源系统
-        /// </summary>
-        public ResourceManager ResourceMgr { private set; get; }
 
         /// <summary>
         /// 资源信息
@@ -42,14 +38,19 @@ namespace YooAsset
         public UnityEngine.Object[] AllAssetObjects { protected set; get; }
 
         /// <summary>
+        /// 获取的资源对象集合
+        /// </summary>
+        public UnityEngine.Object[] SubAssetObjects { protected set; get; }
+
+        /// <summary>
         /// 获取的场景对象
         /// </summary>
         public UnityEngine.SceneManagement.Scene SceneObject { protected set; get; }
 
         /// <summary>
-        /// 获取的原生对象
+        /// 获取的资源包对象
         /// </summary>
-        public RawBundle RawBundleObject { protected set; get; }
+        public BundleResult BundleResultObject { protected set; get; }
 
         /// <summary>
         /// 加载的场景名称
@@ -66,42 +67,125 @@ namespace YooAsset
         /// </summary>
         public bool IsDestroyed { private set; get; } = false;
 
+        /// <summary>
+        /// 加载任务是否进行中
+        /// </summary>
+        private bool IsLoading
+        {
+            get
+            {
+                return _steps == ESteps.WaitBundleLoader || _steps == ESteps.ProcessBundleResult;
+            }
+        }
 
-        protected ESteps _steps = ESteps.None;
-        protected LoadBundleFileOperation LoadBundleFileOp { private set; get; }
-        protected LoadDependBundleFileOperation LoadDependBundleFileOp { private set; get; }
-        protected bool IsWaitForAsyncComplete { private set; get; } = false;
-        private readonly List<HandleBase> _handles = new List<HandleBase>();
-
+        private ESteps _steps = ESteps.None;
+        protected readonly ResourceManager _resManager;
+        private readonly LoadBundleFileOperation _mainBundleLoader;
+        private readonly List<LoadBundleFileOperation> _bundleLoaders = new List<LoadBundleFileOperation>(10);
+        private readonly HashSet<HandleBase> _handles = new HashSet<HandleBase>();
+        private readonly LinkedList<WeakReference<HandleBase>> _weakReferences = new LinkedList<WeakReference<HandleBase>>();
 
         public ProviderOperation(ResourceManager manager, string providerGUID, AssetInfo assetInfo)
         {
-            ResourceMgr = manager;
+            _resManager = manager;
             ProviderGUID = providerGUID;
             MainAssetInfo = assetInfo;
 
             if (string.IsNullOrEmpty(providerGUID) == false)
             {
-                LoadBundleFileOp = manager.CreateMainBundleFileLoader(assetInfo);
-                LoadBundleFileOp.Reference();
-                LoadBundleFileOp.AddProvider(this);
+                // 主资源包加载器
+                _mainBundleLoader = manager.CreateMainBundleFileLoader(assetInfo);
+                _mainBundleLoader.AddProvider(this);
+                _bundleLoaders.Add(_mainBundleLoader);
 
-                LoadDependBundleFileOp = manager.CreateDependFileLoaders(assetInfo);
-                LoadDependBundleFileOp.Reference();
+                // 依赖资源包加载器集合
+                var dependLoaders = manager.CreateDependBundleFileLoaders(assetInfo);
+                if (dependLoaders.Count > 0)
+                    _bundleLoaders.AddRange(dependLoaders);
+
+                // 增加引用计数
+                foreach (var bundleLoader in _bundleLoaders)
+                {
+                    bundleLoader.Reference();
+                }
             }
         }
+        internal override void InternalStart()
+        {
+            _steps = ESteps.StartBundleLoader;
+        }
+        internal override void InternalUpdate()
+        {
+            if (_steps == ESteps.None || _steps == ESteps.Done)
+                return;
 
+            // 注意：未在加载中的任务可以挂起！
+            if (IsLoading == false)
+            {
+                if (RefCount <= 0)
+                    return;
+            }
+
+            if (_steps == ESteps.StartBundleLoader)
+            {
+                foreach (var bundleLoader in _bundleLoaders)
+                {
+                    bundleLoader.StartOperation();
+                    AddChildOperation(bundleLoader);
+                }
+                _steps = ESteps.WaitBundleLoader;
+            }
+
+            if (_steps == ESteps.WaitBundleLoader)
+            {
+                if (IsWaitForAsyncComplete)
+                {
+                    foreach (var bundleLoader in _bundleLoaders)
+                    {
+                        bundleLoader.WaitForAsyncComplete();
+                    }
+                }
+
+                // 更新资源包加载器
+                foreach (var bundleLoader in _bundleLoaders)
+                {
+                    bundleLoader.UpdateOperation();
+                }
+
+                // 检测加载是否完成
+                foreach (var bundleLoader in _bundleLoaders)
+                {
+                    if (bundleLoader.IsDone == false)
+                        return;
+
+                    if (bundleLoader.Status != EOperationStatus.Succeed)
+                    {
+                        InvokeCompletion(bundleLoader.Error, EOperationStatus.Failed);
+                        return;
+                    }
+                }
+
+                // 检测加载结果
+                BundleResultObject = _mainBundleLoader.Result;
+                if (BundleResultObject == null)
+                {
+                    string error = $"Loaded bundle result is null !";
+                    InvokeCompletion(error, EOperationStatus.Failed);
+                    return;
+                }
+
+                _steps = ESteps.ProcessBundleResult;
+            }
+
+            if (_steps == ESteps.ProcessBundleResult)
+            {
+                ProcessBundleResult();
+            }
+        }
         internal override void InternalWaitForAsyncComplete()
         {
-            IsWaitForAsyncComplete = true;
-
             while (true)
             {
-                if (LoadDependBundleFileOp != null)
-                    LoadDependBundleFileOp.WaitForAsyncComplete();
-                if (LoadBundleFileOp != null)
-                    LoadBundleFileOp.WaitForAsyncComplete();
-
                 if (ExecuteWhileDone())
                 {
                     _steps = ESteps.Done;
@@ -109,6 +193,11 @@ namespace YooAsset
                 }
             }
         }
+        internal override string InternalGetDesc()
+        {
+            return $"AssetPath : {MainAssetInfo.AssetPath}";
+        }
+        protected abstract void ProcessBundleResult();
 
         /// <summary>
         /// 销毁资源提供者
@@ -120,21 +209,15 @@ namespace YooAsset
             // 检测是否为正常销毁
             if (IsDone == false)
             {
-                Error = "User abort !";
+                _steps = ESteps.Done;
                 Status = EOperationStatus.Failed;
+                Error = "User abort !";
             }
 
-            // 释放资源包加载器
-            if (LoadBundleFileOp != null)
+            // 减少引用计数
+            foreach (var bundleLoader in _bundleLoaders)
             {
-                LoadBundleFileOp.Release();
-                LoadBundleFileOp = null;
-            }
-
-            if (LoadDependBundleFileOp != null)
-            {
-                LoadDependBundleFileOp.Release();
-                LoadDependBundleFileOp = null;
+                bundleLoader.Release();
             }
         }
 
@@ -143,9 +226,14 @@ namespace YooAsset
         /// </summary>
         public bool CanDestroyProvider()
         {
-            // 注意：在进行资源加载过程时不可以销毁
-            if (_steps == ESteps.Loading || _steps == ESteps.Checking)
+            // 注意：正在加载中的任务不可以销毁
+            if (IsLoading)
                 return false;
+
+            if (_resManager.UseWeakReferenceHandle)
+            {
+                TryCleanupWeakReference();
+            }
 
             return RefCount <= 0;
         }
@@ -158,21 +246,16 @@ namespace YooAsset
             // 引用计数增加
             RefCount++;
 
-            HandleBase handle;
-            if (typeof(T) == typeof(AssetHandle))
-                handle = new AssetHandle(this);
-            else if (typeof(T) == typeof(SceneHandle))
-                handle = new SceneHandle(this);
-            else if (typeof(T) == typeof(SubAssetsHandle))
-                handle = new SubAssetsHandle(this);
-            else if (typeof(T) == typeof(AllAssetsHandle))
-                handle = new AllAssetsHandle(this);
-            else if (typeof(T) == typeof(RawFileHandle))
-                handle = new RawFileHandle(this);
+            HandleBase handle = HandleFactory.CreateHandle(this, typeof(T));
+            if (_resManager.UseWeakReferenceHandle)
+            {
+                var weakRef = new WeakReference<HandleBase>(handle);
+                _weakReferences.AddLast(weakRef);
+            }
             else
-                throw new System.NotImplementedException();
-
-            _handles.Add(handle);
+            {
+                _handles.Add(handle);
+            }
             return handle as T;
         }
 
@@ -184,8 +267,16 @@ namespace YooAsset
             if (RefCount <= 0)
                 throw new System.Exception("Should never get here !");
 
-            if (_handles.Remove(handle) == false)
-                throw new System.Exception("Should never get here !");
+            if (_resManager.UseWeakReferenceHandle)
+            {
+                if (RemoveWeakReference(handle) == false)
+                    throw new System.Exception("Should never get here !");
+            }
+            else
+            {
+                if (_handles.Remove(handle) == false)
+                    throw new System.Exception("Should never get here !");
+            }
 
             // 引用计数减少
             RefCount--;
@@ -196,24 +287,36 @@ namespace YooAsset
         /// </summary>
         public void ReleaseAllHandles()
         {
-            for (int i = _handles.Count - 1; i >= 0; i--)
+            if (_resManager.UseWeakReferenceHandle)
             {
-                var handle = _handles[i];
-                handle.ReleaseInternal();
+                List<WeakReference<HandleBase>> tempers = _weakReferences.ToList();
+                foreach (var weakRef in tempers)
+                {
+                    if (weakRef.TryGetTarget(out HandleBase target))
+                    {
+                        target.Release();
+                    }
+                }
+            }
+            else
+            {
+                List<HandleBase> tempers = _handles.ToList();
+                foreach (var handle in tempers)
+                {
+                    handle.Release();
+                }
             }
         }
 
         /// <summary>
-        /// 处理致命问题
+        /// 尝试卸载资源包
         /// </summary>
-        protected void ProcessFatalEvent()
+        public void TryUnloadBundle()
         {
-            if (LoadBundleFileOp.IsDestroyed)
-                throw new System.Exception("Should never get here !");
-
-            string error = $"The bundle {LoadBundleFileOp.BundleFileInfo.Bundle.BundleName} has been destroyed by unity bugs !";
-            YooLogger.Error(error);
-            InvokeCompletion(Error, EOperationStatus.Failed);
+            if (_resManager.AutoUnloadBundleWhenUnused)
+            {
+                _resManager.TryUnloadUnusedAsset(MainAssetInfo, 10);
+            }
         }
 
         /// <summary>
@@ -221,41 +324,34 @@ namespace YooAsset
         /// </summary>
         protected void InvokeCompletion(string error, EOperationStatus status)
         {
-            DebugEndRecording();
-
             _steps = ESteps.Done;
             Error = error;
             Status = status;
 
             // 注意：创建临时列表是为了防止外部逻辑在回调函数内创建或者释放资源句柄。
             // 注意：回调方法如果发生异常，会阻断列表里的后续回调方法！
-            List<HandleBase> tempers = new List<HandleBase>(_handles);
-            foreach (var hande in tempers)
+            if (_resManager.UseWeakReferenceHandle)
             {
-                if (hande.IsValid)
+                List<WeakReference<HandleBase>> tempers = _weakReferences.ToList();
+                foreach (var weakRef in tempers)
                 {
-                    hande.InvokeCallback();
+                    if (weakRef.TryGetTarget(out HandleBase target))
+                    {
+                        if (target.IsValid)
+                        {
+                            target.InvokeCallback();
+                        }
+                    }
                 }
             }
-        }
-
-        /// <summary>
-        /// 更新流程
-        /// </summary>
-        protected void InvokeUpdateCompletion()
-        {
-            List<HandleBase> tempers = new List<HandleBase>(_handles);
-            foreach (var hande in tempers)
+            else
             {
-                if (hande.IsValid)
+                List<HandleBase> tempers = _handles.ToList();
+                foreach (var handle in tempers)
                 {
-                    try
+                    if (handle.IsValid)
                     {
-                        hande.InvokeUpdateCallback();
-                    }
-                    catch (Exception e)
-                    {
-                        YooLogger.Exception(e);
+                        handle.InvokeCallback();
                     }
                 }
             }
@@ -267,12 +363,10 @@ namespace YooAsset
         public DownloadStatus GetDownloadStatus()
         {
             DownloadStatus status = new DownloadStatus();
-            status.TotalBytes = LoadBundleFileOp.BundleFileInfo.Bundle.FileSize;
-            status.DownloadedBytes = LoadBundleFileOp.DownloadedBytes;
-            foreach (var dependBundle in LoadDependBundleFileOp.Depends)
+            foreach (var bundleLoader in _bundleLoaders)
             {
-                status.TotalBytes += dependBundle.BundleFileInfo.Bundle.FileSize;
-                status.DownloadedBytes += dependBundle.DownloadedBytes;
+                status.TotalBytes += bundleLoader.LoadBundleInfo.Bundle.FileSize;
+                status.DownloadedBytes += bundleLoader.DownloadedBytes;
             }
 
             if (status.TotalBytes == 0)
@@ -283,74 +377,75 @@ namespace YooAsset
             return status;
         }
 
-        #region 调试信息相关
+        /// <summary>
+        /// 移除指定句柄的弱引用对象
+        /// </summary>
+        private bool RemoveWeakReference(HandleBase handle)
+        {
+            bool removed = false;
+            var currentNode = _weakReferences.First;
+            while (currentNode != null)
+            {
+                var nextNode = currentNode.Next;
+                if (currentNode.Value.TryGetTarget(out HandleBase target))
+                {
+                    if (ReferenceEquals(target, handle))
+                    {
+                        _weakReferences.Remove(currentNode);
+                        removed = true;
+                        break;
+                    }
+                }
+                currentNode = nextNode;
+            }
+            return removed;
+        }
 
+        /// <summary>
+        /// 清理所有失效的弱引用
+        /// </summary>
+        private void TryCleanupWeakReference()
+        {
+            var currentNode = _weakReferences.First;
+            while (currentNode != null)
+            {
+                var nextNode = currentNode.Next;
+                if (currentNode.Value.TryGetTarget(out HandleBase target) == false)
+                {
+                    _weakReferences.Remove(currentNode);
+
+                    // 引用计数减少
+                    RefCount--;
+                }
+                currentNode = nextNode;
+            }
+        }
+
+        #region 调试信息
         /// <summary>
         /// 出生的场景
         /// </summary>
         public string SpawnScene = string.Empty;
 
-        /// <summary>
-        /// 出生的时间
-        /// </summary>
-        public string SpawnTime = string.Empty;
-
-        /// <summary>
-        /// 加载耗时（单位：毫秒）
-        /// </summary>
-        public long LoadingTime { protected set; get; }
-
-        // 加载耗时统计
-        private Stopwatch _watch = null;
-
         [Conditional("DEBUG")]
-        public void InitSpawnDebugInfo()
+        public void InitProviderDebugInfo()
         {
             SpawnScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            SpawnTime = SpawnTimeToString(UnityEngine.Time.realtimeSinceStartup);
-        }
-
-        private string SpawnTimeToString(float spawnTime)
-        {
-            float h = UnityEngine.Mathf.FloorToInt(spawnTime / 3600f);
-            float m = UnityEngine.Mathf.FloorToInt(spawnTime / 60f - h * 60f);
-            float s = UnityEngine.Mathf.FloorToInt(spawnTime - m * 60f - h * 3600f);
-            return h.ToString("00") + ":" + m.ToString("00") + ":" + s.ToString("00");
-        }
-
-        [Conditional("DEBUG")]
-        protected void DebugBeginRecording()
-        {
-            if (_watch == null)
-            {
-                _watch = Stopwatch.StartNew();
-            }
-        }
-
-        [Conditional("DEBUG")]
-        private void DebugEndRecording()
-        {
-            if (_watch != null)
-            {
-                LoadingTime = _watch.ElapsedMilliseconds;
-                _watch = null;
-            }
         }
 
         /// <summary>
         /// 获取资源包的调试信息列表
         /// </summary>
-        internal void GetBundleDebugInfos(List<DebugBundleInfo> output)
+        internal List<string> GetDebugDependBundles()
         {
-            var bundleInfo = new DebugBundleInfo();
-            bundleInfo.BundleName = LoadBundleFileOp.BundleFileInfo.Bundle.BundleName;
-            bundleInfo.RefCount = LoadBundleFileOp.RefCount;
-            bundleInfo.Status = LoadBundleFileOp.Status;
-            output.Add(bundleInfo);
-
-            LoadDependBundleFileOp.GetBundleDebugInfos(output);
+            List<string> result = new List<string>(_bundleLoaders.Count);
+            foreach (var bundleLoader in _bundleLoaders)
+            {
+                var packageBundle = bundleLoader.LoadBundleInfo.Bundle;
+                result.Add(packageBundle.BundleName);
+            }
+            return result;
         }
-
         #endregion
     }
 }

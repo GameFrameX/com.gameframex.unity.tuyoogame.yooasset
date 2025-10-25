@@ -27,7 +27,7 @@ namespace YooAsset.Editor
         /// <summary>
         /// 文件哈希值
         /// </summary>
-        public string PackageFileCRC { set; get; }
+        public uint PackageFileCRC { set; get; }
 
         /// <summary>
         /// 文件哈希值
@@ -56,13 +56,13 @@ namespace YooAsset.Editor
         public string EncryptedFilePath { set; get; }
         #endregion
 
-        private readonly HashSet<string> _assetPaths = new HashSet<string>();
+        private readonly Dictionary<string, BuildAssetInfo> _packAssetDic = new Dictionary<string, BuildAssetInfo>(100);
 
         /// <summary>
         /// 参与构建的资源列表
         /// 注意：不包含零依赖资源和冗余资源
         /// </summary>
-        public readonly List<BuildAssetInfo> MainAssets = new List<BuildAssetInfo>();
+        public readonly List<BuildAssetInfo> AllPackAssets = new List<BuildAssetInfo>(100);
 
         /// <summary>
         /// 资源包名称
@@ -86,63 +86,102 @@ namespace YooAsset.Editor
         public void PackAsset(BuildAssetInfo buildAsset)
         {
             string assetPath = buildAsset.AssetInfo.AssetPath;
-            if (_assetPaths.Contains(assetPath))
+            if (_packAssetDic.ContainsKey(assetPath))
                 throw new System.Exception($"Should never get here ! Asset is existed : {assetPath}");
 
-            _assetPaths.Add(assetPath);
-            MainAssets.Add(buildAsset);
+            _packAssetDic.Add(assetPath, buildAsset);
+            AllPackAssets.Add(buildAsset);
         }
 
         /// <summary>
         /// 是否包含指定资源
         /// </summary>
-        public bool IsContainsAsset(string assetPath)
+        public bool IsContainsPackAsset(string assetPath)
         {
-            return _assetPaths.Contains(assetPath);
+            return _packAssetDic.ContainsKey(assetPath);
         }
 
         /// <summary>
         /// 获取构建的资源路径列表
         /// </summary>
-        public string[] GetAllMainAssetPaths()
+        public string[] GetAllPackAssetPaths()
         {
-            return MainAssets.Select(t => t.AssetInfo.AssetPath).ToArray();
+            List<string> results = new List<string>(AllPackAssets.Count);
+            for (int i = 0; i < AllPackAssets.Count; i++)
+            {
+                var packAsset = AllPackAssets[i];
+                results.Add(packAsset.AssetInfo.AssetPath);
+            }
+            return results.ToArray();
         }
 
         /// <summary>
-        /// 获取该资源包内的所有资源（包括零依赖资源和冗余资源）
+        /// 获取构建的资源可寻址列表
         /// </summary>
-        public List<string> GetAllBuiltinAssetPaths()
+        public string[] GetAllPackAssetAddress()
         {
-            var packAssets = GetAllMainAssetPaths();
-            List<string> result = new List<string>(packAssets);
-            foreach (var buildAsset in MainAssets)
+            List<string> results = new List<string>(AllPackAssets.Count);
+            for (int i = 0; i < AllPackAssets.Count; i++)
             {
-                if (buildAsset.AllDependAssetInfos == null)
-                    continue;
-                foreach (var dependAssetInfo in buildAsset.AllDependAssetInfos)
+                var packAsset = AllPackAssets[i];
+                results.Add(packAsset.Address);
+            }
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 获取构建的主资源信息
+        /// </summary>
+        public BuildAssetInfo GetPackAssetInfo(string assetPath)
+        {
+            if (_packAssetDic.TryGetValue(assetPath, out BuildAssetInfo value))
+            {
+                return value;
+            }
+            else
+            {
+                throw new Exception($"Can not found pack asset info {assetPath} in bundle : {BundleName}");
+            }
+        }
+
+        /// <summary>
+        /// 获取资源包内部所有资产
+        /// </summary>
+        public List<AssetInfo> GetBundleContents()
+        {
+            Dictionary<string, AssetInfo> result = new Dictionary<string, AssetInfo>(AllPackAssets.Count);
+            foreach (var packAsset in AllPackAssets)
+            {
+                result.Add(packAsset.AssetInfo.AssetPath, packAsset.AssetInfo);
+                if (packAsset.AllDependAssetInfos != null)
                 {
-                    // 注意：依赖资源里只添加零依赖资源和冗余资源
-                    if (dependAssetInfo.HasBundleName() == false)
+                    foreach (var dependAssetInfo in packAsset.AllDependAssetInfos)
                     {
-                        if (result.Contains(dependAssetInfo.AssetInfo.AssetPath) == false)
-                            result.Add(dependAssetInfo.AssetInfo.AssetPath);
+                        // 注意：依赖资源里只添加零依赖资源和冗余资源
+                        if (dependAssetInfo.HasBundleName() == false)
+                        {
+                            string dependAssetPath = dependAssetInfo.AssetInfo.AssetPath;
+                            if (result.ContainsKey(dependAssetPath) == false)
+                                result.Add(dependAssetPath, dependAssetInfo.AssetInfo);
+                        }
                     }
                 }
             }
-            return result;
+            return result.Values.ToList();
         }
 
         /// <summary>
         /// 创建AssetBundleBuild类
         /// </summary>
-        public UnityEditor.AssetBundleBuild CreatePipelineBuild()
+        public UnityEditor.AssetBundleBuild CreatePipelineBuild(bool replaceAssetPathWithAddress)
         {
             // 注意：我们不再支持AssetBundle的变种机制
             AssetBundleBuild build = new AssetBundleBuild();
             build.assetBundleName = BundleName;
             build.assetBundleVariant = string.Empty;
-            build.assetNames = GetAllMainAssetPaths();
+            build.assetNames = GetAllPackAssetPaths();
+            if (replaceAssetPathWithAddress)
+                build.addressableNames = GetAllPackAssetAddress();
             return build;
         }
 
@@ -151,7 +190,7 @@ namespace YooAsset.Editor
         /// </summary>
         public BuildAssetInfo[] GetAllManifestAssetInfos()
         {
-            return MainAssets.Where(t => t.CollectorType == ECollectorType.MainAssetCollector).ToArray();
+            return AllPackAssets.Where(t => t.CollectorType == ECollectorType.MainAssetCollector).ToArray();
         }
 
         /// <summary>

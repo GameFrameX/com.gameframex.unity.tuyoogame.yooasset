@@ -1,5 +1,4 @@
-﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,13 +13,7 @@ namespace YooAsset.Editor
             var buildParameters = context.GetContextObject<BuildParametersContext>();
             var buildMapContext = context.GetContextObject<BuildMapContext>();
             var manifestContext = context.GetContextObject<ManifestContext>();
-
-            var buildMode = buildParameters.Parameters.BuildMode;
-            if (buildMode != EBuildMode.SimulateBuild)
-            {
-                CreateReportFile(buildParameters, buildMapContext, manifestContext);
-            }
+            CreateReportFile(buildParameters, buildMapContext, manifestContext);
         }
     }
 }
-#endif

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YooAsset.Editor
 {
     [Serializable]
-    public class AssetInfo
+    public class AssetInfo : IComparable<AssetInfo>
     {
         private string _fileExtension = null;
 
@@ -37,6 +37,7 @@ namespace YooAsset.Editor
             }
         }
 
+
         public AssetInfo(string assetPath)
         {
             AssetPath = assetPath;
@@ -59,6 +60,22 @@ namespace YooAsset.Editor
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// 是否为图集资源
+        /// </summary>
+        public bool IsSpriteAtlas()
+        {
+            if (AssetType == typeof(UnityEngine.U2D.SpriteAtlas))
+                return true;
+            else
+                return false;
+        }
+
+        public int CompareTo(AssetInfo other)
+        {
+            return this.AssetPath.CompareTo(other.AssetPath);
         }
     }
 }

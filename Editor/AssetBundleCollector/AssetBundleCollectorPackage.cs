@@ -26,6 +26,11 @@ namespace YooAsset.Editor
         public bool EnableAddressable = false;
 
         /// <summary>
+        /// 支持无后缀名的资源定位地址
+        /// </summary>
+        public bool SupportExtensionless = true;
+
+        /// <summary>
         /// 资源定位地址大小写不敏感
         /// </summary>
         public bool LocationToLower = false;
@@ -98,9 +103,9 @@ namespace YooAsset.Editor
         }
 
         /// <summary>
-        /// 获取打包收集的资源文件
+        /// 获取收集的资源列表
         /// </summary>
-        public List<CollectAssetInfo> GetAllCollectAssets(CollectCommand command)
+        public List<CollectAssetInfo> GetCollectAssets(CollectCommand command)
         {
             Dictionary<string, CollectAssetInfo> result = new Dictionary<string, CollectAssetInfo>(10000);
 
@@ -138,7 +143,7 @@ namespace YooAsset.Editor
                 }
             }
 
-            // 返回列表
+            // 返回结果
             return result.Values.ToList();
         }
 

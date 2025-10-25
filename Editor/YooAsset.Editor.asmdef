@@ -2,7 +2,7 @@
     "name": "YooAsset.Editor",
     "rootNamespace": "",
     "references": [
-        "YooAsset.Runtime",
+        "YooAsset",
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor"
     ],
@@ -15,12 +15,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.unity.scriptablebuildpipeline",
-            "expression": "",
-            "define": "ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace YooAsset
 {
-    public abstract class HandleBase : IEnumerator
+    public abstract class HandleBase : IEnumerator, IDisposable
     {
         private readonly AssetInfo _assetInfo;
         internal ProviderOperation Provider { private set; get; }
@@ -18,11 +18,27 @@ namespace YooAsset
         internal abstract void InvokeUpdateCallback();
 
         /// <summary>
-        /// 是否成功
+        /// 释放资源句柄
         /// </summary>
-        public bool IsSucceed
+        public void Release()
         {
-            get { return IsDone && Status == EOperationStatus.Succeed; }
+            if (IsValidWithWarning == false)
+                return;
+            Provider.ReleaseHandle(this);
+
+            // 主动卸载零引用的资源包
+            if (Provider.RefCount == 0)
+                Provider.TryUnloadBundle();
+
+            Provider = null;
+        }
+
+        /// <summary>
+        /// 释放资源句柄
+        /// </summary>
+        public void Dispose()
+        {
+            this.Release();
         }
 
         /// <summary>
@@ -39,10 +55,7 @@ namespace YooAsset
         public DownloadStatus GetDownloadStatus()
         {
             if (IsValidWithWarning == false)
-            {
                 return DownloadStatus.CreateDefaultStatus();
-            }
-
             return Provider.GetDownloadStatus();
         }
 
@@ -55,7 +68,6 @@ namespace YooAsset
             {
                 if (IsValidWithWarning == false)
                     return EOperationStatus.None;
-
                 return Provider.Status;
             }
         }
@@ -87,22 +99,6 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 加载时长
-        /// </summary>
-        public float Duration
-        {
-            get
-            {
-                if (IsValidWithWarning == false)
-                {
-                    return 0;
-                }
-
-                return Provider.LoadingTime;
-            }
-        }
-
-        /// <summary>
         /// 是否加载完毕
         /// </summary>
         public bool IsDone
@@ -110,7 +106,7 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
-                    return false;
+                    return true;
                 return Provider.IsDone;
             }
         }
@@ -151,17 +147,6 @@ namespace YooAsset
             }
         }
 
-        /// <summary>
-        /// 释放句柄
-        /// </summary>
-        internal void ReleaseInternal()
-        {
-            if (IsValidWithWarning == false)
-                return;
-            Provider.ReleaseHandle(this);
-            Provider = null;
-        }
-
         #region 异步操作相关
 
         /// <summary>
@@ -169,7 +154,12 @@ namespace YooAsset
         /// </summary>
         public System.Threading.Tasks.Task Task
         {
-            get { return Provider.Task; }
+            get
+            {
+                if (IsValidWithWarning == false)
+                    return null;
+                return Provider.Task;
+            }
         }
 
         // 协程相关

@@ -139,21 +139,30 @@ namespace YooAsset.Editor
         /// </summary>
         public List<CollectAssetInfo> GetAllCollectAssets(CollectCommand command, AssetBundleCollectorGroup group)
         {
-            // 注意：模拟构建模式下只收集主资源
-            if (command.BuildMode == EBuildMode.SimulateBuild)
+            bool ignoreStaticCollector = command.IsFlagSet(ECollectFlags.IgnoreStaticCollector);
+            if (ignoreStaticCollector)
             {
-                if (CollectorType != ECollectorType.MainAssetCollector)
+                if (CollectorType == ECollectorType.StaticAssetCollector)
+                    return new List<CollectAssetInfo>();
+            }
+
+            bool ignoreDependCollector = command.IsFlagSet(ECollectFlags.IgnoreDependCollector);
+            if (ignoreDependCollector)
+            {
+                if (CollectorType == ECollectorType.DependAssetCollector)
                     return new List<CollectAssetInfo>();
             }
 
             Dictionary<string, CollectAssetInfo> result = new Dictionary<string, CollectAssetInfo>(1000);
 
             // 收集打包资源路径
-            List<string> findAssets =new List<string>();
+            List<string> findAssets = new List<string>();
             if (AssetDatabase.IsValidFolder(CollectPath))
             {
-                string collectDirectory = CollectPath;
-                string[] findResult = EditorTools.FindAssets(EAssetSearchType.All, collectDirectory);
+                IFilterRule filterRuleInstance = AssetBundleCollectorSettingData.GetFilterRuleInstance(FilterRuleName);
+                string findAssetType = filterRuleInstance.FindAssetType;
+                string searchFolder = CollectPath;
+                string[] findResult = EditorTools.FindAssets(findAssetType, searchFolder);
                 findAssets.AddRange(findResult);
             }
             else
@@ -218,13 +227,7 @@ namespace YooAsset.Editor
             string bundleName = GetBundleName(command, group, assetInfo);
             List<string> assetTags = GetAssetTags(group);
             CollectAssetInfo collectAssetInfo = new CollectAssetInfo(CollectorType, bundleName, address, assetInfo, assetTags);
-
-            // 注意：模拟构建模式下不需要收集依赖资源
-            if (command.BuildMode == EBuildMode.SimulateBuild)
-                collectAssetInfo.DependAssets = new List<AssetInfo>();
-            else
-                collectAssetInfo.DependAssets = GetAllDependencies(command, assetInfo.AssetPath);
-
+            collectAssetInfo.DependAssets = GetAllDependencies(command, assetInfo.AssetPath);
             return collectAssetInfo;
         }
 
@@ -265,14 +268,21 @@ namespace YooAsset.Editor
         }
         private List<string> GetAssetTags(AssetBundleCollectorGroup group)
         {
-            List<string> tags = EditorTools.StringToStringList(group.AssetTags, ';');
-            List<string> temper = EditorTools.StringToStringList(AssetTags, ';');
-            tags.AddRange(temper);
-            return tags;
+            List<string> result = EditorTools.StringToStringList(AssetTags, ';');
+            if (CollectorType == ECollectorType.MainAssetCollector)
+            {
+                List<string> temps = EditorTools.StringToStringList(group.AssetTags, ';');
+                result.AddRange(temps);
+            }
+            return result;
         }
         private List<AssetInfo> GetAllDependencies(CollectCommand command, string mainAssetPath)
         {
-            string[] depends = AssetDatabase.GetDependencies(mainAssetPath, true);
+            bool ignoreGetDependencies = command.IsFlagSet(ECollectFlags.IgnoreGetDependencies);
+            if (ignoreGetDependencies)
+                return new List<AssetInfo>();
+
+            string[] depends = command.AssetDependency.GetDependencies(mainAssetPath, true);
             List<AssetInfo> result = new List<AssetInfo>(depends.Length);
             foreach (string assetPath in depends)
             {

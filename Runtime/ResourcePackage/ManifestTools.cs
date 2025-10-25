@@ -8,7 +8,30 @@ namespace YooAsset
 {
     internal static class ManifestTools
     {
-#if UNITY_EDITOR
+        /// <summary>
+        /// 验证清单文件的二进制数据
+        /// </summary>
+        public static bool VerifyManifestData(byte[] fileData, string hashValue)
+        {
+            if (fileData == null || fileData.Length == 0)
+                return false;
+            if (string.IsNullOrEmpty(hashValue))
+                return false;
+
+            // 注意：兼容俩种验证方式
+            // 注意：计算MD5的哈希值通常为32个字符
+            string fileHash;
+            if (hashValue.Length == 32)
+                fileHash = HashUtility.BytesMD5(fileData);
+            else
+                fileHash = HashUtility.BytesCRC32(fileData);
+
+            if (fileHash == hashValue)
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// 序列化（JSON文件）
         /// </summary>
@@ -21,27 +44,31 @@ namespace YooAsset
         /// <summary>
         /// 序列化（二进制文件）
         /// </summary>
-        public static void SerializeToBinary(string savePath, PackageManifest manifest)
+        public static void SerializeToBinary(string savePath, PackageManifest manifest, IManifestProcessServices services)
         {
             using (FileStream fs = new FileStream(savePath, FileMode.Create))
             {
                 // 创建缓存器
-                BufferWriter buffer = new BufferWriter(YooAssetSettings.ManifestFileMaxSize);
+                BufferWriter buffer = new BufferWriter(ManifestDefine.FileMaxSize);
 
                 // 写入文件标记
-                buffer.WriteUInt32(YooAssetSettings.ManifestFileSign);
+                buffer.WriteUInt32(ManifestDefine.FileSign);
 
                 // 写入文件版本
                 buffer.WriteUTF8(manifest.FileVersion);
 
                 // 写入文件头信息
                 buffer.WriteBool(manifest.EnableAddressable);
+                buffer.WriteBool(manifest.SupportExtensionless);
                 buffer.WriteBool(manifest.LocationToLower);
                 buffer.WriteBool(manifest.IncludeAssetGUID);
+                buffer.WriteBool(manifest.ReplaceAssetPathWithAddress);
                 buffer.WriteInt32(manifest.OutputNameStyle);
+                buffer.WriteInt32(manifest.BuildBundleType);
                 buffer.WriteUTF8(manifest.BuildPipeline);
                 buffer.WriteUTF8(manifest.PackageName);
                 buffer.WriteUTF8(manifest.PackageVersion);
+                buffer.WriteUTF8(manifest.PackageNote);
 
                 // 写入资源列表
                 buffer.WriteInt32(manifest.AssetList.Count);
@@ -53,6 +80,7 @@ namespace YooAsset
                     buffer.WriteUTF8(packageAsset.AssetGUID);
                     buffer.WriteUTF8Array(packageAsset.AssetTags);
                     buffer.WriteInt32(packageAsset.BundleID);
+                    buffer.WriteInt32Array(packageAsset.DependBundleIDs);
                 }
 
                 // 写入资源包列表
@@ -63,16 +91,27 @@ namespace YooAsset
                     buffer.WriteUTF8(packageBundle.BundleName);
                     buffer.WriteUInt32(packageBundle.UnityCRC);
                     buffer.WriteUTF8(packageBundle.FileHash);
-                    buffer.WriteUTF8(packageBundle.FileCRC);
+                    buffer.WriteUInt32(packageBundle.FileCRC);
                     buffer.WriteInt64(packageBundle.FileSize);
                     buffer.WriteBool(packageBundle.Encrypted);
                     buffer.WriteUTF8Array(packageBundle.Tags);
-                    buffer.WriteInt32Array(packageBundle.DependIDs);
+                    buffer.WriteInt32Array(packageBundle.DependBundleIDs);
                 }
 
-                // 写入文件流
-                buffer.WriteToStream(fs);
-                fs.Flush();
+                // 清单处理操作
+                if (services != null)
+                {
+                    var tempBytes = buffer.GetBytes();
+                    var resultBytes = services.ProcessManifest(tempBytes);
+                    fs.Write(resultBytes, 0, resultBytes.Length);
+                    fs.Flush();
+                }
+                else
+                {
+                    // 写入文件流
+                    buffer.WriteToStream(fs);
+                    fs.Flush();
+                }
             }
         }
 
@@ -81,120 +120,29 @@ namespace YooAsset
         /// </summary>
         public static PackageManifest DeserializeFromJson(string jsonContent)
         {
-            return JsonUtility.FromJson<PackageManifest>(jsonContent);
+            var manifest = JsonUtility.FromJson<PackageManifest>(jsonContent);
+
+            // 初始化资源包
+            for (int i = 0; i < manifest.BundleList.Count; i++)
+            {
+                var packageBundle = manifest.BundleList[i];
+                packageBundle.InitBundle(manifest);
+            }
+
+            // 初始化资源清单
+            manifest.Initialize();
+            return manifest;
         }
 
         /// <summary>
         /// 反序列化（二进制文件）
         /// </summary>
-        public static PackageManifest DeserializeFromBinary(byte[] binaryData)
+        public static PackageManifest DeserializeFromBinary(byte[] binaryData, IManifestRestoreServices services)
         {
-            // 创建缓存器
-            BufferReader buffer = new BufferReader(binaryData);
-
-            // 读取文件标记
-            uint fileSign = buffer.ReadUInt32();
-            if (fileSign != YooAssetSettings.ManifestFileSign)
-                throw new Exception("Invalid manifest file !");
-
-            // 读取文件版本
-            string fileVersion = buffer.ReadUTF8();
-            if (fileVersion != YooAssetSettings.ManifestFileVersion)
-                throw new Exception($"The manifest file version are not compatible : {fileVersion} != {YooAssetSettings.ManifestFileVersion}");
-
-            PackageManifest manifest = new PackageManifest();
-            {
-                // 读取文件头信息
-                manifest.FileVersion = fileVersion;
-                manifest.EnableAddressable = buffer.ReadBool();
-                manifest.LocationToLower = buffer.ReadBool();
-                manifest.IncludeAssetGUID = buffer.ReadBool();
-                manifest.OutputNameStyle = buffer.ReadInt32();
-                manifest.BuildPipeline = buffer.ReadUTF8();
-                manifest.PackageName = buffer.ReadUTF8();
-                manifest.PackageVersion = buffer.ReadUTF8();
-
-                // 检测配置
-                if (manifest.EnableAddressable && manifest.LocationToLower)
-                    throw new Exception("Addressable not support location to lower !");
-
-                // 读取资源列表
-                int packageAssetCount = buffer.ReadInt32();
-                manifest.AssetList = new List<PackageAsset>(packageAssetCount);
-                for (int i = 0; i < packageAssetCount; i++)
-                {
-                    var packageAsset = new PackageAsset();
-                    packageAsset.Address = buffer.ReadUTF8();
-                    packageAsset.AssetPath = buffer.ReadUTF8();
-                    packageAsset.AssetGUID = buffer.ReadUTF8();
-                    packageAsset.AssetTags = buffer.ReadUTF8Array();
-                    packageAsset.BundleID = buffer.ReadInt32();
-                    manifest.AssetList.Add(packageAsset);
-                }
-
-                // 读取资源包列表
-                int packageBundleCount = buffer.ReadInt32();
-                manifest.BundleList = new List<PackageBundle>(packageBundleCount);
-                for (int i = 0; i < packageBundleCount; i++)
-                {
-                    var packageBundle = new PackageBundle();
-                    packageBundle.BundleName = buffer.ReadUTF8();
-                    packageBundle.UnityCRC = buffer.ReadUInt32();
-                    packageBundle.FileHash = buffer.ReadUTF8();
-                    packageBundle.FileCRC = buffer.ReadUTF8();
-                    packageBundle.FileSize = buffer.ReadInt64();
-                    packageBundle.Encrypted = buffer.ReadBool();
-                    packageBundle.Tags = buffer.ReadUTF8Array();
-                    packageBundle.DependIDs = buffer.ReadInt32Array();
-                    manifest.BundleList.Add(packageBundle);
-                }
-            }
-
-            // 填充BundleDic
-            manifest.BundleDic1 = new Dictionary<string, PackageBundle>(manifest.BundleList.Count);
-            manifest.BundleDic2 = new Dictionary<string, PackageBundle>(manifest.BundleList.Count);
-            foreach (var packageBundle in manifest.BundleList)
-            {
-                packageBundle.ParseBundle(manifest);
-                manifest.BundleDic1.Add(packageBundle.BundleName, packageBundle);
-                manifest.BundleDic2.Add(packageBundle.FileName, packageBundle);
-            }
-
-            // 填充AssetDic
-            manifest.AssetDic = new Dictionary<string, PackageAsset>(manifest.AssetList.Count);
-            foreach (var packageAsset in manifest.AssetList)
-            {
-                // 注意：我们不允许原始路径存在重名
-                string assetPath = packageAsset.AssetPath;
-                if (manifest.AssetDic.ContainsKey(assetPath))
-                    throw new Exception($"AssetPath have existed : {assetPath}");
-                else
-                    manifest.AssetDic.Add(assetPath, packageAsset);
-            }
-
-            return manifest;
-        }
-#endif
-
-        /// <summary>
-        /// 注意：该类拷贝自编辑器
-        /// </summary>
-        private enum EFileNameStyle
-        {
-            /// <summary>
-            /// 哈希值名称
-            /// </summary>
-            HashName = 0,
-
-            /// <summary>
-            /// 资源包名称（不推荐）
-            /// </summary>
-            BundleName = 1,
-
-            /// <summary>
-            /// 资源包名称 + 哈希值名称
-            /// </summary>
-            BundleName_HashName = 2,
+            DeserializeManifestOperation operation = new DeserializeManifestOperation(services, binaryData);
+            operation.StartOperation();
+            operation.WaitForAsyncComplete();
+            return operation.Manifest;
         }
 
         /// <summary>
@@ -221,8 +169,15 @@ namespace YooAsset
             }
             else if (nameStyle == (int)EFileNameStyle.BundleName_HashName)
             {
-                string fileName = bundleName.Remove(bundleName.LastIndexOf('.'));
-                return StringUtility.Format("{0}_{1}{2}", fileName, fileHash, fileExtension);
+                if (string.IsNullOrEmpty(fileExtension))
+                {
+                    return StringUtility.Format("{0}_{1}", bundleName, fileHash);
+                }
+                else
+                {
+                    string fileName = bundleName.Remove(bundleName.LastIndexOf('.'));
+                    return StringUtility.Format("{0}_{1}{2}", fileName, fileHash, fileExtension);
+                }
             }
             else
             {

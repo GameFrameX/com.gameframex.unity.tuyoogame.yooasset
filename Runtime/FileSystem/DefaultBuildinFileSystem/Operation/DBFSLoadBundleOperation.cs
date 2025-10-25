@@ -19,7 +19,8 @@ namespace YooAsset
         private readonly DefaultBuildinFileSystem _fileSystem;
         private readonly PackageBundle _bundle;
         private AssetBundleCreateRequest _createRequest;
-        private bool _isWaitForAsyncComplete = false;
+        private AssetBundle _assetBundle;
+        private Stream _managedStream;
         private ESteps _steps = ESteps.None;
 
 
@@ -28,13 +29,13 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        internal override void InternalStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadAssetBundle;
         }
-        internal override void InternalOnUpdate()
+        internal override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -53,23 +54,27 @@ namespace YooAsset
                     }
                 }
 
-                if (_isWaitForAsyncComplete)
+                if (IsWaitForAsyncComplete)
                 {
                     if (_bundle.Encrypted)
                     {
-                        Result = _fileSystem.LoadEncryptedAssetBundle(_bundle);
+                        var decryptResult = _fileSystem.LoadEncryptedAssetBundle(_bundle);
+                        _assetBundle = decryptResult.Result;
+                        _managedStream = decryptResult.ManagedStream;
                     }
                     else
                     {
                         string filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
-                        Result = AssetBundle.LoadFromFile(filePath);
+                        _assetBundle = AssetBundle.LoadFromFile(filePath);
                     }
                 }
                 else
                 {
                     if (_bundle.Encrypted)
                     {
-                        _createRequest = _fileSystem.LoadEncryptedAssetBundleAsync(_bundle);
+                        var decryptResult = _fileSystem.LoadEncryptedAssetBundleAsync(_bundle);
+                        _createRequest = decryptResult.CreateRequest;
+                        _managedStream = decryptResult.ManagedStream;
                     }
                     else
                     {
@@ -85,47 +90,47 @@ namespace YooAsset
             {
                 if (_createRequest != null)
                 {
-                    if (_isWaitForAsyncComplete)
+                    if (IsWaitForAsyncComplete)
                     {
                         // 强制挂起主线程（注意：该操作会很耗时）
                         YooLogger.Warning("Suspend the main thread to load unity bundle.");
-                        Result = _createRequest.assetBundle;
+                        _assetBundle = _createRequest.assetBundle;
                     }
                     else
                     {
                         if (_createRequest.isDone == false)
                             return;
-                        Result = _createRequest.assetBundle;
+                        _assetBundle = _createRequest.assetBundle;
                     }
                 }
 
-                if (Result != null)
+                if (_assetBundle == null)
                 {
-                    _steps = ESteps.Done;
-                    Status = EOperationStatus.Succeed;
-                    return;
-                }
-
-                if (_bundle.Encrypted)
-                {
-                    _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Failed to load encrypted buildin asset bundle file : {_bundle.BundleName}";
-                    YooLogger.Error(Error);
+                    if (_bundle.Encrypted)
+                    {
+                        _steps = ESteps.Done;
+                        Status = EOperationStatus.Failed;
+                        Error = $"Failed to load encrypted buildin asset bundle file : {_bundle.BundleName}";
+                        YooLogger.Error(Error);
+                    }
+                    else
+                    {
+                        _steps = ESteps.Done;
+                        Status = EOperationStatus.Failed;
+                        Error = $"Failed to load buildin asset bundle file : {_bundle.BundleName}";
+                        YooLogger.Error(Error);
+                    }
                 }
                 else
                 {
                     _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Failed to load buildin asset bundle file : {_bundle.BundleName}";
-                    YooLogger.Error(Error);
+                    Result = new AssetBundleResult(_fileSystem, _bundle, _assetBundle, _managedStream);
+                    Status = EOperationStatus.Succeed;
                 }
             }
         }
         internal override void InternalWaitForAsyncComplete()
         {
-            _isWaitForAsyncComplete = true;
-
             while (true)
             {
                 if (ExecuteWhileDone())
@@ -134,9 +139,6 @@ namespace YooAsset
                     break;
                 }
             }
-        }
-        public override void AbortDownloadOperation()
-        {
         }
     }
 
@@ -162,13 +164,13 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        internal override void InternalStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadBuildinRawBundle;
         }
-        internal override void InternalOnUpdate()
+        internal override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -176,10 +178,18 @@ namespace YooAsset
             if (_steps == ESteps.LoadBuildinRawBundle)
             {
                 string filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
+
+#if UNITY_ANDROID
+                //TODO : 安卓平台内置文件属于APK压缩包内的文件。
+                _steps = ESteps.Done;
+                Status = EOperationStatus.Failed;
+                Error = $"Can not load android buildin raw bundle file : {filePath}";
+                YooLogger.Error(Error);
+#else
                 if (File.Exists(filePath))
                 {
                     _steps = ESteps.Done;
-                    Result = new RawBundle(_fileSystem, _bundle, filePath);
+                    Result = new RawBundleResult(_fileSystem, _bundle);
                     Status = EOperationStatus.Succeed;
                 }
                 else
@@ -189,6 +199,7 @@ namespace YooAsset
                     Error = $"Can not found buildin raw bundle file : {filePath}";
                     YooLogger.Error(Error);
                 }
+#endif
             }
         }
         internal override void InternalWaitForAsyncComplete()
@@ -201,9 +212,6 @@ namespace YooAsset
                     break;
                 }
             }
-        }
-        public override void AbortDownloadOperation()
-        {
         }
     }
 }

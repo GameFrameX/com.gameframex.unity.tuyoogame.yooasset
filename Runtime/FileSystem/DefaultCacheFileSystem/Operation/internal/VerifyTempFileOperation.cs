@@ -3,29 +3,10 @@ using System.Threading;
 
 namespace YooAsset
 {
-    internal class TempFileElement
-    {
-        public string TempFilePath { private set; get; }
-        public string TempFileCRC { private set; get; }
-        public long TempFileSize { private set; get; }
-
-        /// <summary>
-        /// 注意：原子操作对象
-        /// </summary>
-        public int Result = 0;
-
-        public TempFileElement(string filePath, string fileCRC, long fileSize)
-        {
-            TempFilePath = filePath;
-            TempFileCRC = fileCRC;
-            TempFileSize = fileSize;
-        }
-    }
-
     /// <summary>
     /// 下载文件验证（线程版）
     /// </summary>
-    internal class VerifyTempFileOperation : AsyncOperationBase
+    internal sealed class VerifyTempFileOperation : AsyncOperationBase
     {
         private enum ESteps
         {
@@ -41,25 +22,26 @@ namespace YooAsset
         /// <summary>
         /// 验证结果
         /// </summary>
-        public EFileVerifyResult VerifyResult { protected set; get; }
+        public EFileVerifyResult VerifyResult { private set; get; }
 
 
         internal VerifyTempFileOperation(TempFileElement element)
         {
             _element = element;
         }
-        internal override void InternalOnStart()
+        internal override void InternalStart()
         {
             _steps = ESteps.VerifyFile;
         }
-        internal override void InternalOnUpdate()
+        internal override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
 
             if (_steps == ESteps.VerifyFile)
             {
-                if (BeginVerifyFileWithThread(_element))
+                bool succeed = ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), _element);
+                if (succeed)
                 {
                     _steps = ESteps.Waiting;
                 }
@@ -89,21 +71,20 @@ namespace YooAsset
         {
             while (true)
             {
-                // 注意：等待子线程验证文件完毕
-                InternalOnUpdate();
+                //TODO 等待子线程验证文件完毕，该操作会挂起主线程！
+                InternalUpdate();
                 if (IsDone)
                     break;
+
+                // 短暂休眠避免完全卡死
+                System.Threading.Thread.Sleep(1);
             }
         }
 
-        private bool BeginVerifyFileWithThread(TempFileElement element)
-        {
-            return ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), element);
-        }
         private void VerifyInThread(object obj)
         {
             TempFileElement element = (TempFileElement)obj;
-            int result = (int)FileSystemHelper.FileVerify(element.TempFilePath, element.TempFileSize, element.TempFileCRC, EFileVerifyLevel.High);
+            int result = (int)FileVerifyHelper.FileVerify(element.TempFilePath, element.TempFileSize, element.TempFileCRC, EFileVerifyLevel.High);
             element.Result = result;
         }
     }

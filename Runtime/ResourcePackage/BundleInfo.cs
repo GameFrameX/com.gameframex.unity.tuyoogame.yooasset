@@ -3,18 +3,13 @@ namespace YooAsset
 {
     internal class BundleInfo
     {
-        private readonly string _importFilePath;
         private readonly IFileSystem _fileSystem;
+        private readonly string _importFilePath;
 
         /// <summary>
         /// 资源包对象
         /// </summary>
         public readonly PackageBundle Bundle;
-
-        /// <summary>
-        /// 注意：该字段只用于帮助编辑器下的模拟模式。
-        /// </summary>
-        public string[] IncludeAssetsInEditor;
 
 
         public BundleInfo(IFileSystem fileSystem, PackageBundle bundle)
@@ -31,7 +26,7 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 加载资源文件
+        /// 加载资源包
         /// </summary>
         public FSLoadBundleOperation LoadBundleFile()
         {
@@ -39,21 +34,13 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 卸载资源文件
-        /// </summary>
-        public void UnloadBundleFile(object result)
-        {
-            _fileSystem.UnloadBundleFile(Bundle, result);
-        }
-
-        /// <summary>
         /// 创建下载器
         /// </summary>
-        public FSDownloadFileOperation CreateDownloader(int failedTryAgain, int timeout)
+        public FSDownloadFileOperation CreateDownloader(int failedTryAgain)
         {
-            DownloadParam downloadParam = new DownloadParam(failedTryAgain, timeout);
-            downloadParam.ImportFilePath = _importFilePath;
-            return _fileSystem.DownloadFileAsync(Bundle, downloadParam);
+            DownloadFileOptions options = new DownloadFileOptions(failedTryAgain);
+            options.ImportFilePath = _importFilePath;
+            return _fileSystem.DownloadFileAsync(Bundle, options);
         }
 
         /// <summary>

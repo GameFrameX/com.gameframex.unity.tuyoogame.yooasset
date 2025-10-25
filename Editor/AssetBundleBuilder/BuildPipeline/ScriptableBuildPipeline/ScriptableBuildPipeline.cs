@@ -1,5 +1,4 @@
-﻿#if ENABLE_GAME_FRAME_X_SCRIPTABLE_BUILD_PIPELINE
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -37,9 +36,9 @@ namespace YooAsset.Editor
                     new TaskCreateReport_SBP(),
                     new TaskCreatePackage_SBP(),
                     new TaskCopyBuildinFiles_SBP(),
+                    new TaskCreateCatalog_SBP()
                 };
             return pipeline;
         }
     }
 }
-#endif

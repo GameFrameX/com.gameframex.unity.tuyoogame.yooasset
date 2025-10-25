@@ -14,10 +14,15 @@ namespace YooAsset.Editor
         private readonly Dictionary<string, BuildBundleInfo> _bundleInfoDic = new Dictionary<string, BuildBundleInfo>(10000);
 
         /// <summary>
+        /// 图集资源集合
+        /// </summary>
+        public readonly List<BuildAssetInfo> SpriteAtlasAssetList = new List<BuildAssetInfo>(10000);
+
+        /// <summary>
         /// 未被依赖的资源列表
         /// </summary>
         public readonly List<ReportIndependAsset> IndependAssets = new List<ReportIndependAsset>(1000);
-        
+
         /// <summary>
         /// 参与构建的资源总数
         /// 说明：包括主动收集的资源以及其依赖的所有资源
@@ -60,6 +65,12 @@ namespace YooAsset.Editor
                 newBundleInfo.PackAsset(assetInfo);
                 _bundleInfoDic.Add(bundleName, newBundleInfo);
             }
+
+            // 统计所有的精灵图集
+            if (assetInfo.AssetInfo.IsSpriteAtlas())
+            {
+                SpriteAtlasAssetList.Add(assetInfo);
+            }
         }
 
         /// <summary>
@@ -85,25 +96,25 @@ namespace YooAsset.Editor
         /// <summary>
         /// 获取构建管线里需要的数据
         /// </summary>
-        public UnityEditor.AssetBundleBuild[] GetPipelineBuilds()
+        public UnityEditor.AssetBundleBuild[] GetPipelineBuilds(bool replaceAssetPathWithAddres)
         {
             List<UnityEditor.AssetBundleBuild> builds = new List<UnityEditor.AssetBundleBuild>(_bundleInfoDic.Count);
             foreach (var bundleInfo in _bundleInfoDic.Values)
             {
-                builds.Add(bundleInfo.CreatePipelineBuild());
+                builds.Add(bundleInfo.CreatePipelineBuild(replaceAssetPathWithAddres));
             }
             return builds.ToArray();
         }
 
         /// <summary>
-        /// 创建着色器信息类
+        /// 创建空的资源包
         /// </summary>
-        public void CreateShadersBundleInfo(string shadersBundleName)
+        public void CreateEmptyBundleInfo(string bundleName)
         {
-            if (IsContainsBundle(shadersBundleName) == false)
+            if (IsContainsBundle(bundleName) == false)
             {
-                var shaderBundleInfo = new BuildBundleInfo(shadersBundleName);
-                _bundleInfoDic.Add(shadersBundleName, shaderBundleInfo);
+                var bundleInfo = new BuildBundleInfo(bundleName);
+                _bundleInfoDic.Add(bundleName, bundleInfo);
             }
         }
     }
