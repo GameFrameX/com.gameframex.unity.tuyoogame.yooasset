@@ -21,10 +21,7 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get
-            {
-                return _packageRoot;
-            }
+            get { return _packageRoot; }
         }
 
         /// <summary>
@@ -32,13 +29,11 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         #region 自定义参数
+
         /// <summary>
         /// 模拟WebGL平台模式
         /// </summary>
@@ -63,31 +58,38 @@ namespace YooAsset
         /// 异步模拟加载最大帧数
         /// </summary>
         public int AsyncSimulateMaxFrame { private set; get; } = 1;
+
         #endregion
 
+        [UnityEngine.Scripting.Preserve]
         public DefaultEditorFileSystem()
         {
         }
+
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DEFSInitializeOperation(this);
             return operation;
         }
+
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DEFSLoadPackageManifestOperation(this, packageVersion);
             return operation;
         }
+
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DEFSRequestPackageVersionOperation(this);
             return operation;
         }
+
         public virtual FSClearCacheFilesOperation ClearCacheFilesAsync(PackageManifest manifest, ClearCacheFilesOptions options)
         {
             var operation = new FSClearCacheFilesCompleteOperation();
             return operation;
         }
+
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadFileOptions options)
         {
             string mainURL = bundle.BundleName;
@@ -95,6 +97,7 @@ namespace YooAsset
             var downloader = new DownloadVirtualBundleOperation(this, bundle, options);
             return downloader;
         }
+
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             if (bundle.BundleType == (int)EBuildBundleType.VirtualBundle)
@@ -137,6 +140,7 @@ namespace YooAsset
                 YooLogger.Warning($"Invalid parameter : {name}");
             }
         }
+
         public virtual void OnCreate(string packageName, string packageRoot)
         {
             PackageName = packageName;
@@ -146,6 +150,7 @@ namespace YooAsset
 
             _packageRoot = packageRoot;
         }
+
         public virtual void OnDestroy()
         {
         }
@@ -154,6 +159,7 @@ namespace YooAsset
         {
             return true;
         }
+
         public virtual bool Exists(PackageBundle bundle)
         {
             if (VirtualDownloadMode)
@@ -165,6 +171,7 @@ namespace YooAsset
                 return true;
             }
         }
+
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             if (Belong(bundle) == false)
@@ -172,10 +179,12 @@ namespace YooAsset
 
             return Exists(bundle) == false;
         }
+
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
+
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
@@ -189,6 +198,7 @@ namespace YooAsset
             var pacakgeAsset = bundle.IncludeMainAssets[0];
             return pacakgeAsset.AssetPath;
         }
+
         public virtual byte[] ReadBundleFileData(PackageBundle bundle)
         {
             if (bundle.IncludeMainAssets.Count == 0)
@@ -197,6 +207,7 @@ namespace YooAsset
             var pacakgeAsset = bundle.IncludeMainAssets[0];
             return FileUtility.ReadAllBytes(pacakgeAsset.AssetPath);
         }
+
         public virtual string ReadBundleFileText(PackageBundle bundle)
         {
             if (bundle.IncludeMainAssets.Count == 0)
@@ -207,26 +218,31 @@ namespace YooAsset
         }
 
         #region 内部方法
+
         public void RecordDownloadFile(PackageBundle bundle)
         {
             if (_records.ContainsKey(bundle.BundleGUID) == false)
                 _records.Add(bundle.BundleGUID, bundle.BundleName);
         }
+
         public string GetEditorPackageVersionFilePath()
         {
             string fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
             return PathUtility.Combine(_packageRoot, fileName);
         }
+
         public string GetEditorPackageHashFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(_packageRoot, fileName);
         }
+
         public string GetEditorPackageManifestFilePath(string packageVersion)
         {
             string fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
             return PathUtility.Combine(_packageRoot, fileName);
         }
+
         public int GetAsyncSimulateFrame()
         {
             if (AsyncSimulateMinFrame > AsyncSimulateMaxFrame)
@@ -236,6 +252,7 @@ namespace YooAsset
 
             return UnityEngine.Random.Range(AsyncSimulateMinFrame, AsyncSimulateMaxFrame + 1);
         }
+
         #endregion
     }
 }

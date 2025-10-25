@@ -59,7 +59,7 @@ namespace YooAsset
         public IManifestRestoreServices ManifestServices { private set; get; }
         #endregion
 
-
+        [UnityEngine.Scripting.Preserve]
         public DefaultWebRemoteFileSystem()
         {
         }

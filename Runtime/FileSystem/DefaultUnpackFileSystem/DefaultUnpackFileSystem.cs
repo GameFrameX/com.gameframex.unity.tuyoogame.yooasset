@@ -1,14 +1,15 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 解压文件系统
     /// </summary>
     internal class DefaultUnpackFileSystem : DefaultCacheFileSystem
     {
+        [UnityEngine.Scripting.Preserve]
         public DefaultUnpackFileSystem()
         {
         }
+
         public override void OnCreate(string packageName, string rootDirectory)
         {
             base.OnCreate(packageName, rootDirectory);
