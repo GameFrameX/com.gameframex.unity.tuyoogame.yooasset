@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniFramework.Event;
-using UniFramework.Machine;
 using YooAsset;
 
 internal class SceneBattle : MonoBehaviour
@@ -22,8 +19,7 @@ internal class SceneBattle : MonoBehaviour
         _windowHandle.InstantiateSync(CanvasDesktop.transform);
 
         // 加载背景音乐
-        var package = YooAssets.GetPackage("DefaultPackage");
-        _musicHandle = package.LoadAssetAsync<AudioClip>("music_background");
+        _musicHandle = YooAssets.LoadAssetAsync<AudioClip>("music_background");
         yield return _musicHandle;
 
         // 播放背景音乐
@@ -32,23 +28,31 @@ internal class SceneBattle : MonoBehaviour
         audioSource.clip = _musicHandle.AssetObject as AudioClip;
         audioSource.Play();
 
+        // 切换场景的时候释放资源
+        var package = YooAssets.GetPackage("DefaultPackage");
+        var operation = package.UnloadUnusedAssetsAsync();
+        yield return operation;
+
         _battleRoom = new BattleRoom();
         _battleRoom.IntRoom();
     }
     private void OnDestroy()
     {
+        // 释放资源句柄
         if (_windowHandle != null)
         {
             _windowHandle.Release();
             _windowHandle = null;
         }
 
+        // 释放资源句柄
         if (_musicHandle != null)
         {
             _musicHandle.Release();
             _musicHandle = null;
         }
 
+        // 释放资源句柄
         if (_battleRoom != null)
         {
             _battleRoom.DestroyRoom();
