@@ -15,6 +15,7 @@ public static class WechatFileSystemCreater
         fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
         return fileSystemParams;
     }
+
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices, IWebDecryptionServices decryptionServices)
     {
         string fileSystemClass = $"{nameof(WechatFileSystem)},YooAsset.MiniGame";
@@ -40,10 +41,12 @@ internal class WechatFileSystem : IFileSystem
         {
             _webPackageRoot = buildinPackRoot;
         }
+
         string IRemoteServices.GetRemoteMainURL(string fileName)
         {
             return GetFileLoadURL(fileName);
         }
+
         string IRemoteServices.GetRemoteFallbackURL(string fileName)
         {
             return GetFileLoadURL(fileName);
@@ -57,6 +60,7 @@ internal class WechatFileSystem : IFileSystem
                 url = DownloadSystemHelper.ConvertToWWWPath(filePath);
                 _mapping.Add(fileName, url);
             }
+
             return url;
         }
     }
@@ -75,10 +79,7 @@ internal class WechatFileSystem : IFileSystem
     /// </summary>
     public string FileRoot
     {
-        get
-        {
-            return _wxCacheRoot;
-        }
+        get { return _wxCacheRoot; }
     }
 
     /// <summary>
@@ -86,13 +87,11 @@ internal class WechatFileSystem : IFileSystem
     /// </summary>
     public int FileCount
     {
-        get
-        {
-            return 0;
-        }
+        get { return 0; }
     }
 
     #region 自定义参数
+
     /// <summary>
     /// 自定义参数：远程服务接口
     /// </summary>
@@ -107,27 +106,32 @@ internal class WechatFileSystem : IFileSystem
     /// 自定义参数：资源清单服务类
     /// </summary>
     public IManifestRestoreServices ManifestServices { private set; get; }
+
     #endregion
 
-
+    [UnityEngine.Scripting.Preserve]
     public WechatFileSystem()
     {
     }
+
     public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
     {
         var operation = new WXFSInitializeOperation(this);
         return operation;
     }
+
     public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
     {
         var operation = new WXFSLoadPackageManifestOperation(this, packageVersion, timeout);
         return operation;
     }
+
     public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
     {
         var operation = new WXFSRequestPackageVersionOperation(this, appendTimeTicks, timeout);
         return operation;
     }
+
     public virtual FSClearCacheFilesOperation ClearCacheFilesAsync(PackageManifest manifest, ClearCacheFilesOptions options)
     {
         if (options.ClearMode == EFileClearMode.ClearAllBundleFiles.ToString())
@@ -147,6 +151,7 @@ internal class WechatFileSystem : IFileSystem
             return operation;
         }
     }
+
     public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadFileOptions options)
     {
         string mainURL = RemoteServices.GetRemoteMainURL(bundle.FileName);
@@ -155,6 +160,7 @@ internal class WechatFileSystem : IFileSystem
         var operation = new WXFSDownloadFileOperation(this, bundle, options);
         return operation;
     }
+
     public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
     {
         if (bundle.BundleType == (int)EBuildBundleType.AssetBundle)
@@ -189,6 +195,7 @@ internal class WechatFileSystem : IFileSystem
             YooLogger.Warning($"Invalid parameter : {name}");
         }
     }
+
     public virtual void OnCreate(string packageName, string packageRoot)
     {
         PackageName = packageName;
@@ -217,6 +224,7 @@ internal class WechatFileSystem : IFileSystem
 
         _fileSystemMgr = WX.GetFileSystemManager();
     }
+
     public virtual void OnDestroy()
     {
     }
@@ -225,11 +233,13 @@ internal class WechatFileSystem : IFileSystem
     {
         return true;
     }
+
     public virtual bool Exists(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
         return CheckCacheFileExist(filePath);
     }
+
     public virtual bool NeedDownload(PackageBundle bundle)
     {
         if (Belong(bundle) == false)
@@ -237,10 +247,12 @@ internal class WechatFileSystem : IFileSystem
 
         return Exists(bundle) == false;
     }
+
     public virtual bool NeedUnpack(PackageBundle bundle)
     {
         return false;
     }
+
     public virtual bool NeedImport(PackageBundle bundle)
     {
         return false;
@@ -250,6 +262,7 @@ internal class WechatFileSystem : IFileSystem
     {
         return GetCacheFileLoadPath(bundle);
     }
+
     public virtual byte[] ReadBundleFileData(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
@@ -258,6 +271,7 @@ internal class WechatFileSystem : IFileSystem
         else
             return Array.Empty<byte>();
     }
+
     public virtual string ReadBundleFileText(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
@@ -268,10 +282,12 @@ internal class WechatFileSystem : IFileSystem
     }
 
     #region 内部方法
+
     public WXFileSystemManager GetFileSystemMgr()
     {
         return _fileSystemMgr;
     }
+
     public bool CheckCacheFileExist(string filePath)
     {
         string result = WX.GetCachePath(filePath);
@@ -280,6 +296,7 @@ internal class WechatFileSystem : IFileSystem
         else
             return true;
     }
+
     public string GetCacheFileLoadPath(PackageBundle bundle)
     {
         if (_cacheFilePathMapping.TryGetValue(bundle.BundleGUID, out string filePath) == false)
@@ -287,8 +304,10 @@ internal class WechatFileSystem : IFileSystem
             filePath = PathUtility.Combine(_wxCacheRoot, bundle.FileName);
             _cacheFilePathMapping.Add(bundle.BundleGUID, filePath);
         }
+
         return filePath;
     }
+
     #endregion
 }
 #endif
