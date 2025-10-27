@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.3.17](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.3.17) (2025-10-25)
+
+[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.16...2.3.17)
+
 ## [2.3.16](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.3.16) (2025-10-25)
 
 [Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.6...2.3.16)
