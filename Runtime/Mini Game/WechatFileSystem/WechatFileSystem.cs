@@ -1,7 +1,6 @@
 ﻿#if UNITY_WEBGL && WEIXINMINIGAME
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using YooAsset;
 using WeChatWASM;
@@ -10,7 +9,7 @@ public static class WechatFileSystemCreater
 {
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices)
     {
-        string fileSystemClass = $"{nameof(WechatFileSystem)},YooAsset.MiniGame";
+        string fileSystemClass = typeof(WechatFileSystem).FullName;
         var fileSystemParams = new FileSystemParameters(fileSystemClass, packageRoot);
         fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
         return fileSystemParams;
@@ -18,7 +17,7 @@ public static class WechatFileSystemCreater
 
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices, IWebDecryptionServices decryptionServices)
     {
-        string fileSystemClass = $"{nameof(WechatFileSystem)},YooAsset.MiniGame";
+        string fileSystemClass = typeof(WechatFileSystem).FullName;
         var fileSystemParams = new FileSystemParameters(fileSystemClass, packageRoot);
         fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
         fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
