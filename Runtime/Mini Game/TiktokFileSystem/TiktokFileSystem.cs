@@ -9,7 +9,7 @@ public static class TiktokFileSystemCreater
 {
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices)
     {
-        string fileSystemClass = $"{nameof(TiktokFileSystem)},YooAsset.MiniGame";
+        string fileSystemClass = typeof(TiktokFileSystem).FullName;
         var fileSystemParams = new FileSystemParameters(fileSystemClass, packageRoot);
         fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
         return fileSystemParams;
@@ -17,7 +17,7 @@ public static class TiktokFileSystemCreater
 
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices, IWebDecryptionServices decryptionServices)
     {
-        string fileSystemClass = $"{nameof(TiktokFileSystem)},YooAsset.MiniGame";
+        string fileSystemClass = typeof(TiktokFileSystem).FullName;
         var fileSystemParams = new FileSystemParameters(fileSystemClass, packageRoot);
         fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
         fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
