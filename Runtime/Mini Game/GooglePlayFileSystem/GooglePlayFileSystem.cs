@@ -9,7 +9,7 @@ public static class GooglePlayFileSystemCreater
 {
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot)
     {
-        string fileSystemClass = $"{nameof(GooglePlayFileSystem)},YooAsset.MiniGame";
+        string fileSystemClass = typeof(GooglePlayFileSystem).FullName;
         var fileSystemParams = new FileSystemParameters(fileSystemClass, packageRoot);
         return fileSystemParams;
     }
@@ -20,6 +20,7 @@ public static class GooglePlayFileSystemCreater
 /// </summary>
 internal class GooglePlayFileSystem : DefaultBuildinFileSystem
 {
+    [UnityEngine.Scripting.Preserve]
     public GooglePlayFileSystem()
     {
     }
