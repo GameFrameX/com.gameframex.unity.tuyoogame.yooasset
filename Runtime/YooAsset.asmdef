@@ -39,6 +39,11 @@
       "define": "WEIXINMINIGAME"
     },
     {
+      "name": "com.gameframex.unity.weixin.minigame",
+      "expression": "",
+      "define": "WEIXINMINIGAME"
+    },
+    {
       "name": "com.bytedance.starksdk",
       "expression": "",
       "define": "DOUYIN_MINI_GAME"
