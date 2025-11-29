@@ -7,6 +7,7 @@ using WeChatWASM;
 
 public static class WechatFileSystemCreater
 {
+    [UnityEngine.Scripting.Preserve]
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices)
     {
         string fileSystemClass = typeof(WechatFileSystem).FullName;
@@ -15,6 +16,7 @@ public static class WechatFileSystemCreater
         return fileSystemParams;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public static FileSystemParameters CreateFileSystemParameters(string packageRoot, IRemoteServices remoteServices, IWebDecryptionServices decryptionServices)
     {
         string fileSystemClass = typeof(WechatFileSystem).FullName;
@@ -35,6 +37,7 @@ public static class WechatFileSystemCreater
 /// </summary>
 internal class WechatFileSystem : IFileSystem
 {
+    [UnityEngine.Scripting.Preserve]
     private class WebRemoteServices : IRemoteServices
     {
         private readonly string _webPackageRoot;
@@ -117,24 +120,28 @@ internal class WechatFileSystem : IFileSystem
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
     {
         var operation = new WXFSInitializeOperation(this);
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
     {
         var operation = new WXFSLoadPackageManifestOperation(this, packageVersion, timeout);
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
     {
         var operation = new WXFSRequestPackageVersionOperation(this, appendTimeTicks, timeout);
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSClearCacheFilesOperation ClearCacheFilesAsync(PackageManifest manifest, ClearCacheFilesOptions options)
     {
         if (options.ClearMode == EFileClearMode.ClearAllBundleFiles.ToString())
@@ -155,6 +162,7 @@ internal class WechatFileSystem : IFileSystem
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadFileOptions options)
     {
         string mainURL = RemoteServices.GetRemoteMainURL(bundle.FileName);
@@ -164,6 +172,7 @@ internal class WechatFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
     {
         if (bundle.BundleType == (int)EBuildBundleType.AssetBundle)
@@ -179,6 +188,7 @@ internal class WechatFileSystem : IFileSystem
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void SetParameter(string name, object value)
     {
         if (name == FileSystemParametersDefine.REMOTE_SERVICES)
@@ -199,6 +209,7 @@ internal class WechatFileSystem : IFileSystem
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void OnCreate(string packageName, string packageRoot)
     {
         PackageName = packageName;
@@ -228,21 +239,25 @@ internal class WechatFileSystem : IFileSystem
         _fileSystemMgr = WX.GetFileSystemManager();
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void OnDestroy()
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool Belong(PackageBundle bundle)
     {
         return true;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool Exists(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
         return CheckCacheFileExist(filePath);
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedDownload(PackageBundle bundle)
     {
         if (Belong(bundle) == false)
@@ -251,21 +266,25 @@ internal class WechatFileSystem : IFileSystem
         return Exists(bundle) == false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedUnpack(PackageBundle bundle)
     {
         return false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedImport(PackageBundle bundle)
     {
         return false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual string GetBundleFilePath(PackageBundle bundle)
     {
         return GetCacheFileLoadPath(bundle);
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual byte[] ReadBundleFileData(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
@@ -275,6 +294,7 @@ internal class WechatFileSystem : IFileSystem
             return Array.Empty<byte>();
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual string ReadBundleFileText(PackageBundle bundle)
     {
         string filePath = GetCacheFileLoadPath(bundle);
@@ -286,11 +306,13 @@ internal class WechatFileSystem : IFileSystem
 
     #region 内部方法
 
+    [UnityEngine.Scripting.Preserve]
     public WXFileSystemManager GetFileSystemMgr()
     {
         return _fileSystemMgr;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public bool CheckCacheFileExist(string filePath)
     {
         string result = WX.GetCachePath(filePath);
@@ -300,6 +322,7 @@ internal class WechatFileSystem : IFileSystem
             return true;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public string GetCacheFileLoadPath(PackageBundle bundle)
     {
         if (_cacheFilePathMapping.TryGetValue(bundle.BundleGUID, out string filePath) == false)
