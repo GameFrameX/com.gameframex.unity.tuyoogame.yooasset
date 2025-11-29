@@ -114,6 +114,7 @@ namespace YooAsset.Editor
             buildParameters.BuildBundleType = (int)EBuildBundleType.AssetBundle;
             buildParameters.BuildTarget = BuildTarget;
             buildParameters.PackageName = PackageName;
+            buildParameters.TrackSpriteAtlasDependencies = true;
             buildParameters.PackageVersion = _buildVersionField.value;
             buildParameters.EnableSharePackRule = true;
             buildParameters.VerifyBuildingResult = true;
