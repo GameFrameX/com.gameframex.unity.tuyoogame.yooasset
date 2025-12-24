@@ -27,7 +27,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tuyoogame/YooAsset.git"
+    "url": "git+https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git",
+    "name": "com.gameframex.unity.tuyoogame.yooasset"
   },
   "relatedPackages": {},
   "dependencies": {
@@ -35,5 +36,14 @@
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+  },
+  "devDependencies": {
+    "semantic-release": "^24.2.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.cnb.cool/GameFrameX/npm/-/packages/"
   }
 }
