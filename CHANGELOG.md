@@ -1,3 +1,16 @@
+# [2.4.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.17...2.4.0) (2025-12-24)
+
+
+### Bug Fixes
+
+* **WechatFileSystem:** 为所有方法添加Preserve属性防止代码裁剪 ([81ea09c](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/81ea09cb04bba1d8bf86ff82b5ed8aa61d4e1ed0))
+* **WechatFileSystem:** 添加对decryptionServices为空的检查 ([3914f3d](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/3914f3d912a2b32d9e55ea436f4e230f395707ba))
+
+
+### Features
+
+* **AssetBundleBuilder:** 添加TrackSpriteAtlasDependencies参数以支持精灵图集依赖跟踪 ([c81aae2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/c81aae285ca76150add27464dbb00a35921da2da))
+
 # Changelog
 
 ## [2.3.17](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.3.17) (2025-10-25)
