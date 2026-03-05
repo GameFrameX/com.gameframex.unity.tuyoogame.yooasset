@@ -1,45 +1,30 @@
 {
-  "name": "YooAsset",
-  "rootNamespace": "",
-  "references": [],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [
-    {
-      "name": "com.tuyoogame.yooasset",
-      "expression": "",
-      "define": "YOO_ASSET_2"
-    },
-    {
-      "name": "com.tuyoogame.yooasset",
-      "expression": "2.3",
-      "define": "YOO_ASSET_2_3"
-    },
-    {
-      "name": "com.tuyoogame.yooasset",
-      "expression": "2.3",
-      "define": "YOO_ASSET_2_3_OR_NEWER"
-    },
-    {
-      "name": "com.qq.weixin.minigame",
-      "expression": "",
-      "define": "WECHAT_MINI_GAME"
-    },
-    {
-      "name": "com.qq.weixin.minigame",
-      "expression": "",
-      "define": "WEIXINMINIGAME"
-    },
-    {
-      "name": "com.gameframex.unity.weixin.minigame",
-      "expression": "",
-      "define": "WEIXINMINIGAME"
-    }
-  ],
-  "noEngineReferences": false
+    "name": "YooAsset",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "",
+            "define": "YOO_ASSET_2"
+        },
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "2.3",
+            "define": "YOO_ASSET_2_3"
+        },
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "2.3",
+            "define": "YOO_ASSET_2_3_OR_NEWER"
+        }
+    ],
+    "noEngineReferences": false
 }

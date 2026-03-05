@@ -28,7 +28,8 @@ public class LoadWebPackageManifestOperation : AsyncOperationBase
     public PackageManifest Manifest { private set; get; }
 
 
-    public LoadWebPackageManifestOperation(IManifestRestoreServices manifestServices, IRemoteServices remoteServices, string packageName, string packageVersion, string packageHash, int timeout)
+    public LoadWebPackageManifestOperation(IManifestRestoreServices manifestServices, IRemoteServices remoteServices,
+        string packageName, string packageVersion, string packageHash, int timeout)
     {
         _manifestServices = manifestServices;
         _remoteServices = remoteServices;

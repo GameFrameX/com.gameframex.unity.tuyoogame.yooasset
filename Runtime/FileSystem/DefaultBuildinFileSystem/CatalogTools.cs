@@ -63,14 +63,19 @@ namespace YooAsset
             {
                 "link.xml",
                 "buildlogtep.json",
-                $"{packageName}.version",
-                $"{packageName}_{packageVersion}.bytes",
-                $"{packageName}_{packageVersion}.hash",
-                $"{packageName}_{packageVersion}.json",
-                $"{packageName}_{packageVersion}.report",
                 DefaultBuildinFileSystemDefine.BuildinCatalogJsonFileName,
                 DefaultBuildinFileSystemDefine.BuildinCatalogBinaryFileName
             };
+            string packageVersionFileName = YooAssetSettingsData.GetPackageVersionFileName(packageName);
+            string packageHashFileName = YooAssetSettingsData.GetPackageHashFileName(packageName, packageVersion);
+            string manifestBinaryFIleName = YooAssetSettingsData.GetManifestBinaryFileName(packageName, packageVersion);
+            string manifestJsonFIleName = YooAssetSettingsData.GetManifestJsonFileName(packageName, packageVersion);
+            string reportFileName = YooAssetSettingsData.GetBuildReportFileName(packageName, packageVersion);
+            whiteFileList.Add(packageVersionFileName);
+            whiteFileList.Add(packageHashFileName);
+            whiteFileList.Add(manifestBinaryFIleName);
+            whiteFileList.Add(manifestJsonFIleName);
+            whiteFileList.Add(reportFileName);
 
             // 记录所有内置资源文件
             DirectoryInfo rootDirectory = new DirectoryInfo(packageDirectory);
@@ -105,6 +110,34 @@ namespace YooAsset
 
             // 创建输出文件
             string binaryFilePath = $"{packageDirectory}/{DefaultBuildinFileSystemDefine.BuildinCatalogBinaryFileName}";
+            if (File.Exists(binaryFilePath))
+                File.Delete(binaryFilePath);
+            SerializeToBinary(binaryFilePath, buildinFileCatalog);
+
+            UnityEditor.AssetDatabase.Refresh();
+            Debug.Log($"Succeed to save catalog file : {binaryFilePath}");
+            return true;
+        }
+
+        /// <summary>
+        /// 生成空的包裹内置资源目录文件
+        /// </summary>
+        public static bool CreateEmptyCatalogFile(string packageName, string packageVersion, string outputPath)
+        {
+            // 创建内置清单实例
+            var buildinFileCatalog = new DefaultBuildinFileCatalog();
+            buildinFileCatalog.FileVersion = CatalogDefine.FileVersion;
+            buildinFileCatalog.PackageName = packageName;
+            buildinFileCatalog.PackageVersion = packageVersion;
+
+            // 创建输出文件
+            string jsonFilePath = $"{outputPath}/{DefaultBuildinFileSystemDefine.BuildinCatalogJsonFileName}";
+            if (File.Exists(jsonFilePath))
+                File.Delete(jsonFilePath);
+            SerializeToJson(jsonFilePath, buildinFileCatalog);
+
+            // 创建输出文件
+            string binaryFilePath = $"{outputPath}/{DefaultBuildinFileSystemDefine.BuildinCatalogBinaryFileName}";
             if (File.Exists(binaryFilePath))
                 File.Delete(binaryFilePath);
             SerializeToBinary(binaryFilePath, buildinFileCatalog);

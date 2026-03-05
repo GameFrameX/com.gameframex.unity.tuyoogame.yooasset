@@ -124,7 +124,10 @@ namespace YooAsset.Editor
             enumField.Init(compressOption);
             enumField.SetValueWithoutNotify(compressOption);
             enumField.style.width = StyleWidth;
-            enumField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageCompressOption(PackageName, PipelineName, (ECompressOption)enumField.value); });
+            enumField.RegisterValueChangedCallback(evt =>
+            {
+                AssetBundleBuilderSetting.SetPackageCompressOption(PackageName, PipelineName, (ECompressOption)enumField.value);
+            });
             UIElementsTools.SetElementLabelMinWidth(enumField, LabelMinWidth);
         }
 
@@ -135,7 +138,10 @@ namespace YooAsset.Editor
             enumField.Init(fileNameStyle);
             enumField.SetValueWithoutNotify(fileNameStyle);
             enumField.style.width = StyleWidth;
-            enumField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageFileNameStyle(PackageName, PipelineName, (EFileNameStyle)enumField.value); });
+            enumField.RegisterValueChangedCallback(evt =>
+            {
+                AssetBundleBuilderSetting.SetPackageFileNameStyle(PackageName, PipelineName, (EFileNameStyle)enumField.value);
+            });
             UIElementsTools.SetElementLabelMinWidth(enumField, LabelMinWidth);
         }
 
@@ -167,7 +173,10 @@ namespace YooAsset.Editor
             // 首包文件拷贝参数
             var buildinFileCopyParams = AssetBundleBuilderSetting.GetPackageBuildinFileCopyParams(PackageName, PipelineName);
             textField.SetValueWithoutNotify(buildinFileCopyParams);
-            textField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageBuildinFileCopyParams(PackageName, PipelineName, textField.value); });
+            textField.RegisterValueChangedCallback(evt =>
+            {
+                AssetBundleBuilderSetting.SetPackageBuildinFileCopyParams(PackageName, PipelineName, textField.value);
+            });
             UIElementsTools.SetElementLabelMinWidth(textField, LabelMinWidth);
         }
 
@@ -176,7 +185,10 @@ namespace YooAsset.Editor
             // 清理构建缓存
             bool clearBuildCache = AssetBundleBuilderSetting.GetPackageClearBuildCache(PackageName, PipelineName);
             toggle.SetValueWithoutNotify(clearBuildCache);
-            toggle.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageClearBuildCache(PackageName, PipelineName, toggle.value); });
+            toggle.RegisterValueChangedCallback(evt =>
+            {
+                AssetBundleBuilderSetting.SetPackageClearBuildCache(PackageName, PipelineName, toggle.value);
+            });
             UIElementsTools.SetElementLabelMinWidth(toggle, LabelMinWidth);
         }
 
@@ -185,7 +197,10 @@ namespace YooAsset.Editor
             // 使用资源依赖数据库
             bool useAssetDependencyDB = AssetBundleBuilderSetting.GetPackageUseAssetDependencyDB(PackageName, PipelineName);
             toggle.SetValueWithoutNotify(useAssetDependencyDB);
-            toggle.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageUseAssetDependencyDB(PackageName, PipelineName, toggle.value); });
+            toggle.RegisterValueChangedCallback(evt =>
+            {
+                AssetBundleBuilderSetting.SetPackageUseAssetDependencyDB(PackageName, PipelineName, toggle.value);
+            });
             UIElementsTools.SetElementLabelMinWidth(toggle, LabelMinWidth);
         }
 
@@ -202,7 +217,10 @@ namespace YooAsset.Editor
                 var popupField = new PopupField<Type>(classTypes, defaultIndex);
                 popupField.label = "Encryption Services";
                 popupField.style.width = StyleWidth;
-                popupField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageEncyptionServicesClassName(PackageName, PipelineName, popupField.value.FullName); });
+                popupField.RegisterValueChangedCallback(evt =>
+                {
+                    AssetBundleBuilderSetting.SetPackageEncyptionServicesClassName(PackageName, PipelineName, popupField.value.FullName);
+                });
                 container.Add(popupField);
                 UIElementsTools.SetElementLabelMinWidth(popupField, LabelMinWidth);
                 return popupField;
@@ -231,7 +249,10 @@ namespace YooAsset.Editor
                 var popupField = new PopupField<Type>(classTypes, defaultIndex);
                 popupField.label = "Manifest Process Services";
                 popupField.style.width = StyleWidth;
-                popupField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageManifestProcessServicesClassName(PackageName, PipelineName, popupField.value.FullName); });
+                popupField.RegisterValueChangedCallback(evt =>
+                {
+                    AssetBundleBuilderSetting.SetPackageManifestProcessServicesClassName(PackageName, PipelineName, popupField.value.FullName);
+                });
                 container.Add(popupField);
                 UIElementsTools.SetElementLabelMinWidth(popupField, LabelMinWidth);
                 return popupField;
@@ -260,7 +281,10 @@ namespace YooAsset.Editor
                 var popupField = new PopupField<Type>(classTypes, defaultIndex);
                 popupField.label = "Manifest Restore Services";
                 popupField.style.width = StyleWidth;
-                popupField.RegisterValueChangedCallback(evt => { AssetBundleBuilderSetting.SetPackageManifestRestoreServicesClassName(PackageName, PipelineName, popupField.value.FullName); });
+                popupField.RegisterValueChangedCallback(evt =>
+                {
+                    AssetBundleBuilderSetting.SetPackageManifestRestoreServicesClassName(PackageName, PipelineName, popupField.value.FullName);
+                });
                 container.Add(popupField);
                 UIElementsTools.SetElementLabelMinWidth(popupField, LabelMinWidth);
                 return popupField;

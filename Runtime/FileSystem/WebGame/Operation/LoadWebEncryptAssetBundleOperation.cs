@@ -27,6 +27,7 @@ namespace YooAsset
         {
             _bundle = bundle;
             _options = options;
+            _failedTryAgain = options.FailedTryAgain;
             _decryptionServices = decryptionServices;
         }
         protected override void InternalStart()

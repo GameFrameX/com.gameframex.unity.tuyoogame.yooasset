@@ -28,6 +28,7 @@ namespace YooAsset
         {
             _bundle = bundle;
             _options = options;
+            _failedTryAgain = options.FailedTryAgain;
             _disableUnityWebCache = disableUnityWebCache;
         }
         protected override void InternalStart()

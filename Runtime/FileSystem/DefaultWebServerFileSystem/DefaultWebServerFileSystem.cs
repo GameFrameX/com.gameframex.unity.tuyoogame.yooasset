@@ -34,7 +34,10 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get { return _webPackageRoot; }
+            get
+            {
+                return _webPackageRoot;
+            }
         }
 
         /// <summary>
@@ -42,7 +45,10 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get { return 0; }
+            get
+            {
+                return 0;
+            }
         }
 
         #region 自定义参数

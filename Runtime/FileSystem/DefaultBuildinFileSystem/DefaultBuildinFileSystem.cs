@@ -35,7 +35,10 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get { return _packageRoot; }
+            get
+            {
+                return _packageRoot;
+            }
         }
 
         /// <summary>
@@ -43,7 +46,10 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get { return _wrappers.Count; }
+            get
+            {
+                return _wrappers.Count;
+            }
         }
 
         #region 自定义参数
@@ -83,6 +89,11 @@ namespace YooAsset
         /// 注意：该参数为空的时候，会获取默认的沙盒目录！
         /// </summary>
         public string CopyBuildinPackageManifestDestRoot { private set; get; }
+
+        /// <summary>
+        /// 自定义参数：解压文件系统的根目录
+        /// </summary>
+        public string UnpackFileSystemRoot { private set; get; }
 
         /// <summary>
         ///  自定义参数：解密服务接口的实例类
@@ -192,6 +203,10 @@ namespace YooAsset
             {
                 CopyBuildinPackageManifestDestRoot = (string)value;
             }
+            else if (name == FileSystemParametersDefine.UNPACK_FILE_SYSTEM_ROOT)
+            {
+                UnpackFileSystemRoot = (string)value;
+            }
             else if (name == FileSystemParametersDefine.DECRYPTION_SERVICES)
             {
                 DecryptionServices = (IDecryptionServices)value;
@@ -229,7 +244,7 @@ namespace YooAsset
             _unpackFileSystem.SetParameter(FileSystemParametersDefine.APPEND_FILE_EXTENSION, AppendFileExtension);
             _unpackFileSystem.SetParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, DecryptionServices);
             _unpackFileSystem.SetParameter(FileSystemParametersDefine.COPY_LOCAL_FILE_SERVICES, CopyLocalFileServices);
-            _unpackFileSystem.OnCreate(packageName, null);
+            _unpackFileSystem.OnCreate(packageName, UnpackFileSystemRoot);
         }
 
         public virtual void OnDestroy()

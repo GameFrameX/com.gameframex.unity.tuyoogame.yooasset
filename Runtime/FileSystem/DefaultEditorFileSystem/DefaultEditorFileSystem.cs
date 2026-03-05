@@ -21,7 +21,10 @@ namespace YooAsset
         /// </summary>
         public string FileRoot
         {
-            get { return _packageRoot; }
+            get
+            {
+                return _packageRoot;
+            }
         }
 
         /// <summary>
@@ -29,7 +32,10 @@ namespace YooAsset
         /// </summary>
         public int FileCount
         {
-            get { return 0; }
+            get
+            {
+                return 0;
+            }
         }
 
         #region 自定义参数
@@ -146,7 +152,7 @@ namespace YooAsset
             PackageName = packageName;
 
             if (string.IsNullOrEmpty(packageRoot))
-                throw new Exception($"{nameof(DefaultEditorFileSystem)} root directory is null or empty !");
+                throw new YooFileSystemException($"{nameof(DefaultEditorFileSystem)} package root is null or empty !");
 
             _packageRoot = packageRoot;
         }
