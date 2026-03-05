@@ -1,11 +1,7 @@
 {
   "name": "YooAsset",
   "rootNamespace": "",
-  "references": [
-    "StarkWebGL",
-    "Wx",
-    "TTWebGL"
-  ],
+  "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
@@ -43,16 +39,6 @@
       "name": "com.gameframex.unity.weixin.minigame",
       "expression": "",
       "define": "WEIXINMINIGAME"
-    },
-    {
-      "name": "com.bytedance.starksdk",
-      "expression": "",
-      "define": "DOUYIN_MINI_GAME"
-    },
-    {
-      "name": "com.bytedance.starksdk",
-      "expression": "",
-      "define": "DOUYINMINIGAME"
     }
   ],
   "noEngineReferences": false
