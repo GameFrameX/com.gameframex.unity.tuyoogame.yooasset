@@ -42,7 +42,7 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "com.unity.scriptablebuildpipeline": "1.21.25",
+    "com.unity.scriptablebuildpipeline": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
