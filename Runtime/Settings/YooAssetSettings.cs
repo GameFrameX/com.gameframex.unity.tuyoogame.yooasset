@@ -3,7 +3,7 @@
 namespace YooAsset
 {
     [CreateAssetMenu(fileName = "YooAssetSettings", menuName = "YooAsset/Create YooAsset Settings")]
-    internal class YooAssetSettings : ScriptableObject
+    public class YooAssetSettings : ScriptableObject
     {
         /// <summary>
         /// YooAsset文件夹名称
