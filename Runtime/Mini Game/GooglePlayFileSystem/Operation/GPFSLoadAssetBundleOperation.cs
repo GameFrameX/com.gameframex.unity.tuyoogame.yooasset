@@ -25,13 +25,13 @@ internal class GPFSLoadAssetBundleOperation : FSLoadBundleOperation
         _fileSystem = fileSystem;
         _bundle = bundle;
     }
-    internal override void InternalStart()
+    protected override void InternalStart()
     {
         DownloadProgress = 1f;
         DownloadedBytes = _bundle.FileSize;
         _steps = ESteps.LoadAssetBundle;
     }
-    internal override void InternalUpdate()
+    protected override void InternalUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
             return;
@@ -71,7 +71,7 @@ internal class GPFSLoadAssetBundleOperation : FSLoadBundleOperation
             }
         }
     }
-    internal override void InternalWaitForAsyncComplete()
+    public override void InternalWaitForAsyncComplete()
     {
         if (_steps != ESteps.Done)
         {

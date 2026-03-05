@@ -3,12 +3,12 @@ namespace YooAsset
 {
     internal class RawBundleLoadAssetOperation : FSLoadAssetOperation
     {
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             Error = $"{nameof(RawBundleLoadAssetOperation)} not support load asset !";
             Status = EOperationStatus.Failed;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
         }
     }

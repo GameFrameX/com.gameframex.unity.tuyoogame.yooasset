@@ -26,11 +26,11 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _manifest = manifest;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CheckManifest;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

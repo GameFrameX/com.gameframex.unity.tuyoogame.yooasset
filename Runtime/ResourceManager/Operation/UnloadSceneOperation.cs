@@ -42,11 +42,11 @@ namespace YooAsset
                 throw new System.NotImplementedException();
             }
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CheckError;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

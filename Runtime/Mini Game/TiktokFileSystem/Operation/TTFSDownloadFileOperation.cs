@@ -26,11 +26,11 @@ internal class TTFSDownloadFileOperation : FSDownloadFileOperation
         _fileSystem = fileSystem;
         _options = options;
     }
-    internal override void InternalStart()
+    protected override void InternalStart()
     {
         _steps = ESteps.CreateRequest;
     }
-    internal override void InternalUpdate()
+    protected override void InternalUpdate()
     {
         // 创建下载器
         if (_steps == ESteps.CreateRequest)

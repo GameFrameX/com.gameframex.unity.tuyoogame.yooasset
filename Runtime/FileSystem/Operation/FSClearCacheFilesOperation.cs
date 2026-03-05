@@ -1,7 +1,6 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    internal class ClearCacheFilesOptions
+    public class ClearCacheFilesOptions
     {
         /// <summary>
         /// 清理模式
@@ -14,23 +13,25 @@ namespace YooAsset
         public object ClearParam;
     }
 
-    internal abstract class FSClearCacheFilesOperation : AsyncOperationBase
+    public abstract class FSClearCacheFilesOperation : AsyncOperationBase
     {
     }
 
-    internal sealed class FSClearCacheFilesCompleteOperation : FSClearCacheFilesOperation
+    public sealed class FSClearCacheFilesCompleteOperation : FSClearCacheFilesOperation
     {
         private readonly string _error;
 
-        internal FSClearCacheFilesCompleteOperation()
+        public FSClearCacheFilesCompleteOperation()
         {
             _error = null;
         }
-        internal FSClearCacheFilesCompleteOperation(string error)
+
+        public FSClearCacheFilesCompleteOperation(string error)
         {
             _error = error;
         }
-        internal override void InternalStart()
+
+        protected override void InternalStart()
         {
             if (string.IsNullOrEmpty(_error))
             {
@@ -42,7 +43,8 @@ namespace YooAsset
                 Error = _error;
             }
         }
-        internal override void InternalUpdate()
+
+        protected override void InternalUpdate()
         {
         }
     }

@@ -1,6 +1,6 @@
 ﻿using YooAsset;
 
-internal class RequestWebPackageHashOperation : AsyncOperationBase
+public class RequestWebPackageHashOperation : AsyncOperationBase
 {
     private enum ESteps
     {
@@ -30,12 +30,12 @@ internal class RequestWebPackageHashOperation : AsyncOperationBase
         _packageVersion = packageVersion;
         _timeout = timeout;
     }
-    internal override void InternalStart()
+    protected override void InternalStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_packageName, nameof(RequestWebPackageHashOperation));
         _steps = ESteps.RequestPackageHash;
     }
-    internal override void InternalUpdate()
+    protected override void InternalUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
             return;

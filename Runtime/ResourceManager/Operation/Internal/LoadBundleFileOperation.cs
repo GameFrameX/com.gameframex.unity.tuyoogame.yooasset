@@ -56,11 +56,11 @@ namespace YooAsset
             _resManager = resourceManager;
             LoadBundleInfo = bundleInfo;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CheckConcurrency;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -125,7 +125,7 @@ namespace YooAsset
                 _resManager.BundleLoadingCounter--;
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {

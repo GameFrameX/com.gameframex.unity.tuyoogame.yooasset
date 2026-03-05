@@ -2,7 +2,7 @@
 
 namespace YooAsset
 {
-    internal abstract class BundleResult
+    public abstract class BundleResult
     {
         /// <summary>
         /// 卸载资源包文件

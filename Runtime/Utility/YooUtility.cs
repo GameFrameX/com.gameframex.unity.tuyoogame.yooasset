@@ -8,7 +8,7 @@ namespace YooAsset
     /// <summary>
     /// 路径工具类
     /// </summary>
-    internal static class PathUtility
+    public static class PathUtility
     {
         /// <summary>
         /// 路径归一化

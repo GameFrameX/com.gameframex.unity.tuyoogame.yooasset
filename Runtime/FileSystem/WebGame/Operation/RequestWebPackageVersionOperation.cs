@@ -1,6 +1,6 @@
 ﻿using YooAsset;
 
-internal class RequestWebPackageVersionOperation : AsyncOperationBase
+public class RequestWebPackageVersionOperation : AsyncOperationBase
 {
     private enum ESteps
     {
@@ -30,12 +30,12 @@ internal class RequestWebPackageVersionOperation : AsyncOperationBase
         _appendTimeTicks = appendTimeTicks;
         _timeout = timeout;
     }
-    internal override void InternalStart()
+    protected override void InternalStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_packageName, nameof(RequestWebPackageVersionOperation));
         _steps = ESteps.RequestPackageVersion;
     }
-    internal override void InternalUpdate()
+    protected override void InternalUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
             return;

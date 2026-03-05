@@ -26,11 +26,11 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.LoadPackageHash;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

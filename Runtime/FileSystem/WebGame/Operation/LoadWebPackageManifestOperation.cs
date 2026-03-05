@@ -1,6 +1,6 @@
 ﻿using YooAsset;
 
-internal class LoadWebPackageManifestOperation : AsyncOperationBase
+public class LoadWebPackageManifestOperation : AsyncOperationBase
 {
     private enum ESteps
     {
@@ -28,8 +28,7 @@ internal class LoadWebPackageManifestOperation : AsyncOperationBase
     public PackageManifest Manifest { private set; get; }
 
 
-    internal LoadWebPackageManifestOperation(IManifestRestoreServices manifestServices, IRemoteServices remoteServices,
-        string packageName, string packageVersion, string packageHash, int timeout)
+    public LoadWebPackageManifestOperation(IManifestRestoreServices manifestServices, IRemoteServices remoteServices, string packageName, string packageVersion, string packageHash, int timeout)
     {
         _manifestServices = manifestServices;
         _remoteServices = remoteServices;
@@ -38,15 +37,19 @@ internal class LoadWebPackageManifestOperation : AsyncOperationBase
         _packageHash = packageHash;
         _timeout = timeout;
     }
-    internal override void InternalStart()
+
+    protected override void InternalStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_packageName, nameof(LoadWebPackageManifestOperation));
         _steps = ESteps.RequestFileData;
     }
-    internal override void InternalUpdate()
+
+    protected override void InternalUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
+        {
             return;
+        }
 
         if (_steps == ESteps.RequestFileData)
         {
@@ -119,6 +122,7 @@ internal class LoadWebPackageManifestOperation : AsyncOperationBase
             }
         }
     }
+
     internal override string InternalGetDesc()
     {
         return $"PackageVersion : {_packageVersion} PackageHash : {_packageHash}";

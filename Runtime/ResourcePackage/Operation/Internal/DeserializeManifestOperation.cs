@@ -38,11 +38,11 @@ namespace YooAsset
             _services = services;
             _sourceData = binaryData;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.RestoreFileData;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -224,7 +224,7 @@ namespace YooAsset
                 Error = e.Message;
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {

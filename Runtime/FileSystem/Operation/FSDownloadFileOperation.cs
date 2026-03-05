@@ -1,7 +1,7 @@
 ﻿
 namespace YooAsset
 {
-    internal class DownloadFileOptions
+    public class DownloadFileOptions
     {
         /// <summary>
         /// 失败后重试次数
@@ -49,7 +49,7 @@ namespace YooAsset
         }
     }
 
-    internal abstract class FSDownloadFileOperation : AsyncOperationBase
+    public abstract class FSDownloadFileOperation : AsyncOperationBase
     {
         public PackageBundle Bundle { private set; get; }
 

@@ -1,7 +1,7 @@
 ﻿
 namespace YooAsset
 {
-    internal abstract class FSLoadSceneOperation : AsyncOperationBase
+    public abstract class FSLoadSceneOperation : AsyncOperationBase
     {
         public UnityEngine.SceneManagement.Scene Result;
 

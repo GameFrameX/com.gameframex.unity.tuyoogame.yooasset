@@ -9,11 +9,11 @@ internal partial class APFSInitializeOperation : FSInitializeFileSystemOperation
     {
         _fileSystem = fileSystem;
     }
-    internal override void InternalStart()
+    protected override void InternalStart()
     {
         Status = EOperationStatus.Succeed;
     }
-    internal override void InternalUpdate()
+    protected override void InternalUpdate()
     {
     }
 }

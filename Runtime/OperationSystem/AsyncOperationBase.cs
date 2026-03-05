@@ -52,10 +52,7 @@ namespace YooAsset
         /// </summary>
         public string PackageName
         {
-            get
-            {
-                return _packageName;
-            }
+            get { return _packageName; }
         }
 
         /// <summary>
@@ -63,10 +60,7 @@ namespace YooAsset
         /// </summary>
         public bool IsDone
         {
-            get
-            {
-                return Status == EOperationStatus.Failed || Status == EOperationStatus.Succeed;
-            }
+            get { return Status == EOperationStatus.Failed || Status == EOperationStatus.Succeed; }
         }
 
         /// <summary>
@@ -81,10 +75,7 @@ namespace YooAsset
                 else
                     _callback += value;
             }
-            remove
-            {
-                _callback -= value;
-            }
+            remove { _callback -= value; }
         }
 
         /// <summary>
@@ -100,19 +91,23 @@ namespace YooAsset
                     if (IsDone)
                         _taskCompletionSource.SetResult(null);
                 }
+
                 return _taskCompletionSource.Task;
             }
         }
 
-        internal abstract void InternalStart();
-        internal abstract void InternalUpdate();
+        protected abstract void InternalStart();
+        protected abstract void InternalUpdate();
+
         internal virtual void InternalAbort()
         {
         }
-        internal virtual void InternalWaitForAsyncComplete()
+
+        public virtual void InternalWaitForAsyncComplete()
         {
             throw new System.NotImplementedException(this.GetType().Name);
         }
+
         internal virtual string InternalGetDesc()
         {
             return string.Empty;
@@ -129,11 +124,13 @@ namespace YooAsset
         /// <summary>
         /// 添加子任务
         /// </summary>
-        internal void AddChildOperation(AsyncOperationBase child)
+        public void AddChildOperation(AsyncOperationBase child)
         {
 #if UNITY_EDITOR
             if (Childs.Contains(child))
+            {
                 throw new Exception($"The child node {child.GetType().Name} already exists !");
+            }
 #endif
 
             Childs.Add(child);
@@ -150,7 +147,7 @@ namespace YooAsset
         /// <summary>
         /// 开始异步操作
         /// </summary>
-        internal void StartOperation()
+        public void StartOperation()
         {
             if (Status == EOperationStatus.None)
             {
@@ -167,7 +164,7 @@ namespace YooAsset
         /// <summary>
         /// 更新异步操作
         /// </summary>
-        internal void UpdateOperation()
+        public void UpdateOperation()
         {
             if (IsDone == false)
             {
@@ -234,6 +231,7 @@ namespace YooAsset
                     YooLogger.Error(Error);
                 }
             }
+
             return IsDone;
         }
 
@@ -268,6 +266,7 @@ namespace YooAsset
         }
 
         #region 调试信息
+
         /// <summary>
         /// 开始的时间
         /// </summary>
@@ -317,26 +316,33 @@ namespace YooAsset
             float s = UnityEngine.Mathf.FloorToInt(spawnTime - m * 60f - h * 3600f);
             return h.ToString("00") + ":" + m.ToString("00") + ":" + s.ToString("00");
         }
+
         #endregion
 
         #region 排序接口实现
+
         public int CompareTo(AsyncOperationBase other)
         {
             return other.Priority.CompareTo(this.Priority);
         }
+
         #endregion
 
         #region 异步编程相关
+
         bool IEnumerator.MoveNext()
         {
             return !IsDone;
         }
+
         void IEnumerator.Reset()
         {
         }
+
         object IEnumerator.Current => null;
 
         private TaskCompletionSource<object> _taskCompletionSource;
+
         #endregion
     }
 }

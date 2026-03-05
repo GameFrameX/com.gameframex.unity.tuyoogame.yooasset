@@ -30,11 +30,11 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _timeout = timeout;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.DownloadPackageHash;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

@@ -2,7 +2,7 @@
 
 namespace YooAsset
 {
-    internal class AssetBundleLoadAssetOperation : FSLoadAssetOperation
+    public class AssetBundleLoadAssetOperation : FSLoadAssetOperation
     {
         protected enum ESteps
         {
@@ -25,14 +25,16 @@ namespace YooAsset
             _assetBundle = assetBundle;
             _assetInfo = assetInfo;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CheckBundle;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckBundle)
             {
@@ -106,7 +108,7 @@ namespace YooAsset
                 }
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {

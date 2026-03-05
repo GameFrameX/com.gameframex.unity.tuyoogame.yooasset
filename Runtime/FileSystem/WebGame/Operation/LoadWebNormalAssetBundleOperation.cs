@@ -30,11 +30,11 @@ namespace YooAsset
             _options = options;
             _disableUnityWebCache = disableUnityWebCache;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CreateRequest;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

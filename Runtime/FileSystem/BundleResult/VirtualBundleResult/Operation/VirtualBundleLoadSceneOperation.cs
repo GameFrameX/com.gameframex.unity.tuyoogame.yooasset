@@ -25,17 +25,19 @@ namespace YooAsset
             _loadParams = loadParams;
             _suspendLoad = suspendLoad;
         }
-        internal override void InternalStart()
+
+        protected override void InternalStart()
         {
 #if UNITY_EDITOR
             _steps = ESteps.LoadScene;
 #else
             _steps = ESteps.Done;
             Error = $"{nameof(VirtualBundleLoadSceneOperation)} only support unity editor platform !";
-            Status = EOperationStatus.Failed;            
+            Status = EOperationStatus.Failed;
 #endif
         }
-        internal override void InternalUpdate()
+
+        protected override void InternalUpdate()
         {
 #if UNITY_EDITOR
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -110,11 +112,13 @@ namespace YooAsset
             }
 #endif
         }
-        internal override void InternalWaitForAsyncComplete()
+
+        public override void InternalWaitForAsyncComplete()
         {
             //注意：场景加载不支持异步转同步，为了支持同步加载方法需要实现该方法！
             InternalUpdate();
         }
+
         public override void UnSuspendLoad()
         {
             _suspendLoad = false;

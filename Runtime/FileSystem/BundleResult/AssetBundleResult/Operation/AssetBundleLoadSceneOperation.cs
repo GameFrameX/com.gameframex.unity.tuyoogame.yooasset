@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace YooAsset
 {
-    internal class AssetBundleLoadSceneOperation : FSLoadSceneOperation
+    public class AssetBundleLoadSceneOperation : FSLoadSceneOperation
     {
         protected enum ESteps
         {
@@ -25,11 +25,11 @@ namespace YooAsset
             _loadParams = loadParams;
             _suspendLoad = suspendLoad;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.LoadScene;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -104,7 +104,7 @@ namespace YooAsset
                 }
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             //注意：场景加载不支持异步转同步，为了支持同步加载方法需要实现该方法！
             InternalUpdate();

@@ -43,11 +43,11 @@ namespace YooAsset
             _worldPositionStays = worldPositionStays;
             _actived = actived;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.LoadObject;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -136,13 +136,15 @@ namespace YooAsset
             }
 #endif
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {
                 // 等待句柄完成
                 if (_handle != null)
+                {
                     _handle.WaitForAsyncComplete();
+                }
 
                 if (ExecuteWhileDone())
                 {

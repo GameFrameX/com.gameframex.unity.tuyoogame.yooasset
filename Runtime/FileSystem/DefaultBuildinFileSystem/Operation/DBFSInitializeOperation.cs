@@ -28,7 +28,7 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
 #if UNITY_WEBGL
             _steps = ESteps.Done;
@@ -41,7 +41,7 @@ namespace YooAsset
                 _steps = ESteps.InitUnpackFileSystem;
 #endif
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

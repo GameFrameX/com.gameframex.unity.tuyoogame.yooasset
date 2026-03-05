@@ -13,10 +13,10 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             // 获取可移除的下载器集合
             _removeList.Clear();

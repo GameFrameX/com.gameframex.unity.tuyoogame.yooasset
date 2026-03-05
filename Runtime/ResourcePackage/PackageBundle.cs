@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YooAsset
 {
     [Serializable]
-    internal class PackageBundle
+    public class PackageBundle
     {
         /// <summary>
         /// 资源包名称

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
-    internal abstract class UnityWebRequestOperation : AsyncOperationBase
+    public abstract class UnityWebRequestOperation : AsyncOperationBase
     {
         protected UnityWebRequest _webRequest;
         protected readonly string _requestURL;
@@ -33,7 +33,7 @@ namespace YooAsset
             get { return _requestURL; }
         }
 
-        internal UnityWebRequestOperation(string url)
+        protected UnityWebRequestOperation(string url)
         {
             _requestURL = url;
         }

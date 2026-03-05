@@ -2,7 +2,7 @@
 
 namespace YooAsset
 {
-    internal abstract class LoadWebAssetBundleOperation : AsyncOperationBase
+    public abstract class LoadWebAssetBundleOperation : AsyncOperationBase
     {
         /// <summary>
         /// AssetBundle对象

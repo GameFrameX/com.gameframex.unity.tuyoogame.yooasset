@@ -13,14 +13,14 @@ namespace YooAsset
             : base(fileSystem, bundle, url)
         {
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             if (_fileSystem.CopyLocalFileServices != null)
                 _steps = ESteps.CopyLocalFile;
             else
                 _steps = ESteps.CreateRequest;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -143,7 +143,7 @@ namespace YooAsset
                     File.Delete(_tempFilePath);
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {

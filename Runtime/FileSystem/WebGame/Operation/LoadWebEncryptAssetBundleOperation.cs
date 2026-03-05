@@ -2,7 +2,7 @@
 
 namespace YooAsset
 {
-    internal class LoadWebEncryptAssetBundleOperation : LoadWebAssetBundleOperation
+    public class LoadWebEncryptAssetBundleOperation : LoadWebAssetBundleOperation
     {
         protected enum ESteps
         {
@@ -23,17 +23,17 @@ namespace YooAsset
         protected int _failedTryAgain;
         private ESteps _steps = ESteps.None;
 
-        internal LoadWebEncryptAssetBundleOperation(PackageBundle bundle, DownloadFileOptions options, IWebDecryptionServices decryptionServices)
+        public LoadWebEncryptAssetBundleOperation(PackageBundle bundle, DownloadFileOptions options, IWebDecryptionServices decryptionServices)
         {
             _bundle = bundle;
             _options = options;
             _decryptionServices = decryptionServices;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CreateRequest;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

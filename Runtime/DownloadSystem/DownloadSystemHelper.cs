@@ -8,7 +8,7 @@ namespace YooAsset
     /// </summary>
     public delegate UnityWebRequest UnityWebRequestDelegate(string url);
 
-    internal class DownloadSystemHelper
+    public class DownloadSystemHelper
     {
 #if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

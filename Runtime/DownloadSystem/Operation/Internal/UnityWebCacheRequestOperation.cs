@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
-    internal class UnityWebCacheRequestOperation : UnityWebRequestOperation
+    public class UnityWebCacheRequestOperation : UnityWebRequestOperation
     {
         protected enum ESteps
         {
@@ -20,14 +20,14 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
-        internal UnityWebCacheRequestOperation(string url) : base(url)
+        public UnityWebCacheRequestOperation(string url) : base(url)
         {
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.CreateRequest;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

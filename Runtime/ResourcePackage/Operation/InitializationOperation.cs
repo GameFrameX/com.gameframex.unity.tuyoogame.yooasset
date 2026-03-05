@@ -26,11 +26,11 @@ namespace YooAsset
             _impl = impl;
             _parametersList = parametersList;
         }
-        internal override void InternalStart()
+        protected override void InternalStart()
         {
             _steps = ESteps.Prepare;
         }
-        internal override void InternalUpdate()
+        protected override void InternalUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
