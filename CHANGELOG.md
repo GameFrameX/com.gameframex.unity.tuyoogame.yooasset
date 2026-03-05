@@ -1,3 +1,16 @@
+# [2.3.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.5...2.3.0) (2026-03-05)
+
+
+### Bug Fixes
+
+* **AssetBundleBuilder:** 移除构建输出路径中的冗余目录层级 ([0f9ceb8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/0f9ceb86d464f2a7173411a35fc1096e368cb486))
+* 为文件系统类添加Preserve属性防止代码剥离 ([b05bab5](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/b05bab5a8833c1ab9e9dad1bfca9125bf3b18a9c))
+
+
+### Features
+
+* **AssetBundleBuilder:** 启用Scriptable和RawFile构建管线选项 ([3363607](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/3363607ce8e8a3d7724b309823a13097cca904c2))
+
 # Changelog
 
 ## [2.2.5](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.5) (2025-05-31)
