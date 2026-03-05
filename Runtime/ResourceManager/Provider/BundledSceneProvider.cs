@@ -27,12 +27,12 @@ namespace YooAsset
             _suspendLoadMode = suspendLoad;
         }
 
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
 
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (IsDone)
                 return;

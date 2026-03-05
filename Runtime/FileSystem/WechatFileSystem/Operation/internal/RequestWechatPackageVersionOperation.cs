@@ -27,12 +27,12 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
         _fileSystem = fileSystem;
         _timeout = timeout;
     }
-    internal override void InternalOnStart()
+    public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestWechatPackageVersionOperation));
         _steps = ESteps.RequestPackageVersion;
     }
-    internal override void InternalOnUpdate()
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
             return;

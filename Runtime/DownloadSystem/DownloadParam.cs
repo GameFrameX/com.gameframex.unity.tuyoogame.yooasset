@@ -1,7 +1,7 @@
 ﻿
 namespace YooAsset
 {
-    internal class DownloadParam
+    public class DownloadParam
     {
         public readonly int FailedTryAgain;
         public readonly int Timeout;

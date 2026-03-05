@@ -34,11 +34,11 @@ namespace YooAsset
             _fileSystemB = fileSystemB;
             _fileSystemC = fileSystemC;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.ClearFileSystemA;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

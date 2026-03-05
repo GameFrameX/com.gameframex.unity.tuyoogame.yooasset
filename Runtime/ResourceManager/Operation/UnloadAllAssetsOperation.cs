@@ -21,11 +21,11 @@ namespace YooAsset
         {
             _resManager = resourceManager;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.AbortDownload;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

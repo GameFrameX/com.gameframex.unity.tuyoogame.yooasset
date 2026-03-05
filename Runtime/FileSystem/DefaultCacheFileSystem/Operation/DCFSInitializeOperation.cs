@@ -22,11 +22,11 @@ namespace YooAsset
         {
             _fileSytem = fileSystem;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CheckAppFootPrint;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

@@ -11,16 +11,16 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             Status = EOperationStatus.Succeed;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
         }
         public override void AbortDownloadOperation()

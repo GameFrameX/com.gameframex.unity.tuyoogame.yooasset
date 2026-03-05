@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
-    internal class DeserializeManifestOperation : AsyncOperationBase
+    public class DeserializeManifestOperation : AsyncOperationBase
     {
         private enum ESteps
         {
@@ -32,11 +32,11 @@ namespace YooAsset
         {
             _buffer = new BufferReader(binaryData);
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.DeserializeFileHeader;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

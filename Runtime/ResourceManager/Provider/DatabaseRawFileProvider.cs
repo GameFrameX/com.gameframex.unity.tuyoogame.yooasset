@@ -6,11 +6,11 @@ namespace YooAsset
         public DatabaseRawFileProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
 #if UNITY_EDITOR
             if (IsDone)

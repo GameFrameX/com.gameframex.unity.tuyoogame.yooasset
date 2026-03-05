@@ -9,11 +9,11 @@ namespace YooAsset
         {
             _fileSytem = fileSystem;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
     }

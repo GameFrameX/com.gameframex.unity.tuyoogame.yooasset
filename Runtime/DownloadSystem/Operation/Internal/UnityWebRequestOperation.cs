@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
-    internal abstract class UnityWebRequestOperation : AsyncOperationBase
+    public abstract class UnityWebRequestOperation : AsyncOperationBase
     {
         protected enum ESteps
         {

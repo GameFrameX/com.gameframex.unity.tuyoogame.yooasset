@@ -31,11 +31,11 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.CreateFileSystem)
             {
@@ -108,11 +108,11 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -190,11 +190,11 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -348,11 +348,11 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

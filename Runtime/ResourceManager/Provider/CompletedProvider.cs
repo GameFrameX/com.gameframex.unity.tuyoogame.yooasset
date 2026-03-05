@@ -7,10 +7,10 @@ namespace YooAsset
         {
         }
 
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
 

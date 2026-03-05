@@ -3,11 +3,11 @@ namespace YooAsset
 {
     public abstract class GameAsyncOperation : AsyncOperationBase
     {
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             OnStart();
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             OnUpdate();
         }
@@ -15,7 +15,7 @@ namespace YooAsset
         {
             OnAbort();
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             OnWaitForAsyncComplete();
         }

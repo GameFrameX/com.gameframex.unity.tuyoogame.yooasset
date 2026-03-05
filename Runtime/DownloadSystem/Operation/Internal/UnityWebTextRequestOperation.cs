@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
-    internal class UnityWebTextRequestOperation : UnityWebRequestOperation
+    public class UnityWebTextRequestOperation : UnityWebRequestOperation
     {
         private UnityWebRequestAsyncOperation _requestOperation;
 
@@ -13,14 +13,14 @@ namespace YooAsset
         public string Result { private set; get; }
 
 
-        internal UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
+        public UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
         {
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

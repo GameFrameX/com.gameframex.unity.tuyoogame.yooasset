@@ -91,7 +91,7 @@ namespace YooAsset
             }
         }
 
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             IsWaitForAsyncComplete = true;
 

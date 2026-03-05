@@ -25,11 +25,11 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _manifest = manifest;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.GetUnusedCacheFiles;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

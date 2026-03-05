@@ -22,12 +22,12 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         _bundle = bundle;
     }
 
-    internal override void InternalOnStart()
+    public override void InternalOnStart()
     {
         _steps = ESteps.LoadBundleFile;
     }
 
-    internal override void InternalOnUpdate()
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
         {
@@ -67,7 +67,7 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         }
     }
 
-    internal override void InternalWaitForAsyncComplete()
+    public override void InternalWaitForAsyncComplete()
     {
         if (_steps != ESteps.Done)
         {

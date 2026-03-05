@@ -103,14 +103,14 @@ namespace YooAsset
             }
         }
 
-        internal abstract void InternalOnStart();
-        internal abstract void InternalOnUpdate();
+        public abstract void InternalOnStart();
+        public abstract void InternalOnUpdate();
 
         internal virtual void InternalOnAbort()
         {
         }
 
-        internal virtual void InternalWaitForAsyncComplete()
+        public virtual void InternalWaitForAsyncComplete()
         {
             throw new System.NotImplementedException(this.GetType().Name);
         }

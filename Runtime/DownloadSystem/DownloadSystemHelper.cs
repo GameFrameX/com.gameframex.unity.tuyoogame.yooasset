@@ -7,7 +7,7 @@ namespace YooAsset
     /// </summary>
     public delegate UnityWebRequest UnityWebRequestDelegate(string url);
 
-    internal class DownloadSystemHelper
+    public class DownloadSystemHelper
     {
         public static UnityWebRequestDelegate UnityWebRequestCreater = null;
         public static UnityWebRequest NewUnityWebRequestGet(string requestURL)

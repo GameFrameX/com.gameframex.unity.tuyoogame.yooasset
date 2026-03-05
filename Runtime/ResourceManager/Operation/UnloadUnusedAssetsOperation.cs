@@ -20,11 +20,11 @@ namespace YooAsset
         {
             _resManager = resourceManager;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.UnloadUnused;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -64,7 +64,7 @@ namespace YooAsset
                 Status = EOperationStatus.Succeed;
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {

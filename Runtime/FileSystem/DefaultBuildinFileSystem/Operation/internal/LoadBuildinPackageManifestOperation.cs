@@ -31,11 +31,11 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _packageHash = packageHash;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.RequestFileData;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;

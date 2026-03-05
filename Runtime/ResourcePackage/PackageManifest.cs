@@ -10,7 +10,7 @@ namespace YooAsset
     /// 清单文件
     /// </summary>
     [Serializable]
-    internal class PackageManifest
+    public class PackageManifest
     {
         /// <summary>
         /// 文件版本

@@ -34,12 +34,12 @@ internal class LoadWechatPackageManifestOperation : AsyncOperationBase
         _packageHash = packageHash;
         _timeout = timeout;
     }
-    internal override void InternalOnStart()
+    public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(LoadWechatPackageManifestOperation));
         _steps = ESteps.RequestFileData;
     }
-    internal override void InternalOnUpdate()
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
             return;

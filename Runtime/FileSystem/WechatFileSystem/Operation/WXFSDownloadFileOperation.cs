@@ -14,12 +14,12 @@ internal class WXFSDownloadFileOperation : DefaultDownloadFileOperation
         _fileSystem = fileSystem;
     }
 
-    internal override void InternalOnStart()
+    public override void InternalOnStart()
     {
         _steps = ESteps.CreateRequest;
     }
 
-    internal override void InternalOnUpdate()
+    public override void InternalOnUpdate()
     {
         // 创建下载器
         if (_steps == ESteps.CreateRequest)

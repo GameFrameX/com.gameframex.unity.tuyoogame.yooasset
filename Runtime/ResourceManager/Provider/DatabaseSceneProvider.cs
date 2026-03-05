@@ -29,11 +29,11 @@ namespace YooAsset
             SceneName = Path.GetFileNameWithoutExtension(assetInfo.AssetPath);
             _suspendLoadMode = suspendLoad;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
 #if UNITY_EDITOR
             if (IsDone)

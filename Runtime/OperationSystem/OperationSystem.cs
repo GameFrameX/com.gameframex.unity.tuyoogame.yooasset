@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace YooAsset
 {
-    internal class OperationSystem
+    public class OperationSystem
     {
         private static readonly List<AsyncOperationBase> _operations = new List<AsyncOperationBase>(1000);
         private static readonly List<AsyncOperationBase> _newList = new List<AsyncOperationBase>(1000);

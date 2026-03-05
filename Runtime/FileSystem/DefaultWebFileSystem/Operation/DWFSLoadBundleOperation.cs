@@ -21,11 +21,11 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.DownloadFile;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -62,7 +62,7 @@ namespace YooAsset
                 }
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             if (_steps != ESteps.Done)
             {

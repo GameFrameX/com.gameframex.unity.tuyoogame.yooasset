@@ -4,7 +4,7 @@ using System.Linq;
 namespace YooAsset
 {
     [Serializable]
-    internal class PackageBundle
+    public class PackageBundle
     {
         /// <summary>
         /// 资源包名称

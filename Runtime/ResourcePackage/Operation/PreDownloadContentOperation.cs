@@ -63,11 +63,11 @@ namespace YooAsset
         {
             _impl = impl;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
 
@@ -100,11 +100,11 @@ namespace YooAsset
         {
             _impl = impl;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
 
@@ -154,11 +154,11 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _timeout = timeout;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _steps = ESteps.CheckParams;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -297,11 +297,11 @@ namespace YooAsset
         {
             _impl = impl;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
         }
 

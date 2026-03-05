@@ -17,18 +17,6 @@ namespace YooAsset
         {
             _types = new[]
             {
-#if UNITY_WEBGL && DOUYIN_MINI_GAME
-                typeof(ByteGameFileSystem),
-                typeof(ByteGameFileSystemCreater),
-                typeof(BGFSRequestPackageVersionOperation),
-                typeof(BGFSLoadPackageManifestOperation),
-                typeof(BGFSLoadBundleOperation),
-                typeof(BGFSInitializeOperation),
-                typeof(BGFSDownloadFileOperation),
-                typeof(RequestByteGamePackageVersionOperation),
-                typeof(RequestByteGamePackageHashOperation),
-                typeof(LoadByteGamePackageManifestOperation),
-#endif
                 
 #if UNITY_WEBGL && WECHAT_MINI_GAME
                 typeof(WechatFileSystem),
@@ -108,10 +96,6 @@ namespace YooAsset
                 typeof(YooAsset.DeserializeManifestOperation),
                 typeof(YooAsset.DestroyOperation),
                 typeof(YooAsset.DownloaderOperation),
-                typeof(YooAsset.DownloaderOperation.OnDownloadError),
-                typeof(YooAsset.DownloaderOperation.OnDownloadOver),
-                typeof(YooAsset.DownloaderOperation.OnDownloadProgress),
-                typeof(YooAsset.DownloaderOperation.OnStartDownloadFile),
                 typeof(YooAsset.DownloadHandlerAssetBundleOperation),
                 typeof(YooAsset.DownloadHandlerFileRange),
                 typeof(YooAsset.DownloadPackageHashOperation),

@@ -15,12 +15,12 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -148,7 +148,7 @@ namespace YooAsset
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             bool isReuqestLocalFile = IsRequestLocalFile();
 
@@ -209,12 +209,12 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -358,7 +358,7 @@ namespace YooAsset
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             bool isReuqestLocalFile = IsRequestLocalFile();
 

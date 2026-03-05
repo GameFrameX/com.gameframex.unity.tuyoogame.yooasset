@@ -1,7 +1,7 @@
 ﻿
 namespace YooAsset
 {
-    internal class FileSystemParametersDefine
+    public class FileSystemParametersDefine
     {
         public const string FILE_VERIFY_LEVEL = "FILE_VERIFY_LEVEL";
         public const string REMOTE_SERVICES = "REMOTE_SERVICES";

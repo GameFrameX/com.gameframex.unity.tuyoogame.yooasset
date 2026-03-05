@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
-    internal class WebRequestCounter
+    public class WebRequestCounter
     {
         /// <summary>
         /// 记录网络请求失败事件的次数

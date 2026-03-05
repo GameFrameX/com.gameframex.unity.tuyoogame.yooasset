@@ -28,13 +28,13 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadAssetBundle;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -122,7 +122,7 @@ namespace YooAsset
                 }
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             _isWaitForAsyncComplete = true;
 
@@ -162,13 +162,13 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
-        internal override void InternalOnStart()
+        public override void InternalOnStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadBuildinRawBundle;
         }
-        internal override void InternalOnUpdate()
+        public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
                 return;
@@ -191,7 +191,7 @@ namespace YooAsset
                 }
             }
         }
-        internal override void InternalWaitForAsyncComplete()
+        public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {
