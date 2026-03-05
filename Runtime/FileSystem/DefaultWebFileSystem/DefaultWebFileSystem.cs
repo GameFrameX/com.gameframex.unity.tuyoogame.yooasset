@@ -8,6 +8,7 @@ namespace YooAsset
     /// <summary>
     /// Web文件系统
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultWebFileSystem : IFileSystem
     {
         public class FileWrapper
@@ -59,6 +60,7 @@ namespace YooAsset
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DWFSInitializeOperation(this);
@@ -66,6 +68,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DWFSLoadPackageManifestOperation(this, timeout);
@@ -73,6 +76,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DWFSRequestPackageVersionOperation(this, timeout);
@@ -80,6 +84,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new FSClearAllBundleFilesCompleteOperation();
@@ -87,6 +92,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new FSClearUnusedBundleFilesCompleteOperation();
@@ -94,11 +100,13 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
             throw new System.NotImplementedException();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             var operation = new DWFSLoadAssetBundleOperation(this, bundle);
@@ -106,6 +114,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
             AssetBundle assetBundle = result as AssetBundle;
@@ -116,6 +125,7 @@ namespace YooAsset
                 assetBundle.Unload(true);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void SetParameter(string name, object value)
         {
             if (name == FileSystemParametersDefine.DISABLE_UNITY_WEB_CACHE)
@@ -128,6 +138,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
@@ -138,40 +149,48 @@ namespace YooAsset
             _webPackageRoot = PathUtility.Combine(rootDirectory, packageName);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnUpdate()
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Belong(PackageBundle bundle)
         {
             return true;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Exists(PackageBundle bundle)
         {
             return true;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual byte[] ReadFileData(PackageBundle bundle)
         {
             throw new System.NotImplementedException();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual string ReadFileText(PackageBundle bundle)
         {
             throw new System.NotImplementedException();

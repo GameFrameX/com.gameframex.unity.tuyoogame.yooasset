@@ -3,6 +3,7 @@
     /// <summary>
     /// 解压文件系统
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultUnpackFileSystem : DefaultCacheFileSystem
     {
         [UnityEngine.Scripting.Preserve]
@@ -10,6 +11,7 @@
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void OnCreate(string packageName, string rootDirectory)
         {
             base.OnCreate(packageName, rootDirectory);

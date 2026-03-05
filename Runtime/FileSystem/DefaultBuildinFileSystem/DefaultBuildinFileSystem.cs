@@ -8,18 +8,22 @@ namespace YooAsset
     /// <summary>
     /// 内置文件系统
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultBuildinFileSystem : IFileSystem
     {
+        [UnityEngine.Scripting.Preserve]
         private class UnpackRemoteServices : IRemoteServices
         {
             private readonly string _buildinPackageRoot;
             protected readonly Dictionary<string, string> _mapping = new Dictionary<string, string>(10000);
 
+            [UnityEngine.Scripting.Preserve]
             public UnpackRemoteServices(string buildinPackRoot)
             {
                 _buildinPackageRoot = buildinPackRoot;
             }
 
+            [UnityEngine.Scripting.Preserve]
             string IRemoteServices.GetRemoteMainURL(string fileName)
             {
                 return GetFileLoadURL(fileName);
@@ -30,6 +34,7 @@ namespace YooAsset
                 return GetFileLoadURL(fileName);
             }
 
+            [UnityEngine.Scripting.Preserve]
             private string GetFileLoadURL(string fileName)
             {
                 if (_mapping.TryGetValue(fileName, out string url) == false)
@@ -43,10 +48,12 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public class FileWrapper
         {
             public string FileName { private set; get; }
 
+            [UnityEngine.Scripting.Preserve]
             public FileWrapper(string fileName)
             {
                 FileName = fileName;
@@ -109,6 +116,7 @@ namespace YooAsset
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DBFSInitializeOperation(this);
@@ -116,6 +124,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DBFSLoadPackageManifestOperation(this, packageVersion);
@@ -123,6 +132,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DBFSRequestPackageVersionOperation(this);
@@ -130,22 +140,26 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             return _unpackFileSystem.ClearAllBundleFilesAsync();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             return _unpackFileSystem.ClearUnusedBundleFilesAsync(manifest);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
             param.ImportFilePath = GetBuildinFileLoadPath(bundle);
             return _unpackFileSystem.DownloadFileAsync(bundle, param);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             if (NeedUnpack(bundle))
@@ -167,6 +181,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
             AssetBundle assetBundle = result as AssetBundle;
@@ -195,6 +210,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void SetParameter(string name, object value)
         {
             if (name == FileSystemParametersDefine.FILE_VERIFY_LEVEL)
@@ -219,6 +235,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
@@ -239,25 +256,30 @@ namespace YooAsset
             _unpackFileSystem.OnCreate(packageName, null);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnUpdate()
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Belong(PackageBundle bundle)
         {
             return _wrappers.ContainsKey(bundle.BundleGUID);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Exists(PackageBundle bundle)
         {
             return _wrappers.ContainsKey(bundle.BundleGUID);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             if (Belong(bundle) == false)
@@ -270,11 +292,13 @@ namespace YooAsset
 #endif
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual byte[] ReadFileData(PackageBundle bundle)
         {
             if (NeedUnpack(bundle))
@@ -307,6 +331,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual string ReadFileText(PackageBundle bundle)
         {
             if (NeedUnpack(bundle))

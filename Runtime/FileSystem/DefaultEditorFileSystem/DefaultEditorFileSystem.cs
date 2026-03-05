@@ -5,6 +5,7 @@ namespace YooAsset
     /// <summary>
     /// 模拟文件系统
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultEditorFileSystem : IFileSystem
     {
         protected string _packageRoot;
@@ -30,11 +31,12 @@ namespace YooAsset
             get { return 0; }
         }
 
-
+        [UnityEngine.Scripting.Preserve]
         public DefaultEditorFileSystem()
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DEFSInitializeOperation(this);
@@ -42,6 +44,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new DEFSLoadPackageManifestOperation(this, packageVersion);
@@ -49,6 +52,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DEFSRequestPackageVersionOperation(this);
@@ -56,6 +60,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new FSClearAllBundleFilesCompleteOperation();
@@ -63,6 +68,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new FSClearUnusedBundleFilesCompleteOperation();
@@ -70,11 +76,13 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
             throw new System.NotImplementedException();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             var operation = new DEFSLoadBundleOperation(this, bundle);
@@ -82,15 +90,18 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void SetParameter(string name, object value)
         {
             YooLogger.Warning($"Invalid parameter : {name}");
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
@@ -102,40 +113,48 @@ namespace YooAsset
             _packageRoot = rootDirectory;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void OnUpdate()
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Belong(PackageBundle bundle)
         {
             return true;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool Exists(PackageBundle bundle)
         {
             return true;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual byte[] ReadFileData(PackageBundle bundle)
         {
             throw new System.NotImplementedException();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual string ReadFileText(PackageBundle bundle)
         {
             throw new System.NotImplementedException();
