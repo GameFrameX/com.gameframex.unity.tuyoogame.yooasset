@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.4.0...2.4.1) (2026-03-05)
+
+
+### Bug Fixes
+
+* **AssetBundleBuilder:** 移除构建输出路径中的冗余目录层级 ([7846293](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/784629385a1cf5295b67591a6ac658b62ef003ec))
+
 # [2.4.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.17...2.4.0) (2025-12-24)
 
 
