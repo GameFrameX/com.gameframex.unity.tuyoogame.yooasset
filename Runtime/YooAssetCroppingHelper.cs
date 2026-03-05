@@ -13,18 +13,6 @@ namespace YooAsset
         [Preserve]
         void Start()
         {
-#if UNITY_WEBGL && DOUYIN_MINI_GAME
-            _ = typeof(TiktokFileSystem);
-            _ = typeof(TiktokFileSystemCreater);
-            _ = typeof(TTFSRequestPackageVersionOperation);
-            _ = typeof(TTFSLoadPackageManifestOperation);
-            _ = typeof(TTFSLoadBundleOperation);
-            _ = typeof(TTFSInitializeOperation);
-            _ = typeof(TTFSDownloadFileOperation);
-            _ = typeof(UnityTiktokAssetBundleRequestOperation);
-            _ = typeof(LoadTiktokAssetBundleOperation);
-            _ = typeof(TTAssetBundleResult);
-#endif
 
 #if UNITY_WEBGL && WECHAT_MINI_GAME
             _ = typeof(WechatFileSystem);
