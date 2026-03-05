@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.4.1...2.5.0) (2026-03-05)
+
+
+### Features
+
+* **sync:** 同步官方版本到2.3.18版本 ([9e4a58e](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/9e4a58e41017743a0c2b1054ec3819ce636496ea))
+
 ## [2.4.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.4.0...2.4.1) (2026-03-05)
 
 
