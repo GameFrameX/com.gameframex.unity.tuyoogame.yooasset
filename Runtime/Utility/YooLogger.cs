@@ -14,7 +14,7 @@ namespace YooAsset
         void Exception(System.Exception exception);
     }
 
-    internal static class YooLogger
+    public static class YooLogger
     {
         public static ILogger Logger = null;
 
