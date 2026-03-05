@@ -18,14 +18,6 @@ namespace YooAsset
         internal abstract void InvokeUpdateCallback();
 
         /// <summary>
-        /// 是否成功
-        /// </summary>
-        public bool IsSucceed
-        {
-            get { return IsDone && Status == EOperationStatus.Succeed; }
-        }
-
-        /// <summary>
         /// 获取资源信息
         /// </summary>
         public AssetInfo GetAssetInfo()
