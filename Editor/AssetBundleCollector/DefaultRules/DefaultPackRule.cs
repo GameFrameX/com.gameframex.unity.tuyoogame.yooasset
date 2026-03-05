@@ -148,29 +148,6 @@ namespace YooAsset.Editor
     }
 
     /// <summary>
-    /// FairyGUI描述文件和资源文件
-    /// </summary>
-    [DisplayName("资源包名: FairyGUI描述文件和资源文件")]
-    public class FairyGUIPackage : IPackRule
-    {
-        PackRuleResult IPackRule.GetPackRuleResult(PackRuleData data)
-        {
-            if (data.AssetPath.EndsWith("_fui.bytes"))
-            {
-                string bundleName = Path.GetDirectoryName(data.AssetPath) + "_fui";
-                PackRuleResult result = new PackRuleResult(bundleName, DefaultPackRule.AssetBundleFileExtension);
-                return result;
-            }
-            else
-            {
-                string bundleName = Path.GetDirectoryName(data.AssetPath) + "_res";
-                PackRuleResult result = new PackRuleResult(bundleName, DefaultPackRule.AssetBundleFileExtension);
-                return result;
-            }
-        }
-    }
-
-    /// <summary>
     /// 打包着色器
     /// </summary>
     [DisplayName("打包着色器文件")]

@@ -37,7 +37,7 @@ namespace YooAsset.Editor
     /// FairyGUI描述文件和资源文件
     /// </summary>
     [DisplayName("资源包名: FairyGUI描述文件和资源文件")]
-    public class FairyGUIPackage : IPackRule
+    public partial class FairyGUIPackage : IPackRule
     {
         PackRuleResult IPackRule.GetPackRuleResult(PackRuleData data)
         {
