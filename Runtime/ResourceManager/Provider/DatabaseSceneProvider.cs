@@ -8,7 +8,7 @@ namespace YooAsset
 {
     internal sealed class DatabaseSceneProvider : ProviderOperation
     {
-        public readonly LoadSceneParameters LoadSceneParams;    
+        public readonly LoadSceneParameters LoadSceneParams;
         private AsyncOperation _asyncOperation;
         private bool _suspendLoadMode;
 
@@ -17,10 +17,7 @@ namespace YooAsset
         /// </summary>
         public LoadSceneMode SceneMode
         {
-            get
-            {
-                return LoadSceneParams.loadSceneMode;
-            }
+            get { return LoadSceneParams.loadSceneMode; }
         }
 
         public DatabaseSceneProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo, LoadSceneParameters loadSceneParams, bool suspendLoad) : base(manager, providerGUID, assetInfo)
@@ -29,15 +26,19 @@ namespace YooAsset
             SceneName = Path.GetFileNameWithoutExtension(assetInfo.AssetPath);
             _suspendLoadMode = suspendLoad;
         }
+
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
+
         public override void InternalOnUpdate()
         {
 #if UNITY_EDITOR
             if (IsDone)
+            {
                 return;
+            }
 
             if (_steps == ESteps.None)
             {
@@ -48,7 +49,9 @@ namespace YooAsset
             if (_steps == ESteps.CheckBundle)
             {
                 if (LoadBundleFileOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (LoadBundleFileOp.Status != EOperationStatus.Succeed)
                 {
@@ -79,7 +82,7 @@ namespace YooAsset
                     }
                     else
                     {
-                        string error = $"Failed to load scene : {MainAssetInfo.AssetPath}";
+                        var error = $"Failed to load scene : {MainAssetInfo.AssetPath}";
                         YooLogger.Error(error);
                         InvokeCompletion(error, EOperationStatus.Failed);
                     }
@@ -102,12 +105,16 @@ namespace YooAsset
                         if (_asyncOperation.allowSceneActivation == false)
                         {
                             if (_suspendLoadMode == false)
+                            {
                                 _asyncOperation.allowSceneActivation = true;
+                            }
                         }
 
                         Progress = _asyncOperation.progress;
                         if (_asyncOperation.isDone == false)
+                        {
                             return;
+                        }
                     }
                 }
 
@@ -117,7 +124,7 @@ namespace YooAsset
                 }
                 else
                 {
-                    string error = $"The loaded scene is invalid : {MainAssetInfo.AssetPath}";
+                    var error = $"The loaded scene is invalid : {MainAssetInfo.AssetPath}";
                     YooLogger.Error(error);
                     InvokeCompletion(error, EOperationStatus.Failed);
                 }

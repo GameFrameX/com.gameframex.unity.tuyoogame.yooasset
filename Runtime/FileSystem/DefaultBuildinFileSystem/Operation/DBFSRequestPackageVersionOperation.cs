@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace YooAsset
 {
     internal class DBFSRequestPackageVersionOperation : FSRequestPackageVersionOperation
@@ -6,7 +7,7 @@ namespace YooAsset
         private enum ESteps
         {
             None,
-            RequestPackageVersion,
+            RequestBuildinPackageVersion,
             Done,
         }
 
@@ -19,16 +20,20 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
-            _steps = ESteps.RequestPackageVersion;
+            _steps = ESteps.RequestBuildinPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
-            if (_steps == ESteps.RequestPackageVersion)
+            if (_steps == ESteps.RequestBuildinPackageVersion)
             {
                 if (_requestBuildinPackageVersionOp == null)
                 {
@@ -37,13 +42,16 @@ namespace YooAsset
                 }
 
                 if (_requestBuildinPackageVersionOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestBuildinPackageVersionOp.Status == EOperationStatus.Succeed)
                 {
                     _steps = ESteps.Done;
                     PackageVersion = _requestBuildinPackageVersionOp.PackageVersion;
                     Status = EOperationStatus.Succeed;
+                    Debug.Log("获取包内版本号成功：" + PackageVersion);
                 }
                 else
                 {

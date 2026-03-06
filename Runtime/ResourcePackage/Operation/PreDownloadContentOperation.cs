@@ -63,10 +63,12 @@ namespace YooAsset
         {
             _impl = impl;
         }
+
         public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
+
         public override void InternalOnUpdate()
         {
         }
@@ -75,23 +77,28 @@ namespace YooAsset
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string tag, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string location, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string[] locations, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
     }
+
     internal class OfflinePlayModePreDownloadContentOperation : PreDownloadContentOperation
     {
         private readonly OfflinePlayModeImpl _impl;
@@ -100,10 +107,12 @@ namespace YooAsset
         {
             _impl = impl;
         }
+
         public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
+
         public override void InternalOnUpdate()
         {
         }
@@ -112,23 +121,28 @@ namespace YooAsset
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string tag, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string location, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string[] locations, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
     }
+
     internal class HostPlayModePreDownloadContentOperation : PreDownloadContentOperation
     {
         private enum ESteps
@@ -154,14 +168,18 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckParams;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckParams)
             {
@@ -189,6 +207,7 @@ namespace YooAsset
                         return;
                     }
                 }
+
                 _steps = ESteps.LoadPackageManifest;
             }
 
@@ -196,11 +215,13 @@ namespace YooAsset
             {
                 if (_loadPackageManifestOp == null)
                 {
-                    _loadPackageManifestOp = _impl.CacheFileSystem.LoadPackageManifestAsync(_packageVersion, _timeout);
+                    _loadPackageManifestOp = _impl.CacheFileSystem.RequestRemotePackageManifestAsync(_packageVersion, _timeout);
                 }
 
                 if (_loadPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadPackageManifestOp.Status == EOperationStatus.Succeed)
                 {
@@ -225,10 +246,11 @@ namespace YooAsset
                 return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
             }
 
-            List<BundleInfo> downloadList = PlayModeHelper.GetDownloadListByAll(_manifest, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
+            var downloadList = PlayModeHelper.GetDownloadListByAll(_manifest, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
             var operation = new ResourceDownloaderOperation(_impl.PackageName, downloadList, downloadingMaxNumber, failedTryAgain, timeout);
             return operation;
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string tag, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             if (Status != EOperationStatus.Succeed)
@@ -237,10 +259,11 @@ namespace YooAsset
                 return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
             }
 
-            List<BundleInfo> downloadList = PlayModeHelper.GetDownloadListByTags(_manifest, new string[] { tag }, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
+            var downloadList = PlayModeHelper.GetDownloadListByTags(_manifest, new string[] { tag, }, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
             var operation = new ResourceDownloaderOperation(_impl.PackageName, downloadList, downloadingMaxNumber, failedTryAgain, timeout);
             return operation;
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             if (Status != EOperationStatus.Succeed)
@@ -249,10 +272,11 @@ namespace YooAsset
                 return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
             }
 
-            List<BundleInfo> downloadList = PlayModeHelper.GetDownloadListByTags(_manifest, tags, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
+            var downloadList = PlayModeHelper.GetDownloadListByTags(_manifest, tags, _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
             var operation = new ResourceDownloaderOperation(_impl.PackageName, downloadList, downloadingMaxNumber, failedTryAgain, timeout);
             return operation;
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string location, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             if (Status != EOperationStatus.Succeed)
@@ -261,14 +285,15 @@ namespace YooAsset
                 return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
             }
 
-            List<AssetInfo> assetInfos = new List<AssetInfo>();
+            var assetInfos = new List<AssetInfo>();
             var assetInfo = _manifest.ConvertLocationToAssetInfo(location, null);
             assetInfos.Add(assetInfo);
 
-            List<BundleInfo> downloadList = PlayModeHelper.GetDownloadListByPaths(_manifest, assetInfos.ToArray(), _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
+            var downloadList = PlayModeHelper.GetDownloadListByPaths(_manifest, assetInfos.ToArray(), _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
             var operation = new ResourceDownloaderOperation(_impl.PackageName, downloadList, downloadingMaxNumber, failedTryAgain, timeout);
             return operation;
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string[] locations, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             if (Status != EOperationStatus.Succeed)
@@ -277,18 +302,19 @@ namespace YooAsset
                 return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
             }
 
-            List<AssetInfo> assetInfos = new List<AssetInfo>(locations.Length);
+            var assetInfos = new List<AssetInfo>(locations.Length);
             foreach (var location in locations)
             {
                 var assetInfo = _manifest.ConvertLocationToAssetInfo(location, null);
                 assetInfos.Add(assetInfo);
             }
 
-            List<BundleInfo> downloadList = PlayModeHelper.GetDownloadListByPaths(_manifest, assetInfos.ToArray(), _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
+            var downloadList = PlayModeHelper.GetDownloadListByPaths(_manifest, assetInfos.ToArray(), _impl.BuildinFileSystem, _impl.DeliveryFileSystem, _impl.CacheFileSystem);
             var operation = new ResourceDownloaderOperation(_impl.PackageName, downloadList, downloadingMaxNumber, failedTryAgain, timeout);
             return operation;
         }
     }
+
     internal class WebPlayModePreDownloadContentOperation : PreDownloadContentOperation
     {
         private readonly WebPlayModeImpl _impl;
@@ -297,10 +323,12 @@ namespace YooAsset
         {
             _impl = impl;
         }
+
         public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
+
         public override void InternalOnUpdate()
         {
         }
@@ -309,18 +337,22 @@ namespace YooAsset
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string tag, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateResourceDownloader(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string location, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);
         }
+
         public override ResourceDownloaderOperation CreateBundleDownloader(string[] locations, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
             return ResourceDownloaderOperation.CreateEmptyDownloader(_impl.PackageName, downloadingMaxNumber, failedTryAgain, timeout);

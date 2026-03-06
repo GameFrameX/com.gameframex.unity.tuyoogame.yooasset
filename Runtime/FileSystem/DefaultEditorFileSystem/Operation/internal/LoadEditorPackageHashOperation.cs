@@ -26,18 +26,22 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadHash;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadHash)
             {
-                string hashFilePath = _fileSystem.GetEditorPackageHashFilePath(_packageVersion);
+                var hashFilePath = _fileSystem.GetEditorPackageHashFilePath(_packageVersion);
                 if (File.Exists(hashFilePath))
                 {
                     _steps = ESteps.Done;

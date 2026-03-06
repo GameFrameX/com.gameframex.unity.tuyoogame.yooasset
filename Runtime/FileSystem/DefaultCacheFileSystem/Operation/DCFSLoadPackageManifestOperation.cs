@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using UnityEngine;
 
 namespace YooAsset
 {
@@ -17,6 +18,7 @@ namespace YooAsset
         private readonly DefaultCacheFileSystem _fileSystem;
         private readonly string _packageVersion;
         private readonly int _timeout;
+        private readonly bool _isRemote;
         private DownloadPackageHashOperation _downloadPackageHashOp;
         private DownloadPackageManifestOperation _downloadPackageManifestOp;
         private LoadCachePackageHashOperation _loadCachePackageHashOp;
@@ -24,20 +26,25 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
-        internal DCFSLoadPackageManifestOperation(DefaultCacheFileSystem fileSystem, string packageVersion, int timeout)
+        internal DCFSLoadPackageManifestOperation(DefaultCacheFileSystem fileSystem, string packageVersion, bool isRemote, int timeout)
         {
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
+            _isRemote = isRemote;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
-            _steps = ESteps.DownloadPackageHash;
+            _steps = _isRemote ? ESteps.DownloadPackageHash : ESteps.LoadCachePackageHash;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.DownloadPackageHash)
             {
@@ -48,7 +55,9 @@ namespace YooAsset
                 }
 
                 if (_downloadPackageHashOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_downloadPackageHashOp.Status == EOperationStatus.Succeed)
                 {
@@ -71,7 +80,9 @@ namespace YooAsset
                 }
 
                 if (_downloadPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_downloadPackageManifestOp.Status == EOperationStatus.Succeed)
                 {
@@ -94,7 +105,9 @@ namespace YooAsset
                 }
 
                 if (_loadCachePackageHashOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadCachePackageHashOp.Status == EOperationStatus.Succeed)
                 {
@@ -113,20 +126,23 @@ namespace YooAsset
             {
                 if (_loadCachePackageManifestOp == null)
                 {
-                    string packageHash = _loadCachePackageHashOp.PackageHash;
+                    var packageHash = _loadCachePackageHashOp.PackageHash;
                     _loadCachePackageManifestOp = new LoadCachePackageManifestOperation(_fileSystem, _packageVersion, packageHash);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _loadCachePackageManifestOp);
                 }
 
                 Progress = _loadCachePackageManifestOp.Progress;
                 if (_loadCachePackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadCachePackageManifestOp.Status == EOperationStatus.Succeed)
                 {
                     _steps = ESteps.Done;
                     Manifest = _loadCachePackageManifestOp.Manifest;
                     Status = EOperationStatus.Succeed;
+                    Debug.Log($"DCFSLoadPackageManifestOperation 加载本地资源清单成功：{Manifest.PackageName} {Manifest.PackageVersion}");
                 }
                 else
                 {
@@ -141,14 +157,14 @@ namespace YooAsset
         private void ClearCacheFatalFile()
         {
             // 注意：如果加载沙盒内的清单报错，为了避免流程被卡住，主动把损坏的文件删除。
-            string manifestFilePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
+            var manifestFilePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
             if (File.Exists(manifestFilePath))
             {
                 YooLogger.Warning($"Invalid cache manifest file have been removed : {manifestFilePath}");
                 File.Delete(manifestFilePath);
             }
 
-            string hashFilePath = _fileSystem.GetCachePackageHashFilePath(_packageVersion);
+            var hashFilePath = _fileSystem.GetCachePackageHashFilePath(_packageVersion);
             if (File.Exists(hashFilePath))
             {
                 File.Delete(hashFilePath);

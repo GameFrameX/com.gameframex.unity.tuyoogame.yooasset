@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 文件校验结果

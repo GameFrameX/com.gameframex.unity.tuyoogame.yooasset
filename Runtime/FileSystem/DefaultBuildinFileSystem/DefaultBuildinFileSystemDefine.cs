@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DefaultBuildinFileSystemDefine
     {

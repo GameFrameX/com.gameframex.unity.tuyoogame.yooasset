@@ -2,7 +2,7 @@
 
 namespace YooAsset
 {
-    public abstract class FSLoadBundleOperation : AsyncOperationBase
+    internal abstract class FSLoadBundleOperation : AsyncOperationBase
     {
         /// <summary>
         /// 加载结果

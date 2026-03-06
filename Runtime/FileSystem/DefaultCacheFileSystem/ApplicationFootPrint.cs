@@ -22,7 +22,7 @@ namespace YooAsset
         /// </summary>
         public void Load(string packageName)
         {
-            string footPrintFilePath = _fileSystem.GetSandboxAppFootPrintFilePath();
+            var footPrintFilePath = _fileSystem.GetSandboxAppFootPrintFilePath();
             if (File.Exists(footPrintFilePath))
             {
                 _footPrint = FileUtility.ReadAllText(footPrintFilePath);
@@ -55,9 +55,9 @@ namespace YooAsset
 #else
 			_footPrint = Application.buildGUID;
 #endif
-            string footPrintFilePath = _fileSystem.GetSandboxAppFootPrintFilePath();
+            var footPrintFilePath = _fileSystem.GetSandboxAppFootPrintFilePath();
             FileUtility.WriteAllText(footPrintFilePath, _footPrint);
-            YooLogger.Log($"Save application foot print : {_footPrint}");
+            YooLogger.Warning($"Save application foot print : {_footPrint}");
         }
     }
 }

@@ -8,7 +8,6 @@ namespace YooAsset
     /// <summary>
     /// Web文件系统
     /// </summary>
-    [UnityEngine.Scripting.Preserve]
     internal class DefaultWebFileSystem : IFileSystem
     {
         public class FileWrapper
@@ -21,8 +20,8 @@ namespace YooAsset
             }
         }
 
-        protected readonly Dictionary<string, FileWrapper> _wrappers = new Dictionary<string, FileWrapper>(10000);
-        protected readonly Dictionary<string, string> _webFilePaths = new Dictionary<string, string>(10000);
+        protected readonly Dictionary<string, FileWrapper> _wrappers = new(10000);
+        protected readonly Dictionary<string, string> _webFilePaths = new(10000);
         protected string _webPackageRoot = string.Empty;
 
         /// <summary>
@@ -55,12 +54,11 @@ namespace YooAsset
 
         #endregion
 
-        [UnityEngine.Scripting.Preserve]
+
         public DefaultWebFileSystem()
         {
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DWFSInitializeOperation(this);
@@ -68,23 +66,34 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
-        public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
-        {
-            var operation = new DWFSLoadPackageManifestOperation(this, timeout);
-            OperationSystem.StartOperation(PackageName, operation);
-            return operation;
-        }
-
-        [UnityEngine.Scripting.Preserve]
-        public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
+        public virtual FSRequestPackageVersionOperation LoadLocalPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DWFSRequestPackageVersionOperation(this, timeout);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
+        public virtual FSLoadPackageManifestOperation LoadLocalPackageManifestAsync(string packageVersion, int timeout)
+        {
+            var operation = new DWFSLoadPackageManifestOperation(this, timeout);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
+        public virtual FSLoadPackageManifestOperation RequestRemotePackageManifestAsync(string packageVersion, int timeout)
+        {
+            var operation = new DWFSLoadPackageManifestOperation(this, timeout);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
+        public virtual FSRequestPackageVersionOperation RequestRemotePackageVersionAsync(bool appendTimeTicks, int timeout)
+        {
+            var operation = new DWFSRequestPackageVersionOperation(this, timeout);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new FSClearAllBundleFilesCompleteOperation();
@@ -92,7 +101,6 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new FSClearUnusedBundleFilesCompleteOperation();
@@ -100,13 +108,11 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             var operation = new DWFSLoadAssetBundleOperation(this, bundle);
@@ -114,18 +120,20 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
-            AssetBundle assetBundle = result as AssetBundle;
+            var assetBundle = result as AssetBundle;
             if (assetBundle == null)
+            {
                 return;
+            }
 
             if (assetBundle != null)
+            {
                 assetBundle.Unload(true);
+            }
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void SetParameter(string name, object value)
         {
             if (name == FileSystemParametersDefine.DISABLE_UNITY_WEB_CACHE)
@@ -138,75 +146,68 @@ namespace YooAsset
             }
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
 
             if (string.IsNullOrEmpty(rootDirectory))
+            {
                 rootDirectory = GetDefaultWebRoot();
+            }
 
             _webPackageRoot = PathUtility.Combine(rootDirectory, packageName);
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void OnUpdate()
         {
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool Belong(PackageBundle bundle)
         {
             return true;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool Exists(PackageBundle bundle)
         {
             return true;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual byte[] ReadFileData(PackageBundle bundle)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual string ReadFileText(PackageBundle bundle)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #region 内部方法
 
         protected string GetDefaultWebRoot()
         {
-            string path = PathUtility.Combine(UnityEngine.Application.streamingAssetsPath, YooAssetSettingsData.Setting.DefaultYooFolderName);
+            var path = PathUtility.Combine(Application.streamingAssetsPath, YooAssetSettingsData.Setting.DefaultYooFolderName);
             return path;
         }
 
         public string GetWebFileLoadPath(PackageBundle bundle)
         {
-            if (_webFilePaths.TryGetValue(bundle.BundleGUID, out string filePath) == false)
+            if (_webFilePaths.TryGetValue(bundle.BundleGUID, out var filePath) == false)
             {
                 filePath = PathUtility.Combine(_webPackageRoot, bundle.FileName);
                 _webFilePaths.Add(bundle.BundleGUID, filePath);
@@ -217,31 +218,33 @@ namespace YooAsset
 
         public string GetCatalogFileLoadPath()
         {
-            string fileName = Path.GetFileNameWithoutExtension(DefaultBuildinFileSystemDefine.BuildinCatalogFileName);
+            var fileName = Path.GetFileNameWithoutExtension(DefaultBuildinFileSystemDefine.BuildinCatalogFileName);
             return PathUtility.Combine(YooAssetSettingsData.Setting.DefaultYooFolderName, PackageName, fileName);
         }
 
         public string GetWebPackageVersionFilePath()
         {
-            string fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
+            var fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
+            Debug.LogError(FileRoot + "    " + fileName);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         public string GetWebPackageHashFilePath(string packageVersion)
         {
-            string fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
+            Debug.LogError("packageVersion   " + packageVersion);
+            var fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         public string GetWebPackageManifestFilePath(string packageVersion)
         {
-            string fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
+            var fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         public string GetStreamingAssetsPackageRoot()
         {
-            string rootPath = PathUtility.Combine(Application.dataPath, "StreamingAssets", YooAssetSettingsData.Setting.DefaultYooFolderName);
+            var rootPath = PathUtility.Combine(Application.dataPath, "StreamingAssets", YooAssetSettingsData.Setting.DefaultYooFolderName);
             return PathUtility.Combine(rootPath, PackageName);
         }
 

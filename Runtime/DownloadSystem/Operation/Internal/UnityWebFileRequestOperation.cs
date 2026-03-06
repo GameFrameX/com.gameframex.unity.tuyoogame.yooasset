@@ -12,14 +12,18 @@ namespace YooAsset
         {
             _fileSavePath = fileSavePath;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CreateRequest)
             {
@@ -54,6 +58,7 @@ namespace YooAsset
                 DisposeRequest();
             }
         }
+
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
@@ -63,7 +68,7 @@ namespace YooAsset
         private void CreateWebRequest()
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
-            DownloadHandlerFile handler = new DownloadHandlerFile(_fileSavePath);
+            var handler = new DownloadHandlerFile(_fileSavePath);
             handler.removeFileOnAbort = true;
             _webRequest.downloadHandler = handler;
             _webRequest.disposeDownloadHandlerOnDispose = true;

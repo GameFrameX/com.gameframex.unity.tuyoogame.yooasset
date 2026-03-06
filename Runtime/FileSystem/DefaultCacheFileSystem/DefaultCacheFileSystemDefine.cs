@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DefaultCacheFileSystemDefine
     {
@@ -32,5 +31,7 @@ namespace YooAsset
         /// 记录应用程序版本的文件名称
         /// </summary>
         public const string AppFootPrintFileName = "ApplicationFootPrint.bytes";
+
+        public static string PackageVersion = "";
     }
 }

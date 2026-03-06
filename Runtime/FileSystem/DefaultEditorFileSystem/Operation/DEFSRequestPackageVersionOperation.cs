@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DEFSRequestPackageVersionOperation : FSRequestPackageVersionOperation
     {
@@ -19,14 +18,18 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadPackageVersion)
             {
@@ -37,7 +40,9 @@ namespace YooAsset
                 }
 
                 if (_loadEditorPackageVersionOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadEditorPackageVersionOp.Status == EOperationStatus.Succeed)
                 {

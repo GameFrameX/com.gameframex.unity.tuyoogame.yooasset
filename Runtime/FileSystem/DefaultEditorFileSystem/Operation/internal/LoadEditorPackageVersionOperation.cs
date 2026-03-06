@@ -24,18 +24,22 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadVersion)
             {
-                string versionFilePath = _fileSystem.GetEditorPackageVersionFilePath();
+                var versionFilePath = _fileSystem.GetEditorPackageVersionFilePath();
                 if (File.Exists(versionFilePath))
                 {
                     _steps = ESteps.Done;

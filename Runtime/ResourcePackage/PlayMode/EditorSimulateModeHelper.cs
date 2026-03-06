@@ -13,7 +13,9 @@ namespace YooAsset
         public static SimulateBuildResult SimulateBuild(string buildPipelineName, string packageName)
         {
             if (_classType == null)
+            {
                 _classType = Assembly.Load("YooAsset.Editor").GetType("YooAsset.Editor.AssetBundleSimulateBuilder");
+            }
 
             return (SimulateBuildResult)InvokePublicStaticMethod(_classType, "SimulateBuild", buildPipelineName, packageName);
         }
@@ -34,6 +36,7 @@ namespace YooAsset
                 UnityEngine.Debug.LogError($"{type.FullName} not found method : {method}");
                 return null;
             }
+
             return methodInfo.Invoke(null, parameters);
         }
     }

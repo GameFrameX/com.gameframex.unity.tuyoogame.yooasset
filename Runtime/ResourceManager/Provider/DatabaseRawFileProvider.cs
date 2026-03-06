@@ -1,28 +1,31 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DatabaseRawFileProvider : ProviderOperation
     {
         public DatabaseRawFileProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
+
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
+
         public override void InternalOnUpdate()
         {
 #if UNITY_EDITOR
             if (IsDone)
+            {
                 return;
+            }
 
             if (_steps == ESteps.None)
             {
                 // 检测资源文件是否存在
-                string guid = UnityEditor.AssetDatabase.AssetPathToGUID(MainAssetInfo.AssetPath);
+                var guid = UnityEditor.AssetDatabase.AssetPathToGUID(MainAssetInfo.AssetPath);
                 if (string.IsNullOrEmpty(guid))
                 {
-                    string error = $"Not found asset : {MainAssetInfo.AssetPath}";
+                    var error = $"Not found asset : {MainAssetInfo.AssetPath}";
                     YooLogger.Error(error);
                     InvokeCompletion(error, EOperationStatus.Failed);
                     return;
@@ -32,14 +35,18 @@ namespace YooAsset
 
                 // 注意：模拟异步加载效果提前返回
                 if (IsWaitForAsyncComplete == false)
+                {
                     return;
+                }
             }
 
             // 1. 检测资源包
             if (_steps == ESteps.CheckBundle)
             {
                 if (LoadBundleFileOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (LoadBundleFileOp.Status != EOperationStatus.Succeed)
                 {

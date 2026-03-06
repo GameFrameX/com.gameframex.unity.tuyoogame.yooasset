@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     public class DestroyOperation : AsyncOperationBase
     {
@@ -25,18 +24,25 @@ namespace YooAsset
         {
             _steps = ESteps.UnloadAllAssets;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.UnloadAllAssets)
             {
                 if (_unloadAllAssetsOp == null)
+                {
                     _unloadAllAssetsOp = _resourcePackage.UnloadAllAssetsAsync();
+                }
 
                 if (_unloadAllAssetsOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_unloadAllAssetsOp.Status == EOperationStatus.Succeed)
                 {

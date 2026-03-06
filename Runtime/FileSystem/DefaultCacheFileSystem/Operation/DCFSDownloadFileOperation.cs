@@ -15,15 +15,19 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             // 检测文件是否存在
             if (_steps == ESteps.CheckExists)
@@ -46,7 +50,9 @@ namespace YooAsset
 
                 // 删除临时文件
                 if (File.Exists(_tempFilePath))
+                {
                     File.Delete(_tempFilePath);
+                }
 
                 // 获取请求地址
                 _requestURL = GetRequestURL();
@@ -74,9 +80,13 @@ namespace YooAsset
 
                 // 检查网络错误
                 if (CheckRequestResult())
+                {
                     _steps = ESteps.VerifyTempFile;
+                }
                 else
+                {
                     _steps = ESteps.TryAgain;
+                }
 
                 // 注意：最终释放请求器
                 DisposeWebRequest();
@@ -95,7 +105,9 @@ namespace YooAsset
             if (_steps == ESteps.CheckVerifyTempFile)
             {
                 if (_verifyOperation.IsDone == false)
+                {
                     return;
+                }
 
                 if (_verifyOperation.Status == EOperationStatus.Succeed)
                 {
@@ -120,7 +132,9 @@ namespace YooAsset
 
                 // 注意：验证完成后直接删除文件
                 if (File.Exists(_tempFilePath))
+                {
                     File.Delete(_tempFilePath);
+                }
             }
 
             // 重新尝试下载
@@ -143,26 +157,32 @@ namespace YooAsset
                 }
             }
         }
+
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
+
         public override void InternalWaitForAsyncComplete()
         {
-            bool isReuqestLocalFile = IsRequestLocalFile();
+            var isReuqestLocalFile = IsRequestLocalFile();
 
             while (true)
             {
                 if (_verifyOperation != null)
+                {
                     _verifyOperation.WaitForAsyncComplete();
+                }
 
                 // 注意：如果是导入或解压本地文件，执行等待完毕
                 if (isReuqestLocalFile)
                 {
                     InternalOnUpdate();
                     if (IsDone)
+                    {
                         break;
+                    }
                 }
                 else
                 {
@@ -178,12 +198,13 @@ namespace YooAsset
         private void CreateWebRequest()
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
-            DownloadHandlerFile handler = new DownloadHandlerFile(_tempFilePath);
+            var handler = new DownloadHandlerFile(_tempFilePath);
             handler.removeFileOnAbort = true;
             _webRequest.downloadHandler = handler;
             _webRequest.disposeDownloadHandlerOnDispose = true;
             _webRequest.SendWebRequest();
         }
+
         private void DisposeWebRequest()
         {
             if (_webRequest != null)
@@ -209,15 +230,19 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             // 检测文件是否存在
             if (_steps == ESteps.CheckExists)
@@ -249,7 +274,7 @@ namespace YooAsset
                 long fileBeginLength = -1;
                 if (File.Exists(_tempFilePath))
                 {
-                    FileInfo fileInfo = new FileInfo(_tempFilePath);
+                    var fileInfo = new FileInfo(_tempFilePath);
                     if (fileInfo.Length >= Bundle.FileSize)
                     {
                         // 删除临时文件
@@ -282,9 +307,13 @@ namespace YooAsset
 
                 // 检查网络错误
                 if (CheckRequestResult())
+                {
                     _steps = ESteps.VerifyTempFile;
+                }
                 else
+                {
                     _steps = ESteps.TryAgain;
+                }
 
                 // 在遇到特殊错误的时候删除文件
                 ClearTempFileWhenError();
@@ -306,7 +335,9 @@ namespace YooAsset
             if (_steps == ESteps.CheckVerifyTempFile)
             {
                 if (_verifyOperation.IsDone == false)
+                {
                     return;
+                }
 
                 if (_verifyOperation.Status == EOperationStatus.Succeed)
                 {
@@ -330,7 +361,9 @@ namespace YooAsset
 
                 // 注意：验证完成后直接删除文件
                 if (File.Exists(_tempFilePath))
+                {
                     File.Delete(_tempFilePath);
+                }
             }
 
             // 重新尝试下载
@@ -353,26 +386,32 @@ namespace YooAsset
                 }
             }
         }
+
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
+
         public override void InternalWaitForAsyncComplete()
         {
-            bool isReuqestLocalFile = IsRequestLocalFile();
+            var isReuqestLocalFile = IsRequestLocalFile();
 
             while (true)
             {
                 if (_verifyOperation != null)
+                {
                     _verifyOperation.WaitForAsyncComplete();
+                }
 
                 // 注意：如果是导入或解压本地文件，执行等待完毕
                 if (isReuqestLocalFile)
                 {
                     InternalOnUpdate();
                     if (IsDone)
+                    {
                         break;
+                    }
                 }
                 else
                 {
@@ -398,9 +437,13 @@ namespace YooAsset
             _webRequest.downloadHandler = handler;
             _webRequest.disposeDownloadHandlerOnDispose = true;
             if (beginLength > 0)
+            {
                 _webRequest.SetRequestHeader("Range", $"bytes={beginLength}-");
+            }
+
             _webRequest.SendWebRequest();
         }
+
         private void DisposeWebRequest()
         {
             if (_downloadHandle != null)
@@ -416,16 +459,21 @@ namespace YooAsset
                 _webRequest = null;
             }
         }
+
         private void ClearTempFileWhenError()
         {
             if (_fileSystem.ResumeDownloadResponseCodes == null)
+            {
                 return;
+            }
 
             //说明：如果遇到以下错误返回码，验证失败直接删除文件
             if (_fileSystem.ResumeDownloadResponseCodes.Contains(HttpCode))
             {
                 if (File.Exists(_tempFilePath))
+                {
                     File.Delete(_tempFilePath);
+                }
             }
         }
     }

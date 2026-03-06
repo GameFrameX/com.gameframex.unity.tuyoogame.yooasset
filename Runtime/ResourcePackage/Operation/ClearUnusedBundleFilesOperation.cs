@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 清理未使用的文件
@@ -7,6 +6,7 @@ namespace YooAsset
     public abstract class ClearUnusedBundleFilesOperation : AsyncOperationBase
     {
     }
+
     internal sealed class ClearUnusedBundleFilesImplOperation : ClearUnusedBundleFilesOperation
     {
         private enum ESteps
@@ -34,14 +34,18 @@ namespace YooAsset
             _fileSystemB = fileSystemB;
             _fileSystemC = fileSystemC;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.ClearFileSystemA;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.ClearFileSystemA)
             {
@@ -52,11 +56,15 @@ namespace YooAsset
                 }
 
                 if (_clearUnusedBundleFilesOpA == null)
+                {
                     _clearUnusedBundleFilesOpA = _fileSystemA.ClearUnusedBundleFilesAsync(_impl.ActiveManifest);
+                }
 
                 Progress = _clearUnusedBundleFilesOpA.Progress;
                 if (_clearUnusedBundleFilesOpA.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearUnusedBundleFilesOpA.Status == EOperationStatus.Succeed)
                 {
@@ -79,16 +87,19 @@ namespace YooAsset
                 }
 
                 if (_clearUnusedBundleFilesOpB == null)
+                {
                     _clearUnusedBundleFilesOpB = _fileSystemB.ClearUnusedBundleFilesAsync(_impl.ActiveManifest);
+                }
 
                 Progress = _clearUnusedBundleFilesOpB.Progress;
                 if (_clearUnusedBundleFilesOpB.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearUnusedBundleFilesOpB.Status == EOperationStatus.Succeed)
                 {
                     _steps = ESteps.ClearFileSystemC;
-
                 }
                 else
                 {
@@ -108,11 +119,15 @@ namespace YooAsset
                 }
 
                 if (_clearUnusedBundleFilesOpC == null)
+                {
                     _clearUnusedBundleFilesOpC = _fileSystemC.ClearUnusedBundleFilesAsync(_impl.ActiveManifest);
+                }
 
                 Progress = _clearUnusedBundleFilesOpC.Progress;
                 if (_clearUnusedBundleFilesOpC.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearUnusedBundleFilesOpC.Status == EOperationStatus.Succeed)
                 {

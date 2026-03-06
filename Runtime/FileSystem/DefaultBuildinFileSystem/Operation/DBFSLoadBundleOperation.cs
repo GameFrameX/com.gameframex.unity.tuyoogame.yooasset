@@ -28,16 +28,20 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
+
         public override void InternalOnStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadAssetBundle;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadAssetBundle)
             {
@@ -61,7 +65,7 @@ namespace YooAsset
                     }
                     else
                     {
-                        string filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
+                        var filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
                         Result = AssetBundle.LoadFromFile(filePath);
                     }
                 }
@@ -73,7 +77,7 @@ namespace YooAsset
                     }
                     else
                     {
-                        string filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
+                        var filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
                         _createRequest = AssetBundle.LoadFromFileAsync(filePath);
                     }
                 }
@@ -94,7 +98,10 @@ namespace YooAsset
                     else
                     {
                         if (_createRequest.isDone == false)
+                        {
                             return;
+                        }
+
                         Result = _createRequest.assetBundle;
                     }
                 }
@@ -122,6 +129,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             _isWaitForAsyncComplete = true;
@@ -135,6 +143,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void AbortDownloadOperation()
         {
         }
@@ -162,20 +171,24 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
+
         public override void InternalOnStart()
         {
             DownloadProgress = 1f;
             DownloadedBytes = _bundle.FileSize;
             _steps = ESteps.LoadBuildinRawBundle;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadBuildinRawBundle)
             {
-                string filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
+                var filePath = _fileSystem.GetBuildinFileLoadPath(_bundle);
                 if (File.Exists(filePath))
                 {
                     _steps = ESteps.Done;
@@ -191,6 +204,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -202,6 +216,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void AbortDownloadOperation()
         {
         }

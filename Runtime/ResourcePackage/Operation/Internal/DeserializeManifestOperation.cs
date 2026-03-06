@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
-    public class DeserializeManifestOperation : AsyncOperationBase
+    internal class DeserializeManifestOperation : AsyncOperationBase
     {
         private enum ESteps
         {
@@ -32,14 +32,18 @@ namespace YooAsset
         {
             _buffer = new BufferReader(binaryData);
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.DeserializeFileHeader;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             try
             {
@@ -54,7 +58,7 @@ namespace YooAsset
                     }
 
                     // 读取文件标记
-                    uint fileSign = _buffer.ReadUInt32();
+                    var fileSign = _buffer.ReadUInt32();
                     if (fileSign != YooAssetSettings.ManifestFileSign)
                     {
                         _steps = ESteps.Done;
@@ -64,7 +68,7 @@ namespace YooAsset
                     }
 
                     // 读取文件版本
-                    string fileVersion = _buffer.ReadUTF8();
+                    var fileVersion = _buffer.ReadUTF8();
                     if (fileVersion != YooAssetSettings.ManifestFileVersion)
                     {
                         _steps = ESteps.Done;
@@ -86,7 +90,9 @@ namespace YooAsset
 
                     // 检测配置
                     if (Manifest.EnableAddressable && Manifest.LocationToLower)
+                    {
                         throw new System.Exception("Addressable not support location to lower !");
+                    }
 
                     _steps = ESteps.PrepareAssetList;
                 }
@@ -98,18 +104,27 @@ namespace YooAsset
                     Manifest.AssetDic = new Dictionary<string, PackageAsset>(_packageAssetCount);
 
                     if (Manifest.EnableAddressable)
+                    {
                         Manifest.AssetPathMapping1 = new Dictionary<string, string>(_packageAssetCount * 3);
+                    }
                     else
+                    {
                         Manifest.AssetPathMapping1 = new Dictionary<string, string>(_packageAssetCount * 2);
+                    }
 
                     if (Manifest.IncludeAssetGUID)
+                    {
                         Manifest.AssetPathMapping2 = new Dictionary<string, string>(_packageAssetCount);
+                    }
                     else
+                    {
                         Manifest.AssetPathMapping2 = new Dictionary<string, string>();
+                    }
 
                     _progressTotalValue = _packageAssetCount;
                     _steps = ESteps.DeserializeAssetList;
                 }
+
                 if (_steps == ESteps.DeserializeAssetList)
                 {
                     while (_packageAssetCount > 0)
@@ -123,43 +138,61 @@ namespace YooAsset
                         Manifest.AssetList.Add(packageAsset);
 
                         // 注意：我们不允许原始路径存在重名
-                        string assetPath = packageAsset.AssetPath;
+                        var assetPath = packageAsset.AssetPath;
                         if (Manifest.AssetDic.ContainsKey(assetPath))
+                        {
                             throw new System.Exception($"AssetPath have existed : {assetPath}");
+                        }
                         else
+                        {
                             Manifest.AssetDic.Add(assetPath, packageAsset);
+                        }
 
                         // 填充AssetPathMapping1
                         {
-                            string location = packageAsset.AssetPath;
+                            var location = packageAsset.AssetPath;
                             if (Manifest.LocationToLower)
+                            {
                                 location = location.ToLower();
+                            }
 
                             // 添加原生路径的映射
                             if (Manifest.AssetPathMapping1.ContainsKey(location))
+                            {
                                 throw new System.Exception($"Location have existed : {location}");
+                            }
                             else
+                            {
                                 Manifest.AssetPathMapping1.Add(location, packageAsset.AssetPath);
+                            }
 
                             // 添加无后缀名路径的映射
-                            string locationWithoutExtension = Path.ChangeExtension(location, null);
+                            var locationWithoutExtension = Path.ChangeExtension(location, null);
                             if (ReferenceEquals(location, locationWithoutExtension) == false)
                             {
                                 if (Manifest.AssetPathMapping1.ContainsKey(locationWithoutExtension))
+                                {
                                     YooLogger.Warning($"Location have existed : {locationWithoutExtension}");
+                                }
                                 else
+                                {
                                     Manifest.AssetPathMapping1.Add(locationWithoutExtension, packageAsset.AssetPath);
+                                }
                             }
                         }
                         if (Manifest.EnableAddressable)
                         {
-                            string location = packageAsset.Address;
+                            var location = packageAsset.Address;
                             if (string.IsNullOrEmpty(location) == false)
                             {
                                 if (Manifest.AssetPathMapping1.ContainsKey(location))
+                                {
                                     throw new System.Exception($"Location have existed : {location}");
+                                }
                                 else
+                                {
                                     Manifest.AssetPathMapping1.Add(location, packageAsset.AssetPath);
+                                }
                             }
                         }
 
@@ -167,15 +200,21 @@ namespace YooAsset
                         if (Manifest.IncludeAssetGUID)
                         {
                             if (Manifest.AssetPathMapping2.ContainsKey(packageAsset.AssetGUID))
+                            {
                                 throw new System.Exception($"AssetGUID have existed : {packageAsset.AssetGUID}");
+                            }
                             else
+                            {
                                 Manifest.AssetPathMapping2.Add(packageAsset.AssetGUID, packageAsset.AssetPath);
+                            }
                         }
 
                         _packageAssetCount--;
                         Progress = 1f - _packageAssetCount / _progressTotalValue;
                         if (OperationSystem.IsBusy)
+                        {
                             break;
+                        }
                     }
 
                     if (_packageAssetCount <= 0)
@@ -194,6 +233,7 @@ namespace YooAsset
                     _progressTotalValue = _packageBundleCount;
                     _steps = ESteps.DeserializeBundleList;
                 }
+
                 if (_steps == ESteps.DeserializeBundleList)
                 {
                     while (_packageBundleCount > 0)
@@ -214,12 +254,16 @@ namespace YooAsset
 
                         // 注意：原始文件可能存在相同的BundleGUID
                         if (Manifest.BundleDic3.ContainsKey(packageBundle.BundleGUID) == false)
+                        {
                             Manifest.BundleDic3.Add(packageBundle.BundleGUID, packageBundle);
+                        }
 
                         _packageBundleCount--;
                         Progress = 1f - _packageBundleCount / _progressTotalValue;
                         if (OperationSystem.IsBusy)
+                        {
                             break;
+                        }
                     }
 
                     if (_packageBundleCount <= 0)

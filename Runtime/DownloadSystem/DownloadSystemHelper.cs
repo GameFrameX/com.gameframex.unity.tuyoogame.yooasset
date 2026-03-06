@@ -10,13 +10,19 @@ namespace YooAsset
     public class DownloadSystemHelper
     {
         public static UnityWebRequestDelegate UnityWebRequestCreater = null;
+
         public static UnityWebRequest NewUnityWebRequestGet(string requestURL)
         {
             UnityWebRequest webRequest;
             if (UnityWebRequestCreater != null)
+            {
                 webRequest = UnityWebRequestCreater.Invoke(requestURL);
+            }
             else
+            {
                 webRequest = new UnityWebRequest(requestURL, UnityWebRequest.kHttpVerbGET);
+            }
+
             return webRequest;
         }
 
@@ -43,7 +49,7 @@ namespace YooAsset
 #elif UNITY_OPENHARMONY
             return StringUtility.Format("file://{0}", path);
 #else
-            throw new System.NotImplementedException(); 
+            throw new System.NotImplementedException();
 #endif
         }
     }

@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
 internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
@@ -18,21 +18,25 @@ internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     private LoadByteGamePackageManifestOperation _loadRemotePackageManifestOp;
     private ESteps _steps = ESteps.None;
 
-    
+
     public BGFSLoadPackageManifestOperation(ByteGameFileSystem fileSystem, string packageVersion, int timeout)
     {
         _fileSystem = fileSystem;
         _packageVersion = packageVersion;
         _timeout = timeout;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         _steps = ESteps.RequestRemotePackageHash;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
+        {
             return;
+        }
 
         if (_steps == ESteps.RequestRemotePackageHash)
         {
@@ -43,7 +47,9 @@ internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
             }
 
             if (_requestRemotePackageHashOp.IsDone == false)
+            {
                 return;
+            }
 
             if (_requestRemotePackageHashOp.Status == EOperationStatus.Succeed)
             {
@@ -61,14 +67,16 @@ internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
         {
             if (_loadRemotePackageManifestOp == null)
             {
-                string packageHash = _requestRemotePackageHashOp.PackageHash;
+                var packageHash = _requestRemotePackageHashOp.PackageHash;
                 _loadRemotePackageManifestOp = new LoadByteGamePackageManifestOperation(_fileSystem, _packageVersion, packageHash, _timeout);
                 OperationSystem.StartOperation(_fileSystem.PackageName, _loadRemotePackageManifestOp);
             }
 
             Progress = _loadRemotePackageManifestOp.Progress;
             if (_loadRemotePackageManifestOp.IsDone == false)
+            {
                 return;
+            }
 
             if (_loadRemotePackageManifestOp.Status == EOperationStatus.Succeed)
             {

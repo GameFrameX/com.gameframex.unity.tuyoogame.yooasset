@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 清理所有文件
@@ -7,6 +6,7 @@ namespace YooAsset
     public abstract class ClearAllBundleFilesOperation : AsyncOperationBase
     {
     }
+
     internal sealed class ClearAllBundleFilesImplOperation : ClearAllBundleFilesOperation
     {
         private enum ESteps
@@ -34,14 +34,18 @@ namespace YooAsset
             _fileSystemB = fileSystemB;
             _fileSystemC = fileSystemC;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.ClearFileSystemA;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.ClearFileSystemA)
             {
@@ -52,11 +56,15 @@ namespace YooAsset
                 }
 
                 if (_clearAllBundleFilesOpA == null)
+                {
                     _clearAllBundleFilesOpA = _fileSystemA.ClearAllBundleFilesAsync();
+                }
 
                 Progress = _clearAllBundleFilesOpA.Progress;
                 if (_clearAllBundleFilesOpA.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearAllBundleFilesOpA.Status == EOperationStatus.Succeed)
                 {
@@ -79,11 +87,15 @@ namespace YooAsset
                 }
 
                 if (_clearAllBundleFilesOpB == null)
+                {
                     _clearAllBundleFilesOpB = _fileSystemB.ClearAllBundleFilesAsync();
+                }
 
                 Progress = _clearAllBundleFilesOpB.Progress;
                 if (_clearAllBundleFilesOpB.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearAllBundleFilesOpB.Status == EOperationStatus.Succeed)
                 {
@@ -107,11 +119,15 @@ namespace YooAsset
                 }
 
                 if (_clearAllBundleFilesOpC == null)
+                {
                     _clearAllBundleFilesOpC = _fileSystemC.ClearAllBundleFilesAsync();
+                }
 
                 Progress = _clearAllBundleFilesOpC.Progress;
                 if (_clearAllBundleFilesOpC.IsDone == false)
+                {
                     return;
+                }
 
                 if (_clearAllBundleFilesOpC.Status == EOperationStatus.Succeed)
                 {

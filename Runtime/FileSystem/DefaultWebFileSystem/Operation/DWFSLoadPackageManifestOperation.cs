@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DWFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
@@ -25,14 +24,18 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestWebPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestWebPackageVersion)
             {
@@ -43,7 +46,9 @@ namespace YooAsset
                 }
 
                 if (_requestWebPackageVersionOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestWebPackageVersionOp.Status == EOperationStatus.Succeed)
                 {
@@ -61,13 +66,15 @@ namespace YooAsset
             {
                 if (_requestWebPackageHashOp == null)
                 {
-                    string packageVersion = _requestWebPackageVersionOp.PackageVersion;
+                    var packageVersion = _requestWebPackageVersionOp.PackageVersion;
                     _requestWebPackageHashOp = new RequestWebPackageHashOperation(_fileSystem, packageVersion, _timeout);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _requestWebPackageHashOp);
                 }
 
                 if (_requestWebPackageHashOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestWebPackageHashOp.Status == EOperationStatus.Succeed)
                 {
@@ -85,15 +92,17 @@ namespace YooAsset
             {
                 if (_loadWebPackageManifestOp == null)
                 {
-                    string packageVersion = _requestWebPackageVersionOp.PackageVersion;
-                    string packageHash = _requestWebPackageHashOp.PackageHash;
+                    var packageVersion = _requestWebPackageVersionOp.PackageVersion;
+                    var packageHash = _requestWebPackageHashOp.PackageHash;
                     _loadWebPackageManifestOp = new LoadWebPackageManifestOperation(_fileSystem, packageVersion, packageHash);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _loadWebPackageManifestOp);
                 }
 
                 Progress = _loadWebPackageManifestOp.Progress;
                 if (_loadWebPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadWebPackageManifestOp.Status == EOperationStatus.Succeed)
                 {

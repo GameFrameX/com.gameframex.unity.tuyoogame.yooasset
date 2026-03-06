@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YooAsset
 {
     [Serializable]
-    internal class DebugProviderInfo : IComparer<DebugProviderInfo>, IComparable<DebugProviderInfo>
+    public class DebugProviderInfo : IComparer<DebugProviderInfo>, IComparable<DebugProviderInfo>
     {
         /// <summary>
         /// 包裹名
@@ -51,6 +51,7 @@ namespace YooAsset
         {
             return Compare(this, other);
         }
+
         public int Compare(DebugProviderInfo a, DebugProviderInfo b)
         {
             return string.CompareOrdinal(a.AssetPath, b.AssetPath);

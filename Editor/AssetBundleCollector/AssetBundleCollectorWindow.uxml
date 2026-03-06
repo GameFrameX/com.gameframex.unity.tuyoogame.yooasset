@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <uie:Toolbar name="Toolbar" style="display: flex; flex-direction: row-reverse;">
-        <ui:Button text="保存" display-tooltip-when-elided="true" name="SaveButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
-        <ui:Button text="导出" display-tooltip-when-elided="true" name="ExportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
-        <ui:Button text="导入" display-tooltip-when-elided="true" name="ImportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
-        <ui:Button text="修复" display-tooltip-when-elided="true" name="FixButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Save" display-tooltip-when-elided="true" name="SaveButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Export" display-tooltip-when-elided="true" name="ExportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Import" display-tooltip-when-elided="true" name="ImportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Fix" display-tooltip-when-elided="true" name="FixButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
     </uie:Toolbar>
     <ui:VisualElement name="PublicContainer" style="background-color: rgb(79, 79, 79); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
         <ui:VisualElement name="HelpBoxContainer" style="flex-grow: 1;" />

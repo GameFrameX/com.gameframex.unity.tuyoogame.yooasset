@@ -1,19 +1,20 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    public abstract class FSClearAllBundleFilesOperation : AsyncOperationBase
+    internal abstract class FSClearAllBundleFilesOperation : AsyncOperationBase
     {
     }
 
-    public sealed class FSClearAllBundleFilesCompleteOperation : FSClearAllBundleFilesOperation
+    internal sealed class FSClearAllBundleFilesCompleteOperation : FSClearAllBundleFilesOperation
     {
-        public FSClearAllBundleFilesCompleteOperation()
+        internal FSClearAllBundleFilesCompleteOperation()
         {
         }
+
         public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
+
         public override void InternalOnUpdate()
         {
         }

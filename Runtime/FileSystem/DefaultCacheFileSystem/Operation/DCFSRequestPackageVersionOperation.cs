@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DCFSRequestPackageVersionOperation : FSRequestPackageVersionOperation
     {
@@ -23,14 +22,18 @@ namespace YooAsset
             _appendTimeTicks = appendTimeTicks;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.GetPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.GetPackageVersion)
             {
@@ -42,7 +45,9 @@ namespace YooAsset
 
                 Progress = _requestRemotePackageVersionOp.Progress;
                 if (_requestRemotePackageVersionOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestRemotePackageVersionOp.Status == EOperationStatus.Succeed)
                 {

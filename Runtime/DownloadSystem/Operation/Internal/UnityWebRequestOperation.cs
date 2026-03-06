@@ -57,13 +57,13 @@ namespace YooAsset
             // 注意：在连续时间段内无新增下载数据及判定为超时
             if (_isAbort == false)
             {
-                if ( _latestDownloadBytes != _webRequest.downloadedBytes)
+                if (_latestDownloadBytes != _webRequest.downloadedBytes)
                 {
                     _latestDownloadBytes = _webRequest.downloadedBytes;
                     _latestDownloadRealtime = Time.realtimeSinceStartup;
                 }
 
-                float offset = Time.realtimeSinceStartup - _latestDownloadRealtime;
+                var offset = Time.realtimeSinceStartup - _latestDownloadRealtime;
                 if (offset > _timeout)
                 {
                     _webRequest.Abort();

@@ -16,14 +16,18 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             // 创建下载器
             if (_steps == ESteps.CreateRequest)
@@ -88,6 +92,7 @@ namespace YooAsset
                 }
             }
         }
+
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
@@ -102,6 +107,7 @@ namespace YooAsset
             _webRequest.disposeDownloadHandlerOnDispose = true;
             _webRequest.SendWebRequest();
         }
+
         private void DisposeWebRequest()
         {
             if (_webRequest != null)
@@ -111,6 +117,7 @@ namespace YooAsset
                 _webRequest = null;
             }
         }
+
         private DownloadHandlerAssetBundle CreateDownloadHandler()
         {
             if (_fileSystem.DisableUnityWebCache)
@@ -125,8 +132,8 @@ namespace YooAsset
             {
                 // 注意：优先从浏览器缓存里获取文件
                 // The file hash defining the version of the asset bundle.
-                uint unityCRC = Bundle.UnityCRC;
-                Hash128 fileHash = Hash128.Parse(Bundle.FileHash);
+                var unityCRC = Bundle.UnityCRC;
+                var fileHash = Hash128.Parse(Bundle.FileHash);
                 var downloadhandler = new DownloadHandlerAssetBundle(_requestURL, fileHash, unityCRC);
 #if UNITY_2020_3_OR_NEWER
                 downloadhandler.autoLoadAssetBundle = false;

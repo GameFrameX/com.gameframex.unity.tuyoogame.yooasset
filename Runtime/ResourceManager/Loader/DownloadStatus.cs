@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     public struct DownloadStatus
     {
@@ -25,7 +24,7 @@ namespace YooAsset
 
         public static DownloadStatus CreateDefaultStatus()
         {
-            DownloadStatus status = new DownloadStatus();
+            var status = new DownloadStatus();
             return status;
         }
     }

@@ -33,7 +33,7 @@ namespace YooAsset
             {
                 Directory.Delete(FileRootPath, true);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 YooLogger.Warning($"Failed to delete cache bundle folder : {e}");
             }
@@ -53,7 +53,7 @@ namespace YooAsset
             Done,
         }
 
-        private readonly ThreadSyncContext _syncContext = new ThreadSyncContext();
+        private readonly ThreadSyncContext _syncContext = new();
         private readonly DefaultCacheFileSystem _fileSystem;
         private List<CacheFileElement> _waitingList;
         private List<CacheFileElement> _verifyingList;
@@ -72,27 +72,33 @@ namespace YooAsset
             _waitingList = elements;
             _verifyLevel = _fileSystem.FileVerifyLevel;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.InitVerify;
             _verifyStartTime = UnityEngine.Time.realtimeSinceStartup;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.InitVerify)
             {
-                int fileCount = _waitingList.Count;
+                var fileCount = _waitingList.Count;
 
                 // 设置同时验证的最大数
-                ThreadPool.GetMaxThreads(out int workerThreads, out int ioThreads);
+                ThreadPool.GetMaxThreads(out var workerThreads, out var ioThreads);
                 YooLogger.Log($"Work threads : {workerThreads}, IO threads : {ioThreads}");
                 _verifyMaxNum = Math.Min(workerThreads, ioThreads);
                 _verifyTotalCount = fileCount;
                 if (_verifyMaxNum < 1)
+                {
                     _verifyMaxNum = 1;
+                }
 
                 _verifyingList = new List<CacheFileElement>(_verifyMaxNum);
                 _steps = ESteps.UpdateVerify;
@@ -107,17 +113,21 @@ namespace YooAsset
                 {
                     _steps = ESteps.Done;
                     Status = EOperationStatus.Succeed;
-                    float costTime = UnityEngine.Time.realtimeSinceStartup - _verifyStartTime;
+                    var costTime = UnityEngine.Time.realtimeSinceStartup - _verifyStartTime;
                     YooLogger.Log($"Verify cache files elapsed time {costTime:f1} seconds");
                 }
 
-                for (int i = _waitingList.Count - 1; i >= 0; i--)
+                for (var i = _waitingList.Count - 1; i >= 0; i--)
                 {
                     if (OperationSystem.IsBusy)
+                    {
                         break;
+                    }
 
                     if (_verifyingList.Count >= _verifyMaxNum)
+                    {
                         break;
+                    }
 
                     var element = _waitingList[i];
                     if (BeginVerifyFileWithThread(element))
@@ -137,22 +147,28 @@ namespace YooAsset
         private float GetProgress()
         {
             if (_verifyTotalCount == 0)
+            {
                 return 1f;
+            }
+
             return (float)(_succeedCount + _failedCount) / _verifyTotalCount;
         }
+
         private bool BeginVerifyFileWithThread(CacheFileElement element)
         {
             return ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), element);
         }
+
         private void VerifyInThread(object obj)
         {
-            CacheFileElement element = (CacheFileElement)obj;
+            var element = (CacheFileElement)obj;
             element.Result = VerifyingCacheFile(element, _verifyLevel);
             _syncContext.Post(VerifyCallback, element);
         }
+
         private void VerifyCallback(object obj)
         {
-            CacheFileElement element = (CacheFileElement)obj;
+            var element = (CacheFileElement)obj;
             _verifyingList.Remove(element);
 
             if (element.Result == EFileVerifyResult.Succeed)
@@ -180,15 +196,23 @@ namespace YooAsset
                 if (verifyLevel == EFileVerifyLevel.Low)
                 {
                     if (File.Exists(element.InfoFilePath) == false)
+                    {
                         return EFileVerifyResult.InfoFileNotExisted;
+                    }
+
                     if (File.Exists(element.DataFilePath) == false)
+                    {
                         return EFileVerifyResult.DataFileNotExisted;
+                    }
+
                     return EFileVerifyResult.Succeed;
                 }
                 else
                 {
                     if (File.Exists(element.InfoFilePath) == false)
+                    {
                         return EFileVerifyResult.InfoFileNotExisted;
+                    }
 
                     // 解析信息文件获取验证数据
                     _fileSystem.ReadInfoFile(element.InfoFilePath, out element.DataFileCRC, out element.DataFileSize);

@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DCFSInitializeOperation : FSInitializeFileSystemOperation
     {
@@ -22,14 +21,18 @@ namespace YooAsset
         {
             _fileSytem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckAppFootPrint;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckAppFootPrint)
             {
@@ -39,7 +42,7 @@ namespace YooAsset
                 // 如果水印发生变化，则说明覆盖安装后首次打开游戏
                 if (appFootPrint.IsDirty())
                 {
-                    _fileSytem.DeleteAllManifestFiles();
+                    //_fileSytem.DeleteAllManifestFiles();
                     appFootPrint.Coverage(_fileSytem.PackageName);
                     YooLogger.Warning("Delete manifest files when application foot print dirty !");
                 }
@@ -57,7 +60,9 @@ namespace YooAsset
 
                 Progress = _searchCacheFilesOp.Progress;
                 if (_searchCacheFilesOp.IsDone == false)
+                {
                     return;
+                }
 
                 _steps = ESteps.VerifyCacheFiles;
             }
@@ -72,7 +77,9 @@ namespace YooAsset
 
                 Progress = _verifyCacheFilesOp.Progress;
                 if (_verifyCacheFilesOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_verifyCacheFilesOp.Status == EOperationStatus.Succeed)
                 {

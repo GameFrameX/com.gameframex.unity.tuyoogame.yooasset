@@ -5,39 +5,45 @@ namespace YooAsset
 {
     public sealed class AllAssetsHandle : HandleBase, IDisposable
     {
-        private System.Action<AllAssetsHandle> _callback;
+        private Action<AllAssetsHandle> _callback;
 
         internal AllAssetsHandle(ProviderOperation provider) : base(provider)
         {
         }
+
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
         }
 
-        internal override void InvokeUpdateCallback()
-        {
-            
-        }
-
         /// <summary>
         /// 完成委托
         /// </summary>
-        public event System.Action<AllAssetsHandle> Completed
+        public event Action<AllAssetsHandle> Completed
         {
             add
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(AllAssetsHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(AllAssetsHandle)} is invalid");
+                }
+
                 if (Provider.IsDone)
+                {
                     value.Invoke(this);
+                }
                 else
+                {
                     _callback += value;
+                }
             }
             remove
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(AllAssetsHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(AllAssetsHandle)} is invalid");
+                }
+
                 _callback -= value;
             }
         }
@@ -48,7 +54,10 @@ namespace YooAsset
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
+            {
                 return;
+            }
+
             Provider.WaitForAsyncComplete();
         }
 
@@ -57,7 +66,7 @@ namespace YooAsset
         /// </summary>
         public void Release()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
         /// <summary>
@@ -65,7 +74,7 @@ namespace YooAsset
         /// </summary>
         public void Dispose()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
 
@@ -77,7 +86,10 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return null;
+                }
+
                 return Provider.AllAssetObjects;
             }
         }

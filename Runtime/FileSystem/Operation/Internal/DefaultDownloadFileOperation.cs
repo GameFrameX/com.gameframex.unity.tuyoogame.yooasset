@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 namespace YooAsset
 {
-    public abstract class DefaultDownloadFileOperation : FSDownloadFileOperation
+    internal abstract class DefaultDownloadFileOperation : FSDownloadFileOperation
     {
         protected enum ESteps
         {
@@ -35,7 +35,7 @@ namespace YooAsset
         protected int FailedTryAgain;
 
 
-        public DefaultDownloadFileOperation(PackageBundle bundle, DownloadParam param) : base(bundle)
+        internal DefaultDownloadFileOperation(PackageBundle bundle, DownloadParam param) : base(bundle)
         {
             Param = param;
             FailedTryAgain = param.FailedTryAgain;
@@ -49,9 +49,13 @@ namespace YooAsset
             // 轮流返回请求地址
             _requestCount++;
             if (_requestCount % 2 == 0)
+            {
                 return Param.FallbackURL;
+            }
             else
+            {
                 return Param.MainURL;
+            }
         }
 
         /// <summary>
@@ -68,7 +72,10 @@ namespace YooAsset
 
             // 重置计时器
             if (_tryAgainTimer > 0f)
+            {
                 YooLogger.Warning($"Try again download : {_requestURL}");
+            }
+
             _tryAgainTimer = 0f;
         }
 
@@ -83,15 +90,18 @@ namespace YooAsset
                 if (_latestDownloadBytes != DownloadedBytes)
                 {
                     _latestDownloadBytes = DownloadedBytes;
-                    _latestDownloadRealtime = UnityEngine.Time.realtimeSinceStartup;
+                    _latestDownloadRealtime = Time.realtimeSinceStartup;
                 }
 
-                float offset = UnityEngine.Time.realtimeSinceStartup - _latestDownloadRealtime;
+                var offset = Time.realtimeSinceStartup - _latestDownloadRealtime;
                 if (offset > Param.Timeout)
                 {
                     YooLogger.Warning($"Download request timeout : {_requestURL}");
                     if (_webRequest != null)
+                    {
                         _webRequest.Abort();
+                    }
+
                     _isAbort = true;
                 }
             }
@@ -134,9 +144,14 @@ namespace YooAsset
         {
             //TODO : UNITY_STANDALONE_OSX平台目前无法确定
             if (Param.MainURL.StartsWith("file:"))
+            {
                 return true;
+            }
+
             if (Param.MainURL.StartsWith("jar:file:"))
+            {
                 return true;
+            }
 
             return false;
         }

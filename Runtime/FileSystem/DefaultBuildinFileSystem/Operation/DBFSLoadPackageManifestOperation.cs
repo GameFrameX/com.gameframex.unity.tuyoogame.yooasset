@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DBFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
@@ -23,14 +22,18 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestBuildinPackageHash;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestBuildinPackageHash)
             {
@@ -41,7 +44,9 @@ namespace YooAsset
                 }
 
                 if (_requestBuildinPackageHashOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestBuildinPackageHashOp.Status == EOperationStatus.Succeed)
                 {
@@ -59,13 +64,15 @@ namespace YooAsset
             {
                 if (_loadBuildinPackageManifestOp == null)
                 {
-                    string packageHash = _requestBuildinPackageHashOp.PackageHash;
+                    var packageHash = _requestBuildinPackageHashOp.PackageHash;
                     _loadBuildinPackageManifestOp = new LoadBuildinPackageManifestOperation(_fileSystem, _packageVersion, packageHash);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _loadBuildinPackageManifestOp);
                 }
 
                 if (_loadBuildinPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadBuildinPackageManifestOp.Status == EOperationStatus.Succeed)
                 {

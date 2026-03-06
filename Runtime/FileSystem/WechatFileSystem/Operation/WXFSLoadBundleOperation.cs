@@ -15,11 +15,13 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
     private readonly PackageBundle _bundle;
     private UnityWebRequest _webRequest;
     private ESteps _steps = ESteps.None;
+    private string _packagerVersion;
 
-    internal WXFSLoadBundleOperation(WechatFileSystem fileSystem, PackageBundle bundle)
+    internal WXFSLoadBundleOperation(WechatFileSystem fileSystem, PackageBundle bundle,string packagerVersion)
     {
         _fileSystem = fileSystem;
         _bundle = bundle;
+        _packagerVersion = packagerVersion;
     }
 
     public override void InternalOnStart()
@@ -38,7 +40,7 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         {
             if (_webRequest == null)
             {
-                string mainURL = _fileSystem.RemoteServices.GetRemoteMainURL(_bundle.FileName);
+                string mainURL = _fileSystem.RemoteServices.GetRemoteMainURL(_bundle.FileName, _packagerVersion);
                 _webRequest = UnityWebRequestAssetBundle.GetAssetBundle(mainURL);
                 _webRequest.SendWebRequest();
             }

@@ -1,282 +1,236 @@
-# [2.3.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.5...2.3.0) (2026-03-05)
+# CHANGELOG
 
+All notable changes to this package will be documented in this file.
 
-### Bug Fixes
+## [2.2.4-preview] - 2024-08-15
 
-* **AssetBundleBuilder:** 移除构建输出路径中的冗余目录层级 ([0f9ceb8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/0f9ceb86d464f2a7173411a35fc1096e368cb486))
-* 为文件系统类添加Preserve属性防止代码剥离 ([b05bab5](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/b05bab5a8833c1ab9e9dad1bfca9125bf3b18a9c))
+### Fixed
 
+- 修复了HostPlayMode初始化卡死的问题。
 
-### Features
+## [2.2.3-preview] - 2024-08-13
 
-* **AssetBundleBuilder:** 启用Scriptable和RawFile构建管线选项 ([3363607](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/3363607ce8e8a3d7724b309823a13097cca904c2))
+### Fixed
 
-# Changelog
+- (#311) 修复了断点续传下载器极小概率报错 : “416 Range Not Satisfiable”
 
-## [2.2.5](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.5) (2025-05-31)
+### Improvements
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.4-preview...2.2.5)
+- 原生文件构建管线支持原生文件加密。
 
-## [2.2.4-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.4-preview) (2024-08-15)
+- HostPlayMode模式下内置文件系统初始化参数可以为空。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.3-preview...2.2.4-preview)
+- 场景加载增加了LocalPhysicsMode参数来控制物理运行模式。
 
-## [2.2.3-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.3-preview) (2024-08-13)
+- 默认的内置文件系统和缓存文件系统增加解密方法。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.2-preview...2.2.3-preview)
+  ```csharp
+  /// <summary>
+  /// 创建默认的内置文件系统参数
+  /// </summary>
+  /// <param name="decryptionServices">加密文件解密服务类</param>
+  /// <param name="verifyLevel">缓存文件的校验等级</param>
+  /// <param name="rootDirectory">内置文件的根路径</param>
+  public static FileSystemParameters CreateDefaultBuildinFileSystemParameters(IDecryptionServices decryptionServices, EFileVerifyLevel verifyLevel, string rootDirectory);
+  
+  /// <summary>
+  /// 创建默认的缓存文件系统参数
+  /// </summary>
+  /// <param name="remoteServices">远端资源地址查询服务类</param>
+  /// <param name="decryptionServices">加密文件解密服务类</param>
+  /// <param name="verifyLevel">缓存文件的校验等级</param>
+  /// <param name="rootDirectory">文件系统的根目录</param>
+  public static FileSystemParameters CreateDefaultCacheFileSystemParameters(IRemoteServices remoteServices, IDecryptionServices decryptionServices, EFileVerifyLevel verifyLevel, string rootDirectory);
+  ```
 
-## [2.2.2-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.2-preview) (2024-07-31)
+## [2.2.2-preview] - 2024-07-31
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.1-preview...2.2.2-preview)
+### Fixed
 
-## [2.2.1-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.1-preview) (2024-07-10)
+- (#321) 修复了在Unity2022里编辑器下离线模式运行失败的问题。
+- (#325) 修复了在Unity2019里编译报错问题。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.2.0-preview...2.2.1-preview)
+## [2.2.1-preview] - 2024-07-10
 
-## [2.2.0-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.2.0-preview) (2024-07-07)
+统一了所有PlayMode的初始化逻辑，EditorSimulateMode和OfflinePlayMode初始化不再主动加载资源清单！
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.1.2...2.2.0-preview)
+### Added
 
-## [2.1.2](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.1.2) (2024-05-16)
+- 新增了IFileSystem.ReadFileData方法，支持原生文件自定义获取文本和二进制数据。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.8...2.1.2)
+### Improvements
 
-## [1.5.8](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.8) (2024-05-10)
+- 优化了DefaultWebFileSystem和DefaultBuildFileSystem文件系统的内部初始化逻辑。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.1.1...1.5.8)
+## [2.2.0-preview] - 2024-07-07
 
-## [2.1.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.1.1) (2024-01-17)
+重构了运行时代码，新增了文件系统接口（IFileSystem）方便开发者扩展特殊需求。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.1.0...2.1.1)
+新增微信小游戏文件系统示例代码，详细见Extension Sample/Runtime/WechatFileSystem
 
-## [2.1.0](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.1.0) (2023-12-27)
+### Added
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.0.3-preview...2.1.0)
+- 新增了ResourcePackage.DestroyAsync方法
 
-## [2.0.3-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.0.3-preview) (2023-10-27)
+- 新增了FileSystemParameters类帮助初始化文件系统
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.0.2-preview...2.0.3-preview)
+  内置了编辑器文件系统参数，内置文件系统参数，缓存文件系统参数，Web文件系统参数。
 
-## [2.0.2-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.0.2-preview) (2023-10-17)
+  ```csharp
+  public class FileSystemParameters
+  {
+      /// <summary>
+      /// 文件系统类
+      /// </summary>
+      public string FileSystemClass { private set; get; }
+      
+      /// <summary>
+      /// 文件系统的根目录
+      /// </summary>
+      public string RootDirectory { private set; get; }   
+      
+      /// <summary>
+      /// 添加自定义参数
+      /// </summary>
+      public void AddParameter(string name, object value)    
+  }
+  ```
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.0.1-preview...2.0.2-preview)
+### Changed
 
-## [2.0.1-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.0.1-preview) (2023-10-11)
+- 重构了InitializeParameters初始化参数
+- 重命名YooAssets.DestroyPackage方法为RemovePackage
+- 重命名ResourcePackage.UpdatePackageVersionAsync方法为RequestPackageVersionAsync
+- 重命名ResourcePackage.UnloadUnusedAssets方法为UnloadUnusedAssetsAsync
+- 重命名ResourcePackage.ForceUnloadAllAssets方法为UnloadAllAssetsAsync
+- 重命名ResourcePackage.ClearUnusedCacheFilesAsync方法为ClearUnusedBundleFilesAsync
+- 重命名ResourcePackage.ClearAllCacheFilesAsync方法为ClearAllBundleFilesAsync
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/2.0.0-preview...2.0.1-preview)
+### Removed
 
-## [2.0.0-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/2.0.0-preview) (2023-10-07)
+- 移除了YooAssets.Destroy方法
+- 移除了YooAssets.SetDownloadSystemClearFileResponseCode方法
+- 移除了YooAssets.SetCacheSystemDisableCacheOnWebGL方法
+- 移除了ResourcePackage.GetPackageBuildinRootDirectory方法
+- 移除了ResourcePackage.GetPackageSandboxRootDirectory方法
+- 移除了ResourcePackage.ClearPackageSandbox方法
+- 移除了IBuildinQueryServices接口
+- 移除了IDeliveryLoadServices接口
+- 移除了IDeliveryQueryServices接口
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.7...2.0.0-preview)
 
-## [1.5.7](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.7) (2023-10-07)
+## [2.1.2] - 2024-05-16
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.6-preview...1.5.7)
+SBP库依赖版本升级至2.1.3
 
-## [1.5.6-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.6-preview) (2023-09-26)
+### Fixed
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.5-preview...1.5.6-preview)
+- (#236) 修复了资源配置界面AutoCollectShader复选框没有刷新的问题。
+- (#244) 修复了导入器在安卓平台导入本地下载的资源失败的问题。
+- (#268) 修复了挂起场景未解除状态前无法卸载的问题。
+- (#269) 优化场景挂起流程，支持中途取消挂起操作。
+- (#276) 修复了HostPlayMode模式下，如果内置清单是最新版本，每次运行都会触发拷贝行为。
+- (#289) 修复了Unity2019版本脚本IWebRequester编译报错。
+- (#295) 解决了在安卓移动平台，华为和三星真机上有极小概率加载资源包失败 : Unable to open archive file
 
-## [1.5.5-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.5-preview) (2023-09-25)
+### Added
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.4-preview...1.5.5-preview)
+- 新增GetAllCacheFileInfosOperation()获取缓存文件信息的方法。
 
-## [1.5.4-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.4-preview) (2023-08-25)
+- 新增LoadSceneSync()同步加载场景的方法。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.3-preview...1.5.4-preview)
+- 新增IIgnoreRule接口，资源收集流程可以自定义。
 
-## [1.5.3-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.3-preview) (2023-07-28)
+- 新增IWechatQueryServices接口，用于微信平台本地文件查询。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.2-preview...1.5.3-preview)
+  后续将会通过虚拟文件系统来支持！
 
-## [1.5.2-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.2-preview) (2023-07-18)
+### Changed
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.1...1.5.2-preview)
+- 调整了UnloadSceneOperation代码里场景的卸载顺序。
 
-## [1.5.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.1) (2023-07-12)
+### Improvements
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.5.0...1.5.1)
+- 优化了资源清单的解析过程。
+- 移除资源包名里的空格字符。
+- 支持华为鸿蒙系统。
 
-## [1.5.0](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.5.0) (2023-07-05)
+## [2.1.1] - 2024-01-17
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.17...1.5.0)
+### Fixed
 
-## [1.4.17](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.17) (2023-06-27)
+- (#224)  修复了编辑器模式打包时 SimulateBuild 报错的问题。
+- (#223)  修复了资源构建界面读取配置导致的报错问题。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.16...1.4.17)
+### Added
 
-## [1.4.16](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.16) (2023-06-14)
+- 支持共享资源打包规则，可以定制化独立的构建规则。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.15...1.4.16)
+  ```c#
+  public class BuildParameters
+  {
+     /// <summary>
+      /// 是否启用共享资源打包
+      /// </summary>
+      public bool EnableSharePackRule = false; 
+  }
+  ```
 
-## [1.4.15](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.15) (2023-06-09)
+- 微信小游戏平台，资源下载器支持底层缓存查询。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.14...1.4.15)
+## [2.1.0] - 2023-12-27
 
-## [1.4.14](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.14) (2023-05-26)
+升级了 Scriptable build pipeline (SBP) 的版本，来解决图集引用的精灵图片冗余问题。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.13...1.4.14)
+### Fixed
 
-## [1.4.13](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.13) (2023-05-12)
+- (#195) 修复了在EditorPlayMode模式下，AssetHandle.GetDownloadStatus()发生异常的问题。
+- (#201) 修复了断点续传失效的问题。
+- (#202) 修复了打包参数FileNameStyle设置为BundleName后，IQueryServices会一直返回true的问题。
+- (#205) 修复了HybridCLR插件里创建资源下载器触发的异常。
+- (#210) 修复了DownloaderOperation在未开始下载前，内部的PackageName为空的问题。
+- (#220) 修复了资源收集界面关闭后，撤回操作还会生效的问题。
+- 修复了下载器合并后重新计算下载字节数不正确的问题。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.12...1.4.13)
+### Improvements
 
-## [1.4.12](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.12) (2023-04-22)
+- (#198) 资源收集界面禁用的分组不再检测合法性。
+- (#203) 资源构建类容许自定义打包的输出目录。
+- 资源构建报告增加未依赖的资源信息列表。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.11...1.4.12)
+### Changed
 
-## [1.4.11](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.11) (2023-04-14)
+- IBuildinQueryServices和IDeliveryQueryServices查询方法变更。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.10...1.4.11)
+  ```c#
+      public interface IBuildinQueryServices
+      {
+          /// <summary>
+          /// 查询是否为应用程序内置的资源文件
+          /// </summary>
+          /// <param name="packageName">包裹名称</param>
+          /// <param name="fileName">文件名称（包含文件的后缀格式）</param>
+          /// <param name="fileCRC">文件哈希值</param>
+          /// <returns>返回查询结果</returns>
+          bool Query(string packageName, string fileName, string fileCRC);
+      }
+  
+     	public interface IDeliveryQueryServices
+      {
+          /// <summary>
+          /// 查询是否为开发者分发的资源文件
+          /// </summary>
+          /// <param name="packageName">包裹名称</param>
+          /// <param name="fileName">文件名称（包含文件的后缀格式）</param>
+          /// <param name="fileCRC">文件哈希值</param>
+          /// <returns>返回查询结果</returns>
+          bool Query(string packageName, string fileName, string fileCRC);
+      }
+  ```
 
-## [1.4.10](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.10) (2023-04-08)
+  
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.9...1.4.10)
+### Removed
 
-## [1.4.9](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.9) (2023-03-29)
+- (#212)  移除了构建报告里的资源冗余信息列表。
 
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.8...1.4.9)
-
-## [1.4.8](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.8) (2023-03-10)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.7...1.4.8)
-
-## [1.4.7](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.7) (2023-03-03)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.6-preview...1.4.7)
-
-## [1.4.6-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.6-preview) (2023-02-22)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.5-preview...1.4.6-preview)
-
-## [1.4.5-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.5-preview) (2023-02-17)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.4-preview...1.4.5-preview)
-
-## [1.4.4-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.4-preview) (2023-02-14)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.3-preview...1.4.4-preview)
-
-## [1.4.3-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.3-preview) (2023-02-10)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.2-preview...1.4.3-preview)
-
-## [1.4.2-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.2-preview) (2023-01-03)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.1-preview...1.4.2-preview)
-
-## [1.4.1-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.1-preview) (2022-12-25)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.4.0-preview...1.4.1-preview)
-
-## [1.4.0-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.4.0-preview) (2022-12-04)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.7...1.4.0-preview)
-
-## [1.3.7](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.7) (2022-11-26)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.6...1.3.7)
-
-## [1.3.6](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.6) (2022-11-26)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.5...1.3.6)
-
-## [1.3.5](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.5) (2022-11-19)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.4...1.3.5)
-
-## [1.3.4](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.4) (2022-11-04)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.3...1.3.4)
-
-## [1.3.3](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.3) (2022-10-27)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.2...1.3.3)
-
-## [1.3.2](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.2) (2022-10-22)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.1...1.3.2)
-
-## [1.3.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.1) (2022-10-18)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.3.0-preview...1.3.1)
-
-## [1.3.0-preview](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.3.0-preview) (2022-10-08)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.2.4...1.3.0-preview)
-
-## [1.2.4](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.2.4) (2022-09-22)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.2.3...1.2.4)
-
-## [1.2.3](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.2.3) (2022-09-09)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.2.2...1.2.3)
-
-## [1.2.2](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.2.2) (2022-07-31)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.2.1...1.2.2)
-
-## [1.2.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.2.1) (2022-07-23)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.2.0...1.2.1)
-
-## [1.2.0](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.2.0) (2022-07-18)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.1.1...1.2.0)
-
-## [1.1.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.1.1) (2022-07-07)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.1.0...1.1.1)
-
-## [1.1.0](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.1.0) (2022-06-23)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.10...1.1.0)
-
-## [1.0.10](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.10) (2022-05-22)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.9...1.0.10)
-
-## [1.0.9](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.9) (2022-05-14)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.8...1.0.9)
-
-## [1.0.8](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.8) (2022-05-08)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.7...1.0.8)
-
-## [1.0.7](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.7) (2022-05-03)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.6...1.0.7)
-
-## [1.0.6](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.6) (2022-04-26)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.5...1.0.6)
-
-## [1.0.5](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.5) (2022-04-22)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.4...1.0.5)
-
-## [1.0.4](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.4) (2022-04-18)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.3...1.0.4)
-
-## [1.0.3](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.3) (2022-04-14)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.2...1.0.3)
-
-## [1.0.2](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.2) (2022-04-07)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.1...1.0.2)
-
-## [1.0.1](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.1) (2022-04-07)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1.0.0...1.0.1)
-
-## [1.0.0](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/tree/1.0.0) (2022-04-05)
-
-[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/compare/1d54164bfbbc2ca002a76510fd58540132ae2946...1.0.0)
-
-
-
-\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*

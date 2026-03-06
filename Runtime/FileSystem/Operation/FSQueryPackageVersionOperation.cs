@@ -1,11 +1,10 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    public abstract class FSRequestPackageVersionOperation : AsyncOperationBase
+    internal abstract class FSRequestPackageVersionOperation : AsyncOperationBase
     {
         /// <summary>
         /// 资源版本
         /// </summary>
-        public string PackageVersion { set; get; }
+        internal string PackageVersion { set; get; }
     }
 }

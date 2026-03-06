@@ -5,7 +5,6 @@ namespace YooAsset
     /// <summary>
     /// 模拟文件系统
     /// </summary>
-    [UnityEngine.Scripting.Preserve]
     internal class DefaultEditorFileSystem : IFileSystem
     {
         protected string _packageRoot;
@@ -31,12 +30,11 @@ namespace YooAsset
             get { return 0; }
         }
 
-        [UnityEngine.Scripting.Preserve]
+
         public DefaultEditorFileSystem()
         {
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
         {
             var operation = new DEFSInitializeOperation(this);
@@ -44,23 +42,34 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
-        public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
-        {
-            var operation = new DEFSLoadPackageManifestOperation(this, packageVersion);
-            OperationSystem.StartOperation(PackageName, operation);
-            return operation;
-        }
-
-        [UnityEngine.Scripting.Preserve]
-        public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
+        public virtual FSRequestPackageVersionOperation LoadLocalPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new DEFSRequestPackageVersionOperation(this);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
+        public virtual FSLoadPackageManifestOperation LoadLocalPackageManifestAsync(string packageVersion, int timeout)
+        {
+            var operation = new DEFSLoadPackageManifestOperation(this, packageVersion);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
+        public virtual FSLoadPackageManifestOperation RequestRemotePackageManifestAsync(string packageVersion, int timeout)
+        {
+            var operation = new DEFSLoadPackageManifestOperation(this, packageVersion);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
+        public virtual FSRequestPackageVersionOperation RequestRemotePackageVersionAsync(bool appendTimeTicks, int timeout)
+        {
+            var operation = new DEFSRequestPackageVersionOperation(this);
+            OperationSystem.StartOperation(PackageName, operation);
+            return operation;
+        }
+
         public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
             var operation = new FSClearAllBundleFilesCompleteOperation();
@@ -68,7 +77,6 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
         {
             var operation = new FSClearUnusedBundleFilesCompleteOperation();
@@ -76,13 +84,11 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
         {
             var operation = new DEFSLoadBundleOperation(this, bundle);
@@ -90,93 +96,84 @@ namespace YooAsset
             return operation;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void UnloadBundleFile(PackageBundle bundle, object result)
         {
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void SetParameter(string name, object value)
         {
             YooLogger.Warning($"Invalid parameter : {name}");
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void OnCreate(string packageName, string rootDirectory)
         {
             PackageName = packageName;
 
             if (string.IsNullOrEmpty(rootDirectory))
+            {
                 throw new Exception($"{nameof(DefaultEditorFileSystem)} root directory is null or empty !");
+            }
 
             // 注意：基础目录即为包裹目录
             _packageRoot = rootDirectory;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual void OnUpdate()
         {
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool Belong(PackageBundle bundle)
         {
             return true;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool Exists(PackageBundle bundle)
         {
             return true;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedDownload(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedUnpack(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual bool NeedImport(PackageBundle bundle)
         {
             return false;
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual byte[] ReadFileData(PackageBundle bundle)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        [UnityEngine.Scripting.Preserve]
         public virtual string ReadFileText(PackageBundle bundle)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #region 内部方法
 
         public string GetEditorPackageVersionFilePath()
         {
-            string fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
+            var fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         public string GetEditorPackageHashFilePath(string packageVersion)
         {
-            string fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
+            var fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         public string GetEditorPackageManifestFilePath(string packageVersion)
         {
-            string fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
+            var fileName = YooAssetSettingsData.GetManifestBinaryFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
 

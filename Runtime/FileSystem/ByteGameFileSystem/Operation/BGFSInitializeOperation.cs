@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
 internal partial class BGFSInitializeOperation : FSInitializeFileSystemOperation
@@ -9,11 +9,13 @@ internal partial class BGFSInitializeOperation : FSInitializeFileSystemOperation
     {
         _fileSystem = fileSystem;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         Status = EOperationStatus.Succeed;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
     }
 }

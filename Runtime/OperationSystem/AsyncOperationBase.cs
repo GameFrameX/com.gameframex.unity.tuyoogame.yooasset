@@ -9,10 +9,8 @@ namespace YooAsset
     public abstract class AsyncOperationBase : IEnumerator, IComparable<AsyncOperationBase>
     {
         private Action<AsyncOperationBase> _callback;
-        private Action<AsyncOperationBase> _updatingCallback;
         private string _packageName = null;
         private int _whileFrame = 1000;
-        private float _progress = 0;
 
         /// <summary>
         /// 是否已经完成
@@ -37,15 +35,7 @@ namespace YooAsset
         /// <summary>
         /// 处理进度
         /// </summary>
-        public float Progress
-        {
-            get { return _progress; }
-            protected set
-            {
-                _progress = value;
-                _updatingCallback?.Invoke(this);
-            }
-        }
+        public float Progress { get; protected set; }
 
         /// <summary>
         /// 是否已经完成
@@ -58,29 +48,18 @@ namespace YooAsset
         /// <summary>
         /// 完成事件
         /// </summary>
-        public event Action<AsyncOperationBase> Update
-        {
-            add
-            {
-                if (IsDone)
-                    value.Invoke(this);
-                else
-                    _updatingCallback += value;
-            }
-            remove { _updatingCallback -= value; }
-        }
-
-        /// <summary>
-        /// 完成事件
-        /// </summary>
         public event Action<AsyncOperationBase> Completed
         {
             add
             {
                 if (IsDone)
+                {
                     value.Invoke(this);
+                }
                 else
+                {
                     _callback += value;
+                }
             }
             remove { _callback -= value; }
         }
@@ -96,7 +75,9 @@ namespace YooAsset
                 {
                     _taskCompletionSource = new TaskCompletionSource<object>();
                     if (IsDone)
+                    {
                         _taskCompletionSource.SetResult(null);
+                    }
                 }
 
                 return _taskCompletionSource.Task;
@@ -112,10 +93,10 @@ namespace YooAsset
 
         public virtual void InternalWaitForAsyncComplete()
         {
-            throw new System.NotImplementedException(this.GetType().Name);
+            throw new NotImplementedException(GetType().Name);
         }
 
-        public string GetPackageName()
+        internal string GetPackageName()
         {
             return _packageName;
         }
@@ -142,7 +123,9 @@ namespace YooAsset
             _callback?.Invoke(this);
 
             if (_taskCompletionSource != null)
+            {
                 _taskCompletionSource.TrySetResult(null);
+            }
         }
 
         internal void SetAbort()
@@ -151,7 +134,7 @@ namespace YooAsset
             {
                 Status = EOperationStatus.Failed;
                 Error = "user abort";
-                YooLogger.Warning($"Async operaiton {this.GetType().Name} has been abort !");
+                YooLogger.Warning($"Async operaiton {GetType().Name} has been abort !");
                 InternalOnAbort();
             }
         }
@@ -171,7 +154,7 @@ namespace YooAsset
                 if (_whileFrame == 0)
                 {
                     Status = EOperationStatus.Failed;
-                    Error = $"Operation {this.GetType().Name} failed to wait for async complete !";
+                    Error = $"Operation {GetType().Name} failed to wait for async complete !";
                     YooLogger.Error(Error);
                 }
             }
@@ -193,7 +176,9 @@ namespace YooAsset
         public void WaitForAsyncComplete()
         {
             if (IsDone)
+            {
                 return;
+            }
 
             InternalWaitForAsyncComplete();
         }
@@ -202,7 +187,7 @@ namespace YooAsset
 
         public int CompareTo(AsyncOperationBase other)
         {
-            return other.Priority.CompareTo(this.Priority);
+            return other.Priority.CompareTo(Priority);
         }
 
         #endregion
@@ -218,7 +203,10 @@ namespace YooAsset
         {
         }
 
-        object IEnumerator.Current => null;
+        object IEnumerator.Current
+        {
+            get { return null; }
+        }
 
         private TaskCompletionSource<object> _taskCompletionSource;
 

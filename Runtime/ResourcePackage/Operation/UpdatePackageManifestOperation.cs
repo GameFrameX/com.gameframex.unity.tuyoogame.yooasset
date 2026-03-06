@@ -1,4 +1,7 @@
-﻿
+﻿using System.IO;
+using System.Text;
+using UnityEngine;
+
 namespace YooAsset
 {
     /// <summary>
@@ -7,6 +10,7 @@ namespace YooAsset
     public abstract class UpdatePackageManifestOperation : AsyncOperationBase
     {
     }
+
     internal sealed class UpdatePackageManifestImplOperation : UpdatePackageManifestOperation
     {
         private enum ESteps
@@ -33,14 +37,18 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckParams;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckParams)
             {
@@ -73,15 +81,22 @@ namespace YooAsset
             if (_steps == ESteps.LoadPackageManifest)
             {
                 if (_loadPackageManifestOp == null)
-                    _loadPackageManifestOp = _fileSystem.LoadPackageManifestAsync(_packageVersion, _timeout);
+                {
+                    _loadPackageManifestOp = _fileSystem.RequestRemotePackageManifestAsync(_packageVersion, _timeout);
+                }
 
                 if (_loadPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadPackageManifestOp.Status == EOperationStatus.Succeed)
                 {
                     _steps = ESteps.Done;
                     _impl.ActiveManifest = _loadPackageManifestOp.Manifest;
+                    Debug.Log($"LoadPackageManifest Succeed:{_impl.ActiveManifest.PackageName}  {_impl.ActiveManifest.PackageVersion}");
+                    SavePackageVersion();
+                    DefaultCacheFileSystemDefine.PackageVersion = _packageVersion;
                     Status = EOperationStatus.Succeed;
                 }
                 else
@@ -90,6 +105,29 @@ namespace YooAsset
                     Status = EOperationStatus.Failed;
                     Error = _loadPackageManifestOp.Error;
                 }
+            }
+        }
+
+        public void SavePackageVersion()
+        {
+            if (_impl.ActiveManifest != null)
+            {
+                var fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
+                var _manifestFileRoot = PathUtility.Combine(_fileSystem.FileRoot, DefaultCacheFileSystemDefine.ManifestFilesFolderName);
+                var filePath = Path.Combine(_manifestFileRoot, fileName);
+
+                //if (!File.Exists(filePath))
+                //    File.Create(filePath).Close();
+
+                //FileInfo fi = new FileInfo(filePath);
+                //FileStream fs = fi.OpenWrite();
+                //byte[] bytes = Encoding.UTF8.GetBytes(_packageVersion);
+                //fs.Write(bytes, 0, bytes.Length);
+                //fs.Flush();
+                //fs.Close();
+                //fs.Dispose();
+                FileUtility.WriteAllText(filePath, _packageVersion);
+                Debug.LogWarning("保存沙盒版本文件" + _packageVersion);
             }
         }
     }

@@ -17,7 +17,6 @@ namespace YooAsset
         private readonly Quaternion _rotation;
         private readonly Transform _parent;
         private readonly bool _worldPositionStays;
-        private readonly bool _actived;
         private ESteps _steps = ESteps.None;
 
         /// <summary>
@@ -26,8 +25,7 @@ namespace YooAsset
         public GameObject Result = null;
 
 
-        internal InstantiateOperation(AssetHandle handle, bool setPositionAndRotation, Vector3 position, Quaternion rotation,
-            Transform parent, bool worldPositionStays, bool actived)
+        internal InstantiateOperation(AssetHandle handle, bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             _handle = handle;
             _setPositionAndRotation = setPositionAndRotation;
@@ -35,16 +33,19 @@ namespace YooAsset
             _rotation = rotation;
             _parent = parent;
             _worldPositionStays = worldPositionStays;
-            _actived = actived;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.Clone;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.Clone)
             {
@@ -57,7 +58,9 @@ namespace YooAsset
                 }
 
                 if (_handle.IsDone == false)
+                {
                     return;
+                }
 
                 if (_handle.AssetObject == null)
                 {
@@ -69,20 +72,21 @@ namespace YooAsset
 
                 // 实例化游戏对象
                 Result = InstantiateInternal(_handle.AssetObject, _setPositionAndRotation, _position, _rotation, _parent, _worldPositionStays);
-                if (_actived == false)
-                    Result.SetActive(false);
 
                 _steps = ESteps.Done;
                 Status = EOperationStatus.Succeed;
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {
                 // 等待句柄完成
                 if (_handle != null)
+                {
                     _handle.WaitForAsyncComplete();
+                }
 
                 if (ExecuteWhileDone())
                 {
@@ -100,21 +104,23 @@ namespace YooAsset
             SetAbort();
         }
 
-        internal static GameObject InstantiateInternal(UnityEngine.Object assetObject, bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
+        internal static GameObject InstantiateInternal(Object assetObject, bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             if (assetObject == null)
+            {
                 return null;
+            }
 
             if (setPositionAndRotation)
             {
                 if (parent != null)
                 {
-                    GameObject clone = UnityEngine.Object.Instantiate(assetObject as GameObject, position, rotation, parent);
+                    var clone = Object.Instantiate(assetObject as GameObject, position, rotation, parent);
                     return clone;
                 }
                 else
                 {
-                    GameObject clone = UnityEngine.Object.Instantiate(assetObject as GameObject, position, rotation);
+                    var clone = Object.Instantiate(assetObject as GameObject, position, rotation);
                     return clone;
                 }
             }
@@ -122,12 +128,12 @@ namespace YooAsset
             {
                 if (parent != null)
                 {
-                    GameObject clone = UnityEngine.Object.Instantiate(assetObject as GameObject, parent, worldPositionStays);
+                    var clone = Object.Instantiate(assetObject as GameObject, parent, worldPositionStays);
                     return clone;
                 }
                 else
                 {
-                    GameObject clone = UnityEngine.Object.Instantiate(assetObject as GameObject);
+                    var clone = Object.Instantiate(assetObject as GameObject);
                     return clone;
                 }
             }

@@ -35,6 +35,6 @@ namespace YooAsset
         /// <summary>
         /// 文件列表
         /// </summary>
-        public List<FileWrapper> Wrappers = new List<FileWrapper>();
+        public List<FileWrapper> Wrappers = new();
     }
 }

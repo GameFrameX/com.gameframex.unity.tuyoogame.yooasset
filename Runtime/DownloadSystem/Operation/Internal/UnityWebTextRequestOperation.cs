@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
-    public class UnityWebTextRequestOperation : UnityWebRequestOperation
+    internal class UnityWebTextRequestOperation : UnityWebRequestOperation
     {
         private UnityWebRequestAsyncOperation _requestOperation;
 
@@ -12,18 +12,26 @@ namespace YooAsset
         /// </summary>
         public string Result { private set; get; }
 
+        public UnityWebRequestAsyncOperation requestOperation
+        {
+            get { return _requestOperation; }
+        }
 
-        public UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
+        internal UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
         {
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CreateRequest)
             {
@@ -59,6 +67,7 @@ namespace YooAsset
                 DisposeRequest();
             }
         }
+
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
@@ -68,7 +77,7 @@ namespace YooAsset
         private void CreateWebRequest()
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
-            DownloadHandlerBuffer handler = new DownloadHandlerBuffer();
+            var handler = new DownloadHandlerBuffer();
             _webRequest.downloadHandler = handler;
             _webRequest.disposeDownloadHandlerOnDispose = true;
             _requestOperation = _webRequest.SendWebRequest();

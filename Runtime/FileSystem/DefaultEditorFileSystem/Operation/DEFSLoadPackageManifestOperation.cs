@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DEFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
@@ -23,14 +22,18 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadEditorPackageHash;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadEditorPackageHash)
             {
@@ -41,7 +44,9 @@ namespace YooAsset
                 }
 
                 if (_loadEditorPackageHashOpe.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadEditorPackageHashOpe.Status == EOperationStatus.Succeed)
                 {
@@ -59,14 +64,16 @@ namespace YooAsset
             {
                 if (_loadEditorPackageManifestOp == null)
                 {
-                    string packageHash = _loadEditorPackageHashOpe.PackageHash;
+                    var packageHash = _loadEditorPackageHashOpe.PackageHash;
                     _loadEditorPackageManifestOp = new LoadEditorPackageManifestOperation(_fileSystem, _packageVersion, packageHash);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _loadEditorPackageManifestOp);
                 }
 
                 Progress = _loadEditorPackageManifestOp.Progress;
                 if (_loadEditorPackageManifestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadEditorPackageManifestOp.Status == EOperationStatus.Succeed)
                 {

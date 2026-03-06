@@ -4,10 +4,10 @@ using System.Diagnostics;
 
 namespace YooAsset
 {
-    public class OperationSystem
+    internal class OperationSystem
     {
-        private static readonly List<AsyncOperationBase> _operations = new List<AsyncOperationBase>(1000);
-        private static readonly List<AsyncOperationBase> _newList = new List<AsyncOperationBase>(1000);
+        private static readonly List<AsyncOperationBase> _operations = new(1000);
+        private static readonly List<AsyncOperationBase> _newList = new(1000);
 
         // 计时器相关
         private static Stopwatch _watch;
@@ -23,10 +23,7 @@ namespace YooAsset
         /// </summary>
         public static bool IsBusy
         {
-            get
-            {
-                return _watch.ElapsedMilliseconds - _frameTime >= MaxTimeSlice;
-            }
+            get { return _watch.ElapsedMilliseconds - _frameTime >= MaxTimeSlice; }
         }
 
 
@@ -48,7 +45,7 @@ namespace YooAsset
             // 添加新增的异步操作
             if (_newList.Count > 0)
             {
-                bool sorting = false;
+                var sorting = false;
                 foreach (var operation in _newList)
                 {
                     if (operation.Priority > 0)
@@ -63,32 +60,44 @@ namespace YooAsset
 
                 // 重新排序优先级
                 if (sorting)
+                {
                     _operations.Sort();
+                }
             }
 
             // 更新进行中的异步操作
-            for (int i = 0; i < _operations.Count; i++)
+            for (var i = 0; i < _operations.Count; i++)
             {
                 if (IsBusy)
+                {
                     break;
+                }
 
                 var operation = _operations[i];
                 if (operation.IsFinish)
+                {
                     continue;
+                }
 
                 if (operation.IsDone == false)
+                {
                     operation.InternalOnUpdate();
+                }
 
                 if (operation.IsDone)
+                {
                     operation.SetFinish();
+                }
             }
 
             // 移除已经完成的异步操作
-            for (int i = _operations.Count - 1; i >= 0; i--)
+            for (var i = _operations.Count - 1; i >= 0; i--)
             {
                 var operation = _operations[i];
                 if (operation.IsFinish)
+                {
                     _operations.RemoveAt(i);
+                }
             }
         }
 

@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 初始化操作
@@ -31,10 +30,12 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.CreateFileSystem)
@@ -62,11 +63,15 @@ namespace YooAsset
             if (_steps == ESteps.InitFileSystem)
             {
                 if (_initFileSystemOp == null)
+                {
                     _initFileSystemOp = _impl.EditorFileSystem.InitializeFileSystemAsync();
+                }
 
                 Progress = _initFileSystemOp.Progress;
                 if (_initFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initFileSystemOp.Status == EOperationStatus.Succeed)
                 {
@@ -108,14 +113,18 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CreateFileSystem)
             {
@@ -142,11 +151,15 @@ namespace YooAsset
             if (_steps == ESteps.InitFileSystem)
             {
                 if (_initFileSystemOp == null)
+                {
                     _initFileSystemOp = _impl.BuildinFileSystem.InitializeFileSystemAsync();
+                }
 
                 Progress = _initFileSystemOp.Progress;
                 if (_initFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initFileSystemOp.Status == EOperationStatus.Succeed)
                 {
@@ -190,14 +203,18 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CreateFileSystem)
             {
@@ -255,11 +272,15 @@ namespace YooAsset
                 }
 
                 if (_initBuildinFileSystemOp == null)
+                {
                     _initBuildinFileSystemOp = _impl.BuildinFileSystem.InitializeFileSystemAsync();
+                }
 
                 Progress = _initBuildinFileSystemOp.Progress;
                 if (_initBuildinFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initBuildinFileSystemOp.Status == EOperationStatus.Succeed)
                 {
@@ -284,10 +305,14 @@ namespace YooAsset
 
                 Progress = _initDeliveryFileSystemOp.Progress;
                 if (_initDeliveryFileSystemOp == null)
+                {
                     _initDeliveryFileSystemOp = _impl.DeliveryFileSystem.InitializeFileSystemAsync();
+                }
 
                 if (_initDeliveryFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initDeliveryFileSystemOp.Status == EOperationStatus.Succeed)
                 {
@@ -304,11 +329,15 @@ namespace YooAsset
             if (_steps == ESteps.InitCacheFileSystem)
             {
                 if (_initCacheFileSystemOp == null)
+                {
                     _initCacheFileSystemOp = _impl.CacheFileSystem.InitializeFileSystemAsync();
+                }
 
                 Progress = _initCacheFileSystemOp.Progress;
                 if (_initCacheFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initCacheFileSystemOp.Status == EOperationStatus.Succeed)
                 {
@@ -348,14 +377,18 @@ namespace YooAsset
             _impl = impl;
             _parameters = parameters;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CreateFileSystem)
             {
@@ -382,11 +415,15 @@ namespace YooAsset
             if (_steps == ESteps.InitWebFileSystem)
             {
                 if (_initWebFileSystemOp == null)
+                {
                     _initWebFileSystemOp = _impl.WebFileSystem.InitializeFileSystemAsync();
+                }
 
                 Progress = _initWebFileSystemOp.Progress;
                 if (_initWebFileSystemOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_initWebFileSystemOp.Status == EOperationStatus.Succeed)
                 {

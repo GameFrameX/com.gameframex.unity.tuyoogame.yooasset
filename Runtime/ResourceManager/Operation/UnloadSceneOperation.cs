@@ -26,6 +26,7 @@ namespace YooAsset
         {
             _error = error;
         }
+
         internal UnloadSceneOperation(ProviderOperation provider)
         {
             _error = null;
@@ -47,14 +48,18 @@ namespace YooAsset
                 throw new System.NotImplementedException();
             }
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckError;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckError)
             {
@@ -72,7 +77,9 @@ namespace YooAsset
             if (_steps == ESteps.PrepareDone)
             {
                 if (_provider.IsDone == false)
+                {
                     return;
+                }
 
                 if (_provider.SceneObject.IsValid() == false)
                 {
@@ -103,7 +110,9 @@ namespace YooAsset
 
                 Progress = _asyncOp.progress;
                 if (_asyncOp.isDone == false)
+                {
                     return;
+                }
 
                 _provider.ResourceMgr.TryUnloadUnusedAsset(_provider.MainAssetInfo);
                 _steps = ESteps.Done;

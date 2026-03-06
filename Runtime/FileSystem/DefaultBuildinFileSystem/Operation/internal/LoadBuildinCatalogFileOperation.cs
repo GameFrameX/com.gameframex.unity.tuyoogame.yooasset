@@ -19,18 +19,22 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadCatalog;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadCatalog)
             {
-                string catalogFilePath = _fileSystem.GetBuildinCatalogFileLoadPath();
+                var catalogFilePath = _fileSystem.GetBuildinCatalogFileLoadPath();
                 var catalog = Resources.Load<DefaultBuildinFileCatalog>(catalogFilePath);
                 if (catalog == null)
                 {

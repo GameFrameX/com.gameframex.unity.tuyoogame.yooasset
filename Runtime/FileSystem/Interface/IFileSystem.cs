@@ -1,7 +1,6 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    public interface IFileSystem
+    internal interface IFileSystem
     {
         /// <summary>
         /// 包裹名称
@@ -25,14 +24,24 @@ namespace YooAsset
         FSInitializeFileSystemOperation InitializeFileSystemAsync();
 
         /// <summary>
-        /// 加载包裹清单
+        /// 加载本地最新的版本
         /// </summary>
-        FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout);
+        FSRequestPackageVersionOperation LoadLocalPackageVersionAsync(bool appendTimeTicks, int timeout);
 
         /// <summary>
-        /// 查询最新的版本
+        /// 加载本地包裹清单
         /// </summary>
-        FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout);
+        FSLoadPackageManifestOperation LoadLocalPackageManifestAsync(string packageVersion, int timeout);
+
+        /// <summary>
+        /// 加载网络包裹清单
+        /// </summary>
+        FSLoadPackageManifestOperation RequestRemotePackageManifestAsync(string packageVersion, int timeout);
+
+        /// <summary>
+        /// 查询网络最新的版本
+        /// </summary>
+        FSRequestPackageVersionOperation RequestRemotePackageVersionAsync(bool appendTimeTicks, int timeout);
 
         /// <summary>
         /// 清空所有的文件

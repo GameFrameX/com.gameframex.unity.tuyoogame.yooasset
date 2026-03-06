@@ -1,4 +1,5 @@
 ﻿#if UNITY_WEBGL && WECHAT_MINI_GAME
+using System;
 using YooAsset;
 
 internal class RequestWechatPackageVersionOperation : AsyncOperationBase
@@ -11,6 +12,7 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
     }
 
     private readonly WechatFileSystem _fileSystem;
+    private readonly bool _appendTimeTicks;
     private readonly int _timeout;
     private UnityWebTextRequestOperation _webTextRequestOp;
     private int _requestCount = 0;
@@ -21,17 +23,20 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
     /// </summary>
     public string PackageVersion { private set; get; }
 
-    
-    public RequestWechatPackageVersionOperation(WechatFileSystem fileSystem, int timeout)
+
+    public RequestWechatPackageVersionOperation(WechatFileSystem fileSystem, bool appendTimeTicks, int timeout)
     {
         _fileSystem = fileSystem;
+        _appendTimeTicks = appendTimeTicks;
         _timeout = timeout;
     }
+
     public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestWechatPackageVersionOperation));
         _steps = ESteps.RequestPackageVersion;
     }
+
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -43,6 +48,11 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
             {
                 string fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
                 string url = GetRequestURL(fileName);
+                if (_appendTimeTicks)
+                {
+                    url += $"?time_ticks={DateTime.Now.Ticks}";
+                }
+
                 _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
                 OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
             }
@@ -80,9 +90,9 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
     {
         // 轮流返回请求地址
         if (_requestCount % 2 == 0)
-            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName);
+            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, "");
         else
-            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName);
+            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, "");
     }
 }
 #endif

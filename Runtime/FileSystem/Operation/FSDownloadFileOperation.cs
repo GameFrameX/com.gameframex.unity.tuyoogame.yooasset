@@ -1,7 +1,6 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    public abstract class FSDownloadFileOperation : AsyncOperationBase
+    internal abstract class FSDownloadFileOperation : AsyncOperationBase
     {
         public PackageBundle Bundle { private set; get; }
 
@@ -34,10 +33,12 @@ namespace YooAsset
             DownloadedBytes = 0;
             DownloadProgress = 0;
         }
+
         public void Release()
         {
             RefCount--;
         }
+
         public void Reference()
         {
             RefCount++;

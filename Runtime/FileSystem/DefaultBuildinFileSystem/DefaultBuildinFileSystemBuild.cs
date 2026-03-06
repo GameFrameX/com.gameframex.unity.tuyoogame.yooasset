@@ -20,20 +20,22 @@ namespace YooAsset
         {
             YooLogger.Log("Begin to create catalog file !");
 
-            string savePath = $"Assets/Resources/{YooAssetSettingsData.Setting.DefaultYooFolderName}";
-            DirectoryInfo saveDirectory = new DirectoryInfo(savePath);
+            var savePath = $"Assets/Resources/{YooAssetSettingsData.Setting.DefaultYooFolderName}";
+            var saveDirectory = new DirectoryInfo(savePath);
             if (saveDirectory.Exists)
+            {
                 saveDirectory.Delete(true);
+            }
 
-            string rootPath = $"{Application.dataPath}/StreamingAssets/{YooAssetSettingsData.Setting.DefaultYooFolderName}";
-            DirectoryInfo rootDirectory = new DirectoryInfo(rootPath);
+            var rootPath = $"{Application.dataPath}/StreamingAssets/{YooAssetSettingsData.Setting.DefaultYooFolderName}";
+            var rootDirectory = new DirectoryInfo(rootPath);
             if (rootDirectory.Exists == false)
             {
                 throw new System.Exception($"Can not found StreamingAssets root directory : {rootPath}");
             }
 
             // 搜索所有Package目录
-            DirectoryInfo[] subDirectories = rootDirectory.GetDirectories();
+            var subDirectories = rootDirectory.GetDirectories();
             foreach (var subDirectory in subDirectories)
             {
                 CreateBuildinCatalogFile(subDirectory.Name, subDirectory.FullName);
@@ -48,8 +50,8 @@ namespace YooAsset
             // 获取资源清单版本
             string packageVersion;
             {
-                string versionFileName = YooAssetSettingsData.GetPackageVersionFileName(packageName);
-                string versionFilePath = $"{pacakgeDirectory}/{versionFileName}";
+                var versionFileName = YooAssetSettingsData.GetPackageVersionFileName(packageName);
+                var versionFilePath = $"{pacakgeDirectory}/{versionFileName}";
                 if (File.Exists(versionFilePath) == false)
                 {
                     throw new System.Exception($"Can not found package version file : {versionFilePath}");
@@ -61,8 +63,8 @@ namespace YooAsset
             // 加载资源清单文件
             PackageManifest packageManifest;
             {
-                string manifestFileName = YooAssetSettingsData.GetManifestBinaryFileName(packageName, packageVersion);
-                string manifestFilePath = $"{pacakgeDirectory}/{manifestFileName}";
+                var manifestFileName = YooAssetSettingsData.GetManifestBinaryFileName(packageName, packageVersion);
+                var manifestFilePath = $"{pacakgeDirectory}/{manifestFileName}";
                 if (File.Exists(manifestFilePath) == false)
                 {
                     throw new System.Exception($"Can not found package manifest file : {manifestFilePath}");
@@ -73,7 +75,7 @@ namespace YooAsset
             }
 
             // 获取文件名映射关系
-            Dictionary<string, string> fileMapping = new Dictionary<string, string>();
+            var fileMapping = new Dictionary<string, string>();
             {
                 foreach (var packageBundle in packageManifest.BundleList)
                 {
@@ -87,17 +89,19 @@ namespace YooAsset
             buildinFileCatalog.PackageVersion = packageVersion;
 
             // 记录所有内置资源文件
-            DirectoryInfo rootDirectory = new DirectoryInfo(pacakgeDirectory);
-            FileInfo[] fileInfos = rootDirectory.GetFiles();
+            var rootDirectory = new DirectoryInfo(pacakgeDirectory);
+            var fileInfos = rootDirectory.GetFiles();
             foreach (var fileInfo in fileInfos)
             {
                 if (fileInfo.Extension == ".meta" || fileInfo.Extension == ".version" ||
                     fileInfo.Extension == ".hash" || fileInfo.Extension == ".bytes" ||
                     fileInfo.Extension == ".json")
+                {
                     continue;
+                }
 
-                string fileName = fileInfo.Name;
-                if (fileMapping.TryGetValue(fileName, out string bundleGUID))
+                var fileName = fileInfo.Name;
+                if (fileMapping.TryGetValue(fileName, out var bundleGUID))
                 {
                     var wrapper = new DefaultBuildinFileCatalog.FileWrapper(bundleGUID, fileName);
                     buildinFileCatalog.Wrappers.Add(wrapper);
@@ -108,7 +112,7 @@ namespace YooAsset
                 }
             }
 
-            string saveFilePath = $"Assets/Resources/{YooAssetSettingsData.Setting.DefaultYooFolderName}/{packageName}/{DefaultBuildinFileSystemDefine.BuildinCatalogFileName}";
+            var saveFilePath = $"Assets/Resources/{YooAssetSettingsData.Setting.DefaultYooFolderName}/{packageName}/{DefaultBuildinFileSystemDefine.BuildinCatalogFileName}";
             FileUtility.CreateFileDirectory(saveFilePath);
 
             UnityEditor.AssetDatabase.CreateAsset(buildinFileCatalog, saveFilePath);

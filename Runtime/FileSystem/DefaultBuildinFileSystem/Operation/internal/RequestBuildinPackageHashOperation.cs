@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class RequestBuildinPackageHashOperation : AsyncOperationBase
     {
@@ -26,27 +25,33 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _packageVersion = packageVersion;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestPackageHash;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestPackageHash)
             {
                 if (_webTextRequestOp == null)
                 {
-                    string filePath = _fileSystem.GetBuildinPackageHashFilePath(_packageVersion);
-                    string url = DownloadSystemHelper.ConvertToWWWPath(filePath);
+                    var filePath = _fileSystem.GetBuildinPackageHashFilePath(_packageVersion);
+                    var url = DownloadSystemHelper.ConvertToWWWPath(filePath);
                     _webTextRequestOp = new UnityWebTextRequestOperation(url);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
                 }
 
                 if (_webTextRequestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_webTextRequestOp.Status == EOperationStatus.Succeed)
                 {

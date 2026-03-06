@@ -23,42 +23,49 @@ namespace YooAsset
         /// <summary>
         /// 需要验证的元素
         /// </summary>
-        public readonly List<CacheFileElement> Result = new List<CacheFileElement>(5000);
+        public readonly List<CacheFileElement> Result = new(5000);
 
 
         internal SearchCacheFilesOperation(DefaultCacheFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.Prepare;
             _verifyStartTime = UnityEngine.Time.realtimeSinceStartup;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.Prepare)
             {
-                DirectoryInfo rootDirectory = new DirectoryInfo(_fileSystem.GetCacheFilesRoot());
+                var rootDirectory = new DirectoryInfo(_fileSystem.GetCacheFilesRoot());
                 if (rootDirectory.Exists)
                 {
                     var directorieInfos = rootDirectory.EnumerateDirectories();
                     _filesEnumerator = directorieInfos.GetEnumerator();
                 }
+
                 _steps = ESteps.SearchFiles;
             }
 
             if (_steps == ESteps.SearchFiles)
             {
                 if (SearchFiles())
+                {
                     return;
+                }
 
                 _steps = ESteps.Done;
                 Status = EOperationStatus.Succeed;
-                float costTime = UnityEngine.Time.realtimeSinceStartup - _verifyStartTime;
+                var costTime = UnityEngine.Time.realtimeSinceStartup - _verifyStartTime;
                 YooLogger.Log($"Search cache files elapsed time {costTime:f1} seconds");
             }
         }
@@ -66,34 +73,42 @@ namespace YooAsset
         private bool SearchFiles()
         {
             if (_filesEnumerator == null)
+            {
                 return false;
+            }
 
             bool isFindItem;
             while (true)
             {
                 isFindItem = _filesEnumerator.MoveNext();
                 if (isFindItem == false)
+                {
                     break;
+                }
 
                 var rootFoder = _filesEnumerator.Current;
                 var childDirectories = rootFoder.GetDirectories();
                 foreach (var chidDirectory in childDirectories)
                 {
-                    string bundleGUID = chidDirectory.Name;
+                    var bundleGUID = chidDirectory.Name;
                     if (_fileSystem.IsRecordFile(bundleGUID))
+                    {
                         continue;
+                    }
 
                     // 创建验证元素类
-                    string fileRootPath = chidDirectory.FullName;
-                    string dataFilePath = $"{fileRootPath}/{ DefaultCacheFileSystemDefine.SaveBundleDataFileName}";
-                    string infoFilePath = $"{fileRootPath}/{ DefaultCacheFileSystemDefine.SaveBundleInfoFileName}";
+                    var fileRootPath = chidDirectory.FullName;
+                    var dataFilePath = $"{fileRootPath}/{DefaultCacheFileSystemDefine.SaveBundleDataFileName}";
+                    var infoFilePath = $"{fileRootPath}/{DefaultCacheFileSystemDefine.SaveBundleInfoFileName}";
 
                     // 存储的数据文件追加文件格式
                     if (_fileSystem.AppendFileExtension)
                     {
-                        string dataFileExtension = FindDataFileExtension(chidDirectory);
+                        var dataFileExtension = FindDataFileExtension(chidDirectory);
                         if (string.IsNullOrEmpty(dataFileExtension) == false)
+                        {
                             dataFilePath += dataFileExtension;
+                        }
                     }
 
                     var element = new CacheFileElement(_fileSystem.PackageName, bundleGUID, fileRootPath, dataFilePath, infoFilePath);
@@ -101,14 +116,17 @@ namespace YooAsset
                 }
 
                 if (OperationSystem.IsBusy)
+                {
                     break;
+                }
             }
 
             return isFindItem;
         }
+
         private string FindDataFileExtension(DirectoryInfo directoryInfo)
         {
-            string dataFileExtension = string.Empty;
+            var dataFileExtension = string.Empty;
             var fileInfos = directoryInfo.GetFiles();
             foreach (var fileInfo in fileInfos)
             {
@@ -118,6 +136,7 @@ namespace YooAsset
                     break;
                 }
             }
+
             return dataFileExtension;
         }
     }

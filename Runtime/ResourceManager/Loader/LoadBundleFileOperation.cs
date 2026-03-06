@@ -14,8 +14,8 @@ namespace YooAsset
         }
 
         private readonly ResourceManager _resourceManager;
-        private readonly List<ProviderOperation> _providers = new List<ProviderOperation>(100);
-        private readonly List<ProviderOperation> _removeList = new List<ProviderOperation>(100);
+        private readonly List<ProviderOperation> _providers = new(100);
+        private readonly List<ProviderOperation> _removeList = new(100);
         private FSLoadBundleOperation _loadBundleOp;
         private ESteps _steps = ESteps.None;
 
@@ -55,24 +55,32 @@ namespace YooAsset
             _resourceManager = resourceManager;
             BundleFileInfo = bundleInfo;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadFile;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadFile)
             {
                 if (_loadBundleOp == null)
+                {
                     _loadBundleOp = BundleFileInfo.LoadBundleFile();
+                }
 
                 DownloadProgress = _loadBundleOp.DownloadProgress;
                 DownloadedBytes = _loadBundleOp.DownloadedBytes;
                 if (_loadBundleOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadBundleOp.Status == EOperationStatus.Succeed)
                 {
@@ -88,12 +96,15 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
             {
                 if (_loadBundleOp != null)
+                {
                     _loadBundleOp.WaitForAsyncComplete();
+                }
 
                 if (ExecuteWhileDone())
                 {
@@ -128,9 +139,14 @@ namespace YooAsset
 
             // Check fatal
             if (RefCount > 0)
+            {
                 throw new Exception($"Bundle file loader ref is not zero : {BundleFileInfo.Bundle.BundleName}");
+            }
+
             if (IsDone == false)
+            {
                 throw new Exception($"Bundle file loader is not done : {BundleFileInfo.Bundle.BundleName}");
+            }
 
             BundleFileInfo.UnloadBundleFile(Result);
         }
@@ -141,7 +157,9 @@ namespace YooAsset
         public bool CanDestroyLoader()
         {
             if (IsDone == false)
+            {
                 return false;
+            }
 
             return RefCount <= 0;
         }
@@ -152,7 +170,9 @@ namespace YooAsset
         public void AddProvider(ProviderOperation provider)
         {
             if (_providers.Contains(provider) == false)
+            {
                 _providers.Add(provider);
+            }
         }
 
         /// <summary>
@@ -191,7 +211,9 @@ namespace YooAsset
         public void AbortDownloadOperation()
         {
             if (_loadBundleOp != null)
+            {
                 _loadBundleOp.AbortDownloadOperation();
+            }
         }
     }
 }

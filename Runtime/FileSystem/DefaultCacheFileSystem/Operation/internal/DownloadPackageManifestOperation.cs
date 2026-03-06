@@ -26,19 +26,23 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(DownloadPackageManifestOperation));
-            _steps = ESteps.CheckExist;
+            _steps = ESteps.DownloadFile;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckExist)
             {
-                string filePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
+                var filePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
                 if (File.Exists(filePath))
                 {
                     _steps = ESteps.Done;
@@ -54,15 +58,17 @@ namespace YooAsset
             {
                 if (_webFileRequestOp == null)
                 {
-                    string savePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
-                    string fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
-                    string webURL = GetDownloadRequestURL(fileName);
+                    var savePath = _fileSystem.GetCachePackageManifestFilePath(_packageVersion);
+                    var fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
+                    var webURL = GetDownloadRequestURL(fileName);
                     _webFileRequestOp = new UnityWebFileRequestOperation(webURL, savePath, _timeout);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webFileRequestOp);
                 }
 
                 if (_webFileRequestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_webFileRequestOp.Status == EOperationStatus.Succeed)
                 {
@@ -83,9 +89,13 @@ namespace YooAsset
         {
             // 轮流返回请求地址
             if (_requestCount % 2 == 0)
-                return _fileSystem.RemoteServices.GetRemoteMainURL(fileName);
+            {
+                return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, _packageVersion);
+            }
             else
-                return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName);
+            {
+                return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, _packageVersion);
+            }
         }
     }
 }

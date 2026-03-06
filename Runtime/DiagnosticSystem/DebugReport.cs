@@ -10,7 +10,7 @@ namespace YooAsset
     /// 资源系统调试信息
     /// </summary>
     [Serializable]
-    internal class DebugReport
+    public class DebugReport
     {
         /// <summary>
         /// 游戏帧
@@ -20,7 +20,7 @@ namespace YooAsset
         /// <summary>
         /// 调试的包裹数据列表
         /// </summary>
-        public List<DebugPackageData> PackageDatas = new List<DebugPackageData>(10);
+        public List<DebugPackageData> PackageDatas = new(10);
 
 
         /// <summary>

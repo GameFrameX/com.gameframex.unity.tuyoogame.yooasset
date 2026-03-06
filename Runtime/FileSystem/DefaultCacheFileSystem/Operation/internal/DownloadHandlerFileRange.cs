@@ -27,20 +27,25 @@ namespace YooAsset
 
             if (File.Exists(fileSavePath))
             {
-                FileInfo fileInfo = new FileInfo(fileSavePath);
+                var fileInfo = new FileInfo(fileSavePath);
                 _localFileSize = fileInfo.Length;
             }
 
             _fileStream = new FileStream(_fileSavePath, FileMode.Append, FileAccess.Write);
             _curFileSize = _localFileSize;
         }
+
         protected override bool ReceiveData(byte[] data, int dataLength)
         {
             if (data == null || dataLength == 0 || _webRequest.responseCode >= 400)
+            {
                 return false;
+            }
 
             if (_fileStream == null)
+            {
                 return false;
+            }
 
             _fileStream.Write(data, 0, dataLength);
             _curFileSize += dataLength;
@@ -68,7 +73,7 @@ namespace YooAsset
         /// </summary>
         protected override float GetProgress()
         {
-            return _fileTotalSize == 0 ? 0 : ((float)_curFileSize) / _fileTotalSize;
+            return _fileTotalSize == 0 ? 0 : (float)_curFileSize / _fileTotalSize;
         }
 
         /// <summary>

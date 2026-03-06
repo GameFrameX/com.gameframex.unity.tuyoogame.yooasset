@@ -5,7 +5,7 @@ namespace YooAsset
 {
     public sealed class SubAssetsHandle : HandleBase, IDisposable
     {
-        private System.Action<SubAssetsHandle> _callback;
+        private Action<SubAssetsHandle> _callback;
 
         internal SubAssetsHandle(ProviderOperation provider) : base(provider)
         {
@@ -16,28 +16,34 @@ namespace YooAsset
             _callback?.Invoke(this);
         }
 
-        internal override void InvokeUpdateCallback()
-        {
-        }
-
         /// <summary>
         /// 完成委托
         /// </summary>
-        public event System.Action<SubAssetsHandle> Completed
+        public event Action<SubAssetsHandle> Completed
         {
             add
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(SubAssetsHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(SubAssetsHandle)} is invalid");
+                }
+
                 if (Provider.IsDone)
+                {
                     value.Invoke(this);
+                }
                 else
+                {
                     _callback += value;
+                }
             }
             remove
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(SubAssetsHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(SubAssetsHandle)} is invalid");
+                }
+
                 _callback -= value;
             }
         }
@@ -48,7 +54,10 @@ namespace YooAsset
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
+            {
                 return;
+            }
+
             Provider.WaitForAsyncComplete();
         }
 
@@ -57,7 +66,7 @@ namespace YooAsset
         /// </summary>
         public void Release()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
         /// <summary>
@@ -65,7 +74,7 @@ namespace YooAsset
         /// </summary>
         public void Dispose()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
 
@@ -77,7 +86,10 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return null;
+                }
+
                 return Provider.AllAssetObjects;
             }
         }
@@ -90,12 +102,16 @@ namespace YooAsset
         public TObject GetSubAssetObject<TObject>(string assetName) where TObject : UnityEngine.Object
         {
             if (IsValidWithWarning == false)
+            {
                 return null;
+            }
 
             foreach (var assetObject in Provider.AllAssetObjects)
             {
                 if (assetObject.name == assetName)
+                {
                     return assetObject as TObject;
+                }
             }
 
             YooLogger.Warning($"Not found sub asset object : {assetName}");
@@ -109,14 +125,18 @@ namespace YooAsset
         public TObject[] GetSubAssetObjects<TObject>() where TObject : UnityEngine.Object
         {
             if (IsValidWithWarning == false)
+            {
                 return null;
+            }
 
-            List<TObject> ret = new List<TObject>(Provider.AllAssetObjects.Length);
+            var ret = new List<TObject>(Provider.AllAssetObjects.Length);
             foreach (var assetObject in Provider.AllAssetObjects)
             {
                 var retObject = assetObject as TObject;
                 if (retObject != null)
+                {
                     ret.Add(retObject);
+                }
             }
 
             return ret.ToArray();

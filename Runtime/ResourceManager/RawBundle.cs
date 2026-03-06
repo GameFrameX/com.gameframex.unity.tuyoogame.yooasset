@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class RawBundle
     {
@@ -18,19 +17,29 @@ namespace YooAsset
         {
             return _filePath;
         }
+
         public byte[] ReadFileData()
         {
             if (_fileSystem != null)
+            {
                 return _fileSystem.ReadFileData(_packageBundle);
+            }
             else
+            {
                 return FileUtility.ReadAllBytes(_filePath);
+            }
         }
+
         public string ReadFileText()
         {
             if (_fileSystem != null)
+            {
                 return _fileSystem.ReadFileText(_packageBundle);
+            }
             else
+            {
                 return FileUtility.ReadAllText(_filePath);
+            }
         }
     }
 }

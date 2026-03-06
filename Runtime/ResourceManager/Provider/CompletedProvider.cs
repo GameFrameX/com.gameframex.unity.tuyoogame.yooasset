@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal sealed class CompletedProvider : ProviderOperation
     {
@@ -10,6 +9,7 @@ namespace YooAsset
         public override void InternalOnStart()
         {
         }
+
         public override void InternalOnUpdate()
         {
         }

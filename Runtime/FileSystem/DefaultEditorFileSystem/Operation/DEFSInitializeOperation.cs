@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DEFSInitializeOperation : FSInitializeFileSystemOperation
     {
@@ -9,10 +8,12 @@ namespace YooAsset
         {
             _fileSytem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             Status = EOperationStatus.Succeed;
         }
+
         public override void InternalOnUpdate()
         {
         }

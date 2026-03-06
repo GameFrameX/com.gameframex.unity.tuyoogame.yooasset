@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     /// <summary>
     /// 查询远端包裹的最新版本
@@ -11,6 +10,7 @@ namespace YooAsset
         /// </summary>
         public string PackageVersion { protected set; get; }
     }
+
     internal sealed class RequestPackageVersionImplOperation : RequestPackageVersionOperation
     {
         private enum ESteps
@@ -32,22 +32,30 @@ namespace YooAsset
             _appendTimeTicks = appendTimeTicks;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestPackageVersion)
             {
                 if (_requestPackageVersionOp == null)
-                    _requestPackageVersionOp = _fileSystem.RequestPackageVersionAsync(_appendTimeTicks, _timeout);
+                {
+                    _requestPackageVersionOp = _fileSystem.RequestRemotePackageVersionAsync(_appendTimeTicks, _timeout);
+                }
 
                 if (_requestPackageVersionOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_requestPackageVersionOp.Status == EOperationStatus.Succeed)
                 {

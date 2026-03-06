@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace YooAsset
 {
     [Serializable]
-    internal class DebugPackageData
+    public class DebugPackageData
     {
         /// <summary>
         /// 包裹名称
@@ -16,6 +16,6 @@ namespace YooAsset
         /// <summary>
         /// 调试数据列表
         /// </summary>
-        public List<DebugProviderInfo> ProviderInfos = new List<DebugProviderInfo>(1000);
+        public List<DebugProviderInfo> ProviderInfos = new(1000);
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal interface IPlayMode
     {
@@ -12,6 +11,16 @@ namespace YooAsset
         /// 更新游戏模式
         /// </summary>
         void UpdatePlayMode();
+
+        /// <summary>
+        /// 获取本地最新的资源版本
+        /// </summary>
+        LoadLocalVersionOperation LoadLocalVersionAsync(bool appendTimeTicks, int timeout);
+
+        /// <summary>
+        /// 获取本地最新的资源清单
+        /// </summary>
+        LoadLocalManifestOperation LoadLocalManifestAsync(string packageVersion, int timeout);
 
         /// <summary>
         /// 向网络端请求最新的资源版本

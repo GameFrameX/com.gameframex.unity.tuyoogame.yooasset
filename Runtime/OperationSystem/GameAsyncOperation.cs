@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     public abstract class GameAsyncOperation : AsyncOperationBase
     {
@@ -7,14 +6,17 @@ namespace YooAsset
         {
             OnStart();
         }
+
         public override void InternalOnUpdate()
         {
             OnUpdate();
         }
+
         internal override void InternalOnAbort()
         {
             OnAbort();
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             OnWaitForAsyncComplete();
@@ -38,7 +40,9 @@ namespace YooAsset
         /// <summary>
         /// 异步等待完成
         /// </summary>
-        protected virtual void OnWaitForAsyncComplete() { }
+        protected virtual void OnWaitForAsyncComplete()
+        {
+        }
 
         /// <summary>
         /// 异步操作系统是否繁忙
@@ -46,14 +50,6 @@ namespace YooAsset
         protected bool IsBusy()
         {
             return OperationSystem.IsBusy;
-        }
-
-        /// <summary>
-        /// 终止异步操作
-        /// </summary>
-        protected void Abort()
-        {
-            SetAbort();
         }
     }
 }

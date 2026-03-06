@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using UnityEngine;
 using UnityEngine.Networking;
 using YooAsset;
@@ -7,16 +7,18 @@ internal class BGFSDownloadFileOperation : DefaultDownloadFileOperation
 {
     private ByteGameFileSystem _fileSystem;
     private ESteps _steps = ESteps.None;
-    
+
     internal BGFSDownloadFileOperation(ByteGameFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
     {
         _fileSystem = fileSystem;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         _steps = ESteps.CreateRequest;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
         // 创建下载器
         if (_steps == ESteps.CreateRequest)
@@ -88,6 +90,7 @@ internal class BGFSDownloadFileOperation : DefaultDownloadFileOperation
         _webRequest.disposeDownloadHandlerOnDispose = true;
         _webRequest.SendWebRequest();
     }
+
     private void DisposeWebRequest()
     {
         if (_webRequest != null)

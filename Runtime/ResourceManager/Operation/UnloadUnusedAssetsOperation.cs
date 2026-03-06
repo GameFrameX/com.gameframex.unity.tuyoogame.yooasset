@@ -20,14 +20,18 @@ namespace YooAsset
         {
             _resManager = resourceManager;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.UnloadUnused;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.UnloadUnused)
             {
@@ -52,7 +56,7 @@ namespace YooAsset
                 // 销毁文件加载器
                 foreach (var loader in removeList)
                 {
-                    string bundleName = loader.BundleFileInfo.Bundle.BundleName;
+                    var bundleName = loader.BundleFileInfo.Bundle.BundleName;
                     loader.DestroyLoader();
                     _resManager._loaderDic.Remove(bundleName);
                 }
@@ -64,6 +68,7 @@ namespace YooAsset
                 Status = EOperationStatus.Succeed;
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)

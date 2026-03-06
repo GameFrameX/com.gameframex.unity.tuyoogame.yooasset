@@ -6,39 +6,45 @@ namespace YooAsset
 {
     public class RawFileHandle : HandleBase, IDisposable
     {
-        private System.Action<RawFileHandle> _callback;
+        private Action<RawFileHandle> _callback;
 
         internal RawFileHandle(ProviderOperation provider) : base(provider)
         {
         }
+
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
         }
 
-        internal override void InvokeUpdateCallback()
-        {
-            
-        }
-
         /// <summary>
         /// 完成委托
         /// </summary>
-        public event System.Action<RawFileHandle> Completed
+        public event Action<RawFileHandle> Completed
         {
             add
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(RawFileHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(RawFileHandle)} is invalid");
+                }
+
                 if (Provider.IsDone)
+                {
                     value.Invoke(this);
+                }
                 else
+                {
                     _callback += value;
+                }
             }
             remove
             {
                 if (IsValidWithWarning == false)
-                    throw new System.Exception($"{nameof(RawFileHandle)} is invalid");
+                {
+                    throw new Exception($"{nameof(RawFileHandle)} is invalid");
+                }
+
                 _callback -= value;
             }
         }
@@ -49,7 +55,10 @@ namespace YooAsset
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
+            {
                 return;
+            }
+
             Provider.WaitForAsyncComplete();
         }
 
@@ -58,7 +67,7 @@ namespace YooAsset
         /// </summary>
         public void Release()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
         /// <summary>
@@ -66,7 +75,7 @@ namespace YooAsset
         /// </summary>
         public void Dispose()
         {
-            this.ReleaseInternal();
+            ReleaseInternal();
         }
 
 
@@ -76,7 +85,10 @@ namespace YooAsset
         public byte[] GetRawFileData()
         {
             if (IsValidWithWarning == false)
+            {
                 return null;
+            }
+
             return Provider.RawBundleObject.ReadFileData();
         }
 
@@ -86,7 +98,10 @@ namespace YooAsset
         public string GetRawFileText()
         {
             if (IsValidWithWarning == false)
+            {
                 return null;
+            }
+
             return Provider.RawBundleObject.ReadFileText();
         }
 
@@ -96,7 +111,10 @@ namespace YooAsset
         public string GetRawFilePath()
         {
             if (IsValidWithWarning == false)
+            {
                 return string.Empty;
+            }
+
             return Provider.RawBundleObject.GetFilePath();
         }
     }

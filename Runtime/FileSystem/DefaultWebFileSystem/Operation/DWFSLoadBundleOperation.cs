@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DWFSLoadAssetBundleOperation : FSLoadBundleOperation
     {
@@ -21,21 +20,25 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.DownloadFile;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.DownloadFile)
             {
                 if (_downloadhanlderAssetBundleOp == null)
                 {
-                    DownloadParam downloadParam = new DownloadParam(int.MaxValue, 60);
-                    string fileLoadPath = _fileSystem.GetWebFileLoadPath(_bundle);
+                    var downloadParam = new DownloadParam(int.MaxValue, 60);
+                    var fileLoadPath = _fileSystem.GetWebFileLoadPath(_bundle);
                     downloadParam.MainURL = DownloadSystemHelper.ConvertToWWWPath(fileLoadPath);
                     downloadParam.FallbackURL = downloadParam.MainURL;
                     _downloadhanlderAssetBundleOp = new DownloadHandlerAssetBundleOperation(_fileSystem, _bundle, downloadParam);
@@ -46,7 +49,9 @@ namespace YooAsset
                 DownloadedBytes = _downloadhanlderAssetBundleOp.DownloadedBytes;
                 Progress = _downloadhanlderAssetBundleOp.Progress;
                 if (_downloadhanlderAssetBundleOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_downloadhanlderAssetBundleOp.Status == EOperationStatus.Succeed)
                 {
@@ -62,6 +67,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             if (_steps != ESteps.Done)
@@ -72,12 +78,15 @@ namespace YooAsset
                 UnityEngine.Debug.LogError(Error);
             }
         }
+
         public override void AbortDownloadOperation()
         {
             if (_steps == ESteps.DownloadFile)
             {
                 if (_downloadhanlderAssetBundleOp != null)
+                {
                     _downloadhanlderAssetBundleOp.SetAbort();
+                }
             }
         }
     }

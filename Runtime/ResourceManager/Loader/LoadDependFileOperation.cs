@@ -18,6 +18,7 @@ namespace YooAsset
         /// 依赖的资源包加载器列表
         /// </summary>
         internal readonly List<LoadBundleFileOperation> Depends;
+
         private ESteps _steps = ESteps.None;
 
 
@@ -25,22 +26,29 @@ namespace YooAsset
         {
             Depends = dpends;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckDepend;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.CheckDepend)
             {
                 foreach (var loader in Depends)
                 {
                     if (loader.IsDone == false)
+                    {
                         return;
+                    }
                 }
+
                 _steps = ESteps.CheckResult;
             }
 
@@ -69,6 +77,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)

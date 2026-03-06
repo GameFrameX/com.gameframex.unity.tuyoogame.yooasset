@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
 internal class BGFSRequestPackageVersionOperation : FSRequestPackageVersionOperation
@@ -21,14 +21,18 @@ internal class BGFSRequestPackageVersionOperation : FSRequestPackageVersionOpera
         _fileSystem = fileSystem;
         _timeout = timeout;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         _steps = ESteps.RequestPackageVersion;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
+        {
             return;
+        }
 
         if (_steps == ESteps.RequestPackageVersion)
         {
@@ -40,7 +44,9 @@ internal class BGFSRequestPackageVersionOperation : FSRequestPackageVersionOpera
 
             Progress = _requestWebPackageVersionOp.Progress;
             if (_requestWebPackageVersionOp.IsDone == false)
+            {
                 return;
+            }
 
             if (_requestWebPackageVersionOp.Status == EOperationStatus.Succeed)
             {

@@ -25,17 +25,21 @@ namespace YooAsset
             _fileSystem = fileSystem;
             _manifest = manifest;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.GetUnusedCacheFiles;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.GetUnusedCacheFiles)
-            {    
+            {
                 _unusedBundleGUIDs = GetUnusedBundleGUIDs();
                 _unusedFileTotalCount = _unusedBundleGUIDs.Count;
                 _steps = ESteps.ClearUnusedCacheFiles;
@@ -44,19 +48,25 @@ namespace YooAsset
 
             if (_steps == ESteps.ClearUnusedCacheFiles)
             {
-                for (int i = _unusedBundleGUIDs.Count - 1; i >= 0; i--)
+                for (var i = _unusedBundleGUIDs.Count - 1; i >= 0; i--)
                 {
-                    string bundleGUID = _unusedBundleGUIDs[i];
+                    var bundleGUID = _unusedBundleGUIDs[i];
                     _fileSystem.DeleteCacheFile(bundleGUID);
                     _unusedBundleGUIDs.RemoveAt(i);
                     if (OperationSystem.IsBusy)
+                    {
                         break;
+                    }
                 }
 
                 if (_unusedFileTotalCount == 0)
+                {
                     Progress = 1.0f;
+                }
                 else
-                    Progress = 1.0f - (_unusedBundleGUIDs.Count / _unusedFileTotalCount);
+                {
+                    Progress = 1.0f - _unusedBundleGUIDs.Count / _unusedFileTotalCount;
+                }
 
                 if (_unusedBundleGUIDs.Count == 0)
                 {
@@ -69,7 +79,7 @@ namespace YooAsset
         private List<string> GetUnusedBundleGUIDs()
         {
             var allBundleGUIDs = _fileSystem.GetAllCachedBundleGUIDs();
-            List<string> result = new List<string>(allBundleGUIDs.Count);
+            var result = new List<string>(allBundleGUIDs.Count);
             foreach (var bundleGUID in allBundleGUIDs)
             {
                 if (_manifest.IsIncludeBundleFile(bundleGUID) == false)
@@ -77,6 +87,7 @@ namespace YooAsset
                     result.Add(bundleGUID);
                 }
             }
+
             return result;
         }
     }

@@ -5,53 +5,15 @@ namespace YooAsset
     public class SceneHandle : HandleBase
     {
         private System.Action<SceneHandle> _callback;
-        private System.Action<SceneHandle> _updateCallback;
         internal string PackageName { set; get; }
 
         internal SceneHandle(ProviderOperation provider) : base(provider)
         {
         }
 
-        internal override void InvokeUpdateCallback()
-        {
-            _updateCallback?.Invoke(this);
-        }
-
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
-        }
-
-        /// <summary>
-        /// 更新委托
-        /// </summary>
-        public event System.Action<SceneHandle> Update
-        {
-            add
-            {
-                if (IsValidWithWarning == false)
-                {
-                    throw new System.Exception($"{nameof(SceneHandle)} is invalid !");
-                }
-
-                if (Provider.IsDone)
-                {
-                    value.Invoke(this);
-                }
-                else
-                {
-                    _updateCallback += value;
-                }
-            }
-            remove
-            {
-                if (IsValidWithWarning == false)
-                {
-                    throw new System.Exception($"{nameof(SceneHandle)} is invalid !");
-                }
-
-                _updateCallback -= value;
-            }
         }
 
         /// <summary>
@@ -62,16 +24,26 @@ namespace YooAsset
             add
             {
                 if (IsValidWithWarning == false)
+                {
                     throw new System.Exception($"{nameof(SceneHandle)} is invalid !");
+                }
+
                 if (Provider.IsDone)
+                {
                     value.Invoke(this);
+                }
                 else
+                {
                     _callback += value;
+                }
             }
             remove
             {
                 if (IsValidWithWarning == false)
+                {
                     throw new System.Exception($"{nameof(SceneHandle)} is invalid !");
+                }
+
                 _callback -= value;
             }
         }
@@ -82,7 +54,10 @@ namespace YooAsset
         internal void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
+            {
                 return;
+            }
+
             Provider.WaitForAsyncComplete();
         }
 
@@ -94,7 +69,10 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return string.Empty;
+                }
+
                 return Provider.SceneName;
             }
         }
@@ -107,11 +85,13 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return new Scene();
+                }
+
                 return Provider.SceneObject;
             }
         }
-
 
         /// <summary>
         /// 激活场景（当同时存在多个场景时用于切换激活场景）
@@ -119,7 +99,9 @@ namespace YooAsset
         public bool ActivateScene()
         {
             if (IsValidWithWarning == false)
+            {
                 return false;
+            }
 
             if (SceneObject.IsValid() && SceneObject.isLoaded)
             {
@@ -138,7 +120,9 @@ namespace YooAsset
         public bool UnSuspend()
         {
             if (IsValidWithWarning == false)
+            {
                 return false;
+            }
 
             if (Provider is DatabaseSceneProvider)
             {
@@ -164,7 +148,9 @@ namespace YooAsset
         public bool IsMainScene()
         {
             if (IsValidWithWarning == false)
+            {
                 return false;
+            }
 
             if (Provider is DatabaseSceneProvider)
             {
@@ -187,12 +173,12 @@ namespace YooAsset
         /// </summary>
         public UnloadSceneOperation UnloadAsync()
         {
-            string packageName = GetAssetInfo().PackageName;
+            var packageName = GetAssetInfo().PackageName;
 
             // 如果句柄无效
             if (IsValidWithWarning == false)
             {
-                string error = $"{nameof(SceneHandle)} is invalid.";
+                var error = $"{nameof(SceneHandle)} is invalid.";
                 var operation = new UnloadSceneOperation(error);
                 OperationSystem.StartOperation(packageName, operation);
                 return operation;
@@ -201,7 +187,7 @@ namespace YooAsset
             // 如果是主场景
             if (IsMainScene())
             {
-                string error = $"Cannot unload main scene. Use {nameof(YooAssets.LoadSceneAsync)} method to change the main scene !";
+                var error = $"Cannot unload main scene. Use {nameof(YooAssets.LoadSceneAsync)} method to change the main scene !";
                 YooLogger.Error(error);
                 var operation = new UnloadSceneOperation(error);
                 OperationSystem.StartOperation(packageName, operation);

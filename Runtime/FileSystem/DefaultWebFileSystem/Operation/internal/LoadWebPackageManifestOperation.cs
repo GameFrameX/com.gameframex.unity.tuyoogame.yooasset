@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class LoadWebPackageManifestOperation : AsyncOperationBase
     {
@@ -31,27 +30,33 @@ namespace YooAsset
             _packageVersion = packageVersion;
             _packageHash = packageHash;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestFileData;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestFileData)
             {
                 if (_webDataRequestOp == null)
                 {
-                    string filePath = _fileSystem.GetWebPackageManifestFilePath(_packageVersion);
-                    string url = DownloadSystemHelper.ConvertToWWWPath(filePath);
+                    var filePath = _fileSystem.GetWebPackageManifestFilePath(_packageVersion);
+                    var url = DownloadSystemHelper.ConvertToWWWPath(filePath);
                     _webDataRequestOp = new UnityWebDataRequestOperation(url);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webDataRequestOp);
                 }
 
                 if (_webDataRequestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_webDataRequestOp.Status == EOperationStatus.Succeed)
                 {
@@ -67,7 +72,7 @@ namespace YooAsset
 
             if (_steps == ESteps.VerifyFileData)
             {
-                string fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
+                var fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
                 if (fileHash == _packageHash)
                 {
                     _steps = ESteps.LoadManifest;
@@ -90,7 +95,9 @@ namespace YooAsset
 
                 Progress = _deserializer.Progress;
                 if (_deserializer.IsDone == false)
+                {
                     return;
+                }
 
                 if (_deserializer.Status == EOperationStatus.Succeed)
                 {

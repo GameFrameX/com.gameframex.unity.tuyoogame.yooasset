@@ -1,7 +1,8 @@
 {
     "name": "YooAsset.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "YooAsset.Editor",
     "references": [
+        "YooAsset",
         "YooAsset.Runtime",
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor"

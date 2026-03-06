@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using UnityEngine;
 using UnityEngine.Networking;
 using YooAsset;
@@ -22,20 +22,24 @@ internal class BGFSLoadBundleOperation : FSLoadBundleOperation
         _fileSystem = fileSystem;
         _bundle = bundle;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         _steps = ESteps.LoadBundleFile;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
+        {
             return;
+        }
 
         if (_steps == ESteps.LoadBundleFile)
         {
             if (_webRequest == null)
             {
-                string mainURL = _fileSystem.RemoteServices.GetRemoteMainURL(_bundle.FileName);
+                var mainURL = _fileSystem.RemoteServices.GetRemoteMainURL(_bundle.FileName, null);
                 _webRequest = UnityWebRequestAssetBundle.GetAssetBundle(mainURL);
                 _webRequest.SendWebRequest();
             }
@@ -44,7 +48,9 @@ internal class BGFSLoadBundleOperation : FSLoadBundleOperation
             DownloadedBytes = (long)_webRequest.downloadedBytes;
             Progress = DownloadProgress;
             if (_webRequest.isDone == false)
+            {
                 return;
+            }
 
             if (CheckRequestResult())
             {
@@ -59,16 +65,18 @@ internal class BGFSLoadBundleOperation : FSLoadBundleOperation
             }
         }
     }
-    internal override void InternalWaitForAsyncComplete()
+
+    public override void InternalWaitForAsyncComplete()
     {
         if (_steps != ESteps.Done)
         {
             _steps = ESteps.Done;
             Status = EOperationStatus.Failed;
             Error = "WebGL platform not support sync load method !";
-            UnityEngine.Debug.LogError(Error);
+            Debug.LogError(Error);
         }
     }
+
     public override void AbortDownloadOperation()
     {
     }

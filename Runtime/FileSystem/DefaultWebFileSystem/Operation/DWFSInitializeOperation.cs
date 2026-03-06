@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DWFSInitializeOperation : FSInitializeFileSystemOperation
     {
@@ -19,14 +18,18 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadCatalogFile;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.LoadCatalogFile)
             {
@@ -35,7 +38,7 @@ namespace YooAsset
 #if UNITY_EDITOR
                     // 兼容性初始化
                     // 说明：内置文件系统在编辑器下运行时需要动态生成
-                    string packageRoot = _fileSystem.GetStreamingAssetsPackageRoot();
+                    var packageRoot = _fileSystem.GetStreamingAssetsPackageRoot();
                     DefaultBuildinFileSystemBuild.CreateBuildinCatalogFile(_fileSystem.PackageName, packageRoot);
 #endif
 
@@ -44,7 +47,9 @@ namespace YooAsset
                 }
 
                 if (_loadCatalogFileOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_loadCatalogFileOp.Status == EOperationStatus.Succeed)
                 {

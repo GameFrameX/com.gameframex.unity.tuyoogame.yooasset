@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class DefaultUnpackFileSystemDefine
     {
@@ -12,7 +11,7 @@ namespace YooAsset
         /// 保存的资源文件的文件夹名称
         /// </summary>
         public const string SaveFilesFolderName = "UnpackFiles";
-        
+
         /// <summary>
         /// 下载的临时文件的文件夹名称
         /// </summary>

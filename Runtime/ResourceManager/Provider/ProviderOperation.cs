@@ -71,7 +71,7 @@ namespace YooAsset
         protected LoadBundleFileOperation LoadBundleFileOp { private set; get; }
         protected LoadDependBundleFileOperation LoadDependBundleFileOp { private set; get; }
         protected bool IsWaitForAsyncComplete { private set; get; } = false;
-        private readonly List<HandleBase> _handles = new List<HandleBase>();
+        private readonly List<HandleBase> _handles = new();
 
 
         public ProviderOperation(ResourceManager manager, string providerGUID, AssetInfo assetInfo)
@@ -98,9 +98,14 @@ namespace YooAsset
             while (true)
             {
                 if (LoadDependBundleFileOp != null)
+                {
                     LoadDependBundleFileOp.WaitForAsyncComplete();
+                }
+
                 if (LoadBundleFileOp != null)
+                {
                     LoadBundleFileOp.WaitForAsyncComplete();
+                }
 
                 if (ExecuteWhileDone())
                 {
@@ -145,7 +150,9 @@ namespace YooAsset
         {
             // 注意：在进行资源加载过程时不可以销毁
             if (_steps == ESteps.Loading || _steps == ESteps.Checking)
+            {
                 return false;
+            }
 
             return RefCount <= 0;
         }
@@ -160,17 +167,29 @@ namespace YooAsset
 
             HandleBase handle;
             if (typeof(T) == typeof(AssetHandle))
+            {
                 handle = new AssetHandle(this);
+            }
             else if (typeof(T) == typeof(SceneHandle))
+            {
                 handle = new SceneHandle(this);
+            }
             else if (typeof(T) == typeof(SubAssetsHandle))
+            {
                 handle = new SubAssetsHandle(this);
+            }
             else if (typeof(T) == typeof(AllAssetsHandle))
+            {
                 handle = new AllAssetsHandle(this);
+            }
             else if (typeof(T) == typeof(RawFileHandle))
+            {
                 handle = new RawFileHandle(this);
+            }
             else
-                throw new System.NotImplementedException();
+            {
+                throw new NotImplementedException();
+            }
 
             _handles.Add(handle);
             return handle as T;
@@ -182,10 +201,14 @@ namespace YooAsset
         public void ReleaseHandle(HandleBase handle)
         {
             if (RefCount <= 0)
-                throw new System.Exception("Should never get here !");
+            {
+                throw new Exception("Should never get here !");
+            }
 
             if (_handles.Remove(handle) == false)
-                throw new System.Exception("Should never get here !");
+            {
+                throw new Exception("Should never get here !");
+            }
 
             // 引用计数减少
             RefCount--;
@@ -196,7 +219,7 @@ namespace YooAsset
         /// </summary>
         public void ReleaseAllHandles()
         {
-            for (int i = _handles.Count - 1; i >= 0; i--)
+            for (var i = _handles.Count - 1; i >= 0; i--)
             {
                 var handle = _handles[i];
                 handle.ReleaseInternal();
@@ -209,9 +232,11 @@ namespace YooAsset
         protected void ProcessFatalEvent()
         {
             if (LoadBundleFileOp.IsDestroyed)
-                throw new System.Exception("Should never get here !");
+            {
+                throw new Exception("Should never get here !");
+            }
 
-            string error = $"The bundle {LoadBundleFileOp.BundleFileInfo.Bundle.BundleName} has been destroyed by unity bugs !";
+            var error = $"The bundle {LoadBundleFileOp.BundleFileInfo.Bundle.BundleName} has been destroyed by unity bugs !";
             YooLogger.Error(error);
             InvokeCompletion(Error, EOperationStatus.Failed);
         }
@@ -229,7 +254,7 @@ namespace YooAsset
 
             // 注意：创建临时列表是为了防止外部逻辑在回调函数内创建或者释放资源句柄。
             // 注意：回调方法如果发生异常，会阻断列表里的后续回调方法！
-            List<HandleBase> tempers = new List<HandleBase>(_handles);
+            var tempers = new List<HandleBase>(_handles);
             foreach (var hande in tempers)
             {
                 if (hande.IsValid)
@@ -240,33 +265,11 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 更新流程
-        /// </summary>
-        protected void InvokeUpdateCompletion()
-        {
-            List<HandleBase> tempers = new List<HandleBase>(_handles);
-            foreach (var hande in tempers)
-            {
-                if (hande.IsValid)
-                {
-                    try
-                    {
-                        hande.InvokeUpdateCallback();
-                    }
-                    catch (Exception e)
-                    {
-                        YooLogger.Exception(e);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 获取下载报告
         /// </summary>
         public DownloadStatus GetDownloadStatus()
         {
-            DownloadStatus status = new DownloadStatus();
+            var status = new DownloadStatus();
             status.TotalBytes = LoadBundleFileOp.BundleFileInfo.Bundle.FileSize;
             status.DownloadedBytes = LoadBundleFileOp.DownloadedBytes;
             foreach (var dependBundle in LoadDependBundleFileOp.Depends)
@@ -276,7 +279,9 @@ namespace YooAsset
             }
 
             if (status.TotalBytes == 0)
-                throw new System.Exception("Should never get here !");
+            {
+                throw new Exception("Should never get here !");
+            }
 
             status.IsDone = status.DownloadedBytes == status.TotalBytes;
             status.Progress = (float)status.DownloadedBytes / status.TotalBytes;
@@ -307,6 +312,7 @@ namespace YooAsset
         public void InitSpawnDebugInfo()
         {
             SpawnScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            ;
             SpawnTime = SpawnTimeToString(UnityEngine.Time.realtimeSinceStartup);
         }
 

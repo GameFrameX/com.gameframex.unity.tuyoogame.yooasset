@@ -23,14 +23,18 @@ namespace YooAsset
         {
             _fileSystem = fileSystem;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.GetAllCacheFiles;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.GetAllCacheFiles)
             {
@@ -42,19 +46,25 @@ namespace YooAsset
 
             if (_steps == ESteps.ClearAllCacheFiles)
             {
-                for (int i = _allBundleGUIDs.Count - 1; i >= 0; i--)
+                for (var i = _allBundleGUIDs.Count - 1; i >= 0; i--)
                 {
-                    string bundleGUID = _allBundleGUIDs[i];
+                    var bundleGUID = _allBundleGUIDs[i];
                     _fileSystem.DeleteCacheFile(bundleGUID);
                     _allBundleGUIDs.RemoveAt(i);
                     if (OperationSystem.IsBusy)
+                    {
                         break;
+                    }
                 }
 
                 if (_fileTotalCount == 0)
+                {
                     Progress = 1.0f;
+                }
                 else
-                    Progress = 1.0f - (_allBundleGUIDs.Count / _fileTotalCount);
+                {
+                    Progress = 1.0f - _allBundleGUIDs.Count / _fileTotalCount;
+                }
 
                 if (_allBundleGUIDs.Count == 0)
                 {

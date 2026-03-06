@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
 internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
@@ -34,29 +34,35 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
         _packageHash = packageHash;
         _timeout = timeout;
     }
-    internal override void InternalOnStart()
+
+    public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(LoadByteGamePackageManifestOperation));
         _steps = ESteps.RequestFileData;
     }
-    internal override void InternalOnUpdate()
+
+    public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
+        {
             return;
+        }
 
         if (_steps == ESteps.RequestFileData)
         {
             if (_webDataRequestOp == null)
             {
-                string fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
-                string url = GetRequestURL(fileName);
+                var fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
+                var url = GetRequestURL(fileName);
                 _webDataRequestOp = new UnityWebDataRequestOperation(url, _timeout);
                 OperationSystem.StartOperation(_fileSystem.PackageName, _webDataRequestOp);
             }
 
             Progress = _webDataRequestOp.Progress;
             if (_webDataRequestOp.IsDone == false)
+            {
                 return;
+            }
 
             if (_webDataRequestOp.Status == EOperationStatus.Succeed)
             {
@@ -73,7 +79,7 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
 
         if (_steps == ESteps.VerifyFileData)
         {
-            string fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
+            var fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
             if (fileHash == _packageHash)
             {
                 _steps = ESteps.LoadManifest;
@@ -96,7 +102,9 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
 
             Progress = _deserializer.Progress;
             if (_deserializer.IsDone == false)
+            {
                 return;
+            }
 
             if (_deserializer.Status == EOperationStatus.Succeed)
             {
@@ -117,9 +125,13 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
     {
         // 轮流返回请求地址
         if (_requestCount % 2 == 0)
-            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName);
+        {
+            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, _packageVersion);
+        }
         else
-            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName);
+        {
+            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, _packageVersion);
+        }
     }
 }
 #endif

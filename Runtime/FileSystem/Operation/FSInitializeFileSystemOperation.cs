@@ -1,7 +1,6 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
-    public abstract class FSInitializeFileSystemOperation : AsyncOperationBase
+    internal abstract class FSInitializeFileSystemOperation : AsyncOperationBase
     {
     }
 }

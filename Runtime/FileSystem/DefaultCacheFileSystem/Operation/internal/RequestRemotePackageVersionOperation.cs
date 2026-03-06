@@ -1,4 +1,6 @@
-﻿
+﻿using TTSDK;
+using UnityEngine;
+
 namespace YooAsset
 {
     internal class RequestRemotePackageVersionOperation : AsyncOperationBase
@@ -29,29 +31,42 @@ namespace YooAsset
             _appendTimeTicks = appendTimeTicks;
             _timeout = timeout;
         }
+
         public override void InternalOnStart()
         {
             _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestRemotePackageVersionOperation));
             _steps = ESteps.RequestPackageVersion;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.RequestPackageVersion)
             {
                 if (_webTextRequestOp == null)
                 {
-                    string fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
-                    string url = GetWebRequestURL(fileName);
+                    var fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
+                    var url = GetWebRequestURL(fileName);
                     _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
+                    if (_webTextRequestOp.requestOperation.webRequest != null)
+                    {
+                        var web = _webTextRequestOp.requestOperation.webRequest;
+                        web.SetRequestHeader("Cache-Control", "no-cache");
+                        web.SetRequestHeader("Pragma", "no-cache");
+                    }
+
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
                 }
 
                 Progress = _webTextRequestOp.Progress;
                 if (_webTextRequestOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (_webTextRequestOp.Status == EOperationStatus.Succeed)
                 {
@@ -84,15 +99,23 @@ namespace YooAsset
 
             // 轮流返回请求地址
             if (_requestCount % 2 == 0)
-                url = _fileSystem.RemoteServices.GetRemoteMainURL(fileName);
+            {
+                url = _fileSystem.RemoteServices.GetRemoteMainURL(fileName, "");
+            }
             else
-                url = _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName);
+            {
+                url = _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, "");
+            }
 
             // 在URL末尾添加时间戳
             if (_appendTimeTicks)
+            {
                 return $"{url}?{System.DateTime.UtcNow.Ticks}";
+            }
             else
+            {
                 return url;
+            }
         }
     }
 }

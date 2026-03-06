@@ -12,14 +12,18 @@ namespace YooAsset
         public BundledAssetProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
+
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
+
         public override void InternalOnUpdate()
         {
             if (IsDone)
+            {
                 return;
+            }
 
             if (_steps == ESteps.None)
             {
@@ -30,9 +34,14 @@ namespace YooAsset
             if (_steps == ESteps.CheckBundle)
             {
                 if (LoadDependBundleFileOp.IsDone == false)
+                {
                     return;
+                }
+
                 if (LoadBundleFileOp.IsDone == false)
+                {
                     return;
+                }
 
                 if (LoadDependBundleFileOp.Status != EOperationStatus.Succeed)
                 {
@@ -54,7 +63,7 @@ namespace YooAsset
 
                 if (LoadBundleFileOp.Result is AssetBundle == false)
                 {
-                    string error = "Try load raw file using load assetbundle method !";
+                    var error = "Try load raw file using load assetbundle method !";
                     InvokeCompletion(error, EOperationStatus.Failed);
                     return;
                 }
@@ -69,17 +78,26 @@ namespace YooAsset
                 if (IsWaitForAsyncComplete)
                 {
                     if (MainAssetInfo.AssetType == null)
+                    {
                         AssetObject = _assetBundle.LoadAsset(MainAssetInfo.AssetPath);
+                    }
                     else
+                    {
                         AssetObject = _assetBundle.LoadAsset(MainAssetInfo.AssetPath, MainAssetInfo.AssetType);
+                    }
                 }
                 else
                 {
                     if (MainAssetInfo.AssetType == null)
+                    {
                         _cacheRequest = _assetBundle.LoadAssetAsync(MainAssetInfo.AssetPath);
+                    }
                     else
+                    {
                         _cacheRequest = _assetBundle.LoadAssetAsync(MainAssetInfo.AssetPath, MainAssetInfo.AssetType);
+                    }
                 }
+
                 _steps = ESteps.Checking;
             }
 
@@ -98,7 +116,10 @@ namespace YooAsset
                     {
                         Progress = _cacheRequest.progress;
                         if (_cacheRequest.isDone == false)
+                        {
                             return;
+                        }
+
                         AssetObject = _cacheRequest.asset;
                     }
                 }
@@ -107,9 +128,14 @@ namespace YooAsset
                 {
                     string error;
                     if (MainAssetInfo.AssetType == null)
+                    {
                         error = $"Failed to load asset : {MainAssetInfo.AssetPath} AssetType : null AssetBundle : {LoadBundleFileOp.BundleFileInfo.Bundle.BundleName}";
+                    }
                     else
+                    {
                         error = $"Failed to load asset : {MainAssetInfo.AssetPath} AssetType : {MainAssetInfo.AssetType} AssetBundle : {LoadBundleFileOp.BundleFileInfo.Bundle.BundleName}";
+                    }
+
                     YooLogger.Error(error);
                     InvokeCompletion(error, EOperationStatus.Failed);
                 }

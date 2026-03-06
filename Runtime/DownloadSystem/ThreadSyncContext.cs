@@ -11,7 +11,7 @@ namespace YooAsset
     /// </summary>
     internal sealed class ThreadSyncContext : SynchronizationContext
     {
-        private readonly ConcurrentQueue<Action> _safeQueue = new ConcurrentQueue<Action>();
+        private readonly ConcurrentQueue<Action> _safeQueue = new();
 
         /// <summary>
         /// 更新同步队列
@@ -20,8 +20,11 @@ namespace YooAsset
         {
             while (true)
             {
-                if (_safeQueue.TryDequeue(out Action action) == false)
+                if (_safeQueue.TryDequeue(out var action) == false)
+                {
                     return;
+                }
+
                 action.Invoke();
             }
         }
@@ -31,7 +34,7 @@ namespace YooAsset
         /// </summary>
         public override void Post(SendOrPostCallback callback, object state)
         {
-            Action action = new Action(() => { callback(state); });
+            var action = new Action(() => { callback(state); });
             _safeQueue.Enqueue(action);
         }
     }

@@ -21,14 +21,18 @@ namespace YooAsset
         {
             _resManager = resourceManager;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.AbortDownload;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.AbortDownload)
             {
@@ -38,6 +42,7 @@ namespace YooAsset
                 {
                     loader.AbortDownloadOperation();
                 }
+
                 _steps = ESteps.CheckLoading;
             }
 
@@ -48,8 +53,11 @@ namespace YooAsset
                 foreach (var provider in providerDic.Values)
                 {
                     if (provider.IsDone == false)
+                    {
                         return;
+                    }
                 }
+
                 _steps = ESteps.UnloadAll;
             }
 

@@ -82,9 +82,9 @@ internal class RequestWechatPackageHashOperation : AsyncOperationBase
     {
         // 轮流返回请求地址
         if (_requestCount % 2 == 0)
-            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName);
+            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName,_packageVersion);
         else
-            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName);
+            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName,_packageVersion);
     }
 }
 #endif

@@ -15,7 +15,6 @@ namespace YooAsset
         }
 
         internal abstract void InvokeCallback();
-        internal abstract void InvokeUpdateCallback();
 
         /// <summary>
         /// 获取资源信息
@@ -46,7 +45,9 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return EOperationStatus.None;
+                }
 
                 return Provider.Status;
             }
@@ -60,7 +61,10 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return string.Empty;
+                }
+
                 return Provider.Error;
             }
         }
@@ -73,24 +77,11 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
-                    return 0;
-                return Provider.Progress;
-            }
-        }
-
-        /// <summary>
-        /// 加载时长
-        /// </summary>
-        public float Duration
-        {
-            get
-            {
-                if (IsValidWithWarning == false)
                 {
                     return 0;
                 }
 
-                return Provider.LoadingTime;
+                return Provider.Progress;
             }
         }
 
@@ -102,7 +93,10 @@ namespace YooAsset
             get
             {
                 if (IsValidWithWarning == false)
+                {
                     return false;
+                }
+
                 return Provider.IsDone;
             }
         }
@@ -115,9 +109,13 @@ namespace YooAsset
             get
             {
                 if (Provider != null && Provider.IsDestroyed == false)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
         }
 
@@ -135,9 +133,14 @@ namespace YooAsset
                 else
                 {
                     if (Provider == null)
+                    {
                         YooLogger.Warning($"Operation handle is released : {_assetInfo.AssetPath}");
+                    }
                     else if (Provider.IsDestroyed)
+                    {
                         YooLogger.Warning($"Provider is destroyed : {_assetInfo.AssetPath}");
+                    }
+
                     return false;
                 }
             }
@@ -149,7 +152,10 @@ namespace YooAsset
         internal void ReleaseInternal()
         {
             if (IsValidWithWarning == false)
+            {
                 return;
+            }
+
             Provider.ReleaseHandle(this);
             Provider = null;
         }

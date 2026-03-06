@@ -48,14 +48,18 @@ namespace YooAsset
         {
             _element = element;
         }
+
         public override void InternalOnStart()
         {
             _steps = ESteps.VerifyFile;
         }
+
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
+            }
 
             if (_steps == ESteps.VerifyFile)
             {
@@ -67,9 +71,11 @@ namespace YooAsset
 
             if (_steps == ESteps.Waiting)
             {
-                int result = _element.Result;
+                var result = _element.Result;
                 if (result == 0)
+                {
                     return;
+                }
 
                 VerifyResult = (EFileVerifyResult)result;
                 if (VerifyResult == EFileVerifyResult.Succeed)
@@ -85,6 +91,7 @@ namespace YooAsset
                 }
             }
         }
+
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -92,7 +99,9 @@ namespace YooAsset
                 // 注意：等待子线程验证文件完毕
                 InternalOnUpdate();
                 if (IsDone)
+                {
                     break;
+                }
             }
         }
 
@@ -100,10 +109,11 @@ namespace YooAsset
         {
             return ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), element);
         }
+
         private void VerifyInThread(object obj)
         {
-            TempFileElement element = (TempFileElement)obj;
-            int result = (int)FileSystemHelper.FileVerify(element.TempFilePath, element.TempFileSize, element.TempFileCRC, EFileVerifyLevel.High);
+            var element = (TempFileElement)obj;
+            var result = (int)FileSystemHelper.FileVerify(element.TempFilePath, element.TempFileSize, element.TempFileCRC, EFileVerifyLevel.High);
             element.Result = result;
         }
     }
