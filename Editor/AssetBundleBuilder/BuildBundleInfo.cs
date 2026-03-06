@@ -56,7 +56,6 @@ namespace YooAsset.Editor
         public string EncryptedFilePath { set; get; }
         #endregion
 
-        private readonly HashSet<string> _assetPaths = new HashSet<string>();
 
         /// <summary>
         /// 参与构建的资源列表
@@ -85,11 +84,9 @@ namespace YooAsset.Editor
         /// </summary>
         public void PackAsset(BuildAssetInfo buildAsset)
         {
-            string assetPath = buildAsset.AssetInfo.AssetPath;
-            if (_assetPaths.Contains(assetPath))
-                throw new System.Exception($"Should never get here ! Asset is existed : {assetPath}");
+            if (IsContainsAsset(buildAsset.AssetInfo.AssetPath))
+                throw new System.Exception($"Should never get here ! Asset is existed : {buildAsset.AssetInfo.AssetPath}");
 
-            _assetPaths.Add(assetPath);
             MainAssets.Add(buildAsset);
         }
 
@@ -98,7 +95,14 @@ namespace YooAsset.Editor
         /// </summary>
         public bool IsContainsAsset(string assetPath)
         {
-            return _assetPaths.Contains(assetPath);
+            foreach (var buildAsset in MainAssets)
+            {
+                if (buildAsset.AssetInfo.AssetPath == assetPath)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

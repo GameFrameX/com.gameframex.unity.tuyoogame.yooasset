@@ -58,6 +58,7 @@ namespace YooAsset.Editor
             _buildVersionField = Root.Q<TextField>("BuildVersion");
             _buildVersionField.style.width = StyleWidth;
             _buildVersionField.SetValueWithoutNotify(GetDefaultPackageVersion());
+            _buildVersionField.SetEnabled(false);
 
             // 构建模式
             {
@@ -65,11 +66,8 @@ namespace YooAsset.Editor
                 var buildMode = AssetBundleBuilderSetting.GetPackageBuildMode(PackageName, BuildPipeline);
                 var buildModeList = GetSupportBuildModes();
                 int defaultIndex = buildModeList.FindIndex(x => x.Equals(buildMode));
-                if (defaultIndex < 0 && buildModeList.Count > 0)
-                {
+                if (defaultIndex < 0)
                     defaultIndex = (int)(EBuildMode)buildModeList[0];
-                }
-
                 _buildModeField = new PopupField<Enum>(buildModeList, defaultIndex);
                 _buildModeField.label = "Build Mode";
                 _buildModeField.style.width = StyleWidth;
@@ -88,11 +86,8 @@ namespace YooAsset.Editor
                 {
                     var encyptionClassName = AssetBundleBuilderSetting.GetPackageEncyptionClassName(PackageName, BuildPipeline);
                     int defaultIndex = encryptionClassTypes.FindIndex(x => x.FullName.Equals(encyptionClassName));
-                    if (defaultIndex < 0 && encryptionClassTypes.Count > 0)
-                    {
+                    if (defaultIndex < 0)
                         defaultIndex = 0;
-                    }
-
                     _encryptionField = new PopupField<Type>(encryptionClassTypes, defaultIndex);
                     _encryptionField.label = "Encryption";
                     _encryptionField.style.width = StyleWidth;
