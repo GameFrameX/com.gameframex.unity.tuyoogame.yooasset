@@ -25,13 +25,19 @@ namespace YooAsset
         public static string RemoveExtension(string str)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return str;
+            }
 
             int index = str.LastIndexOf('.');
             if (index == -1)
+            {
                 return str;
+            }
             else
+            {
                 return str.Remove(index); //"assets/config/test.unity3d" --> "assets/config/test"
+            }
         }
 
         /// <summary>
@@ -39,7 +45,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2)
         {
-            return StringUtility.Format("{0}/{1}", path1, path2);
+            return System.IO.Path.Combine(path1, path2);
         }
 
         /// <summary>
@@ -47,7 +53,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2, string path3)
         {
-            return StringUtility.Format("{0}/{1}/{2}", path1, path2, path3);
+            return System.IO.Path.Combine(path1, path2, path3);
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2, string path3, string path4)
         {
-            return StringUtility.Format("{0}/{1}/{2}/{3}", path1, path2, path3, path4);
+            return System.IO.Path.Combine(path1, path2, path3, path4);
         }
     }
 
@@ -64,43 +70,55 @@ namespace YooAsset
     /// </summary>
     internal static class StringUtility
     {
-        [ThreadStatic]
-        private static StringBuilder _cacheBuilder = new StringBuilder(2048);
+        [ThreadStatic] private static StringBuilder _cacheBuilder = new StringBuilder(2048);
 
         public static string Format(string format, object arg0)
         {
             if (string.IsNullOrEmpty(format))
+            {
                 throw new ArgumentNullException();
+            }
 
             _cacheBuilder.Length = 0;
             _cacheBuilder.AppendFormat(format, arg0);
             return _cacheBuilder.ToString();
         }
+
         public static string Format(string format, object arg0, object arg1)
         {
             if (string.IsNullOrEmpty(format))
+            {
                 throw new ArgumentNullException();
+            }
 
             _cacheBuilder.Length = 0;
             _cacheBuilder.AppendFormat(format, arg0, arg1);
             return _cacheBuilder.ToString();
         }
+
         public static string Format(string format, object arg0, object arg1, object arg2)
         {
             if (string.IsNullOrEmpty(format))
+            {
                 throw new ArgumentNullException();
+            }
 
             _cacheBuilder.Length = 0;
             _cacheBuilder.AppendFormat(format, arg0, arg1, arg2);
             return _cacheBuilder.ToString();
         }
+
         public static string Format(string format, params object[] args)
         {
             if (string.IsNullOrEmpty(format))
+            {
                 throw new ArgumentNullException();
+            }
 
             if (args == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             _cacheBuilder.Length = 0;
             _cacheBuilder.AppendFormat(format, args);
@@ -111,7 +129,7 @@ namespace YooAsset
     /// <summary>
     /// 文件工具类
     /// </summary>
-    internal static class FileUtility
+    public static class FileUtility
     {
         /// <summary>
         /// 读取文件的文本数据
@@ -119,7 +137,10 @@ namespace YooAsset
         public static string ReadAllText(string filePath)
         {
             if (File.Exists(filePath) == false)
+            {
                 return null;
+            }
+
             return File.ReadAllText(filePath, Encoding.UTF8);
         }
 
@@ -129,7 +150,10 @@ namespace YooAsset
         public static byte[] ReadAllBytes(string filePath)
         {
             if (File.Exists(filePath) == false)
+            {
                 return null;
+            }
+
             return File.ReadAllBytes(filePath);
         }
 
@@ -173,7 +197,9 @@ namespace YooAsset
         {
             // If the directory doesn't exist, create it.
             if (Directory.Exists(directory) == false)
+            {
                 Directory.CreateDirectory(directory);
+            }
         }
 
         /// <summary>
@@ -199,6 +225,7 @@ namespace YooAsset
         }
 
         #region SHA1
+
         /// <summary>
         /// 获取字符串的Hash值
         /// </summary>
@@ -256,9 +283,11 @@ namespace YooAsset
             byte[] hashBytes = hash.ComputeHash(buffer);
             return ToString(hashBytes);
         }
+
         #endregion
 
         #region MD5
+
         /// <summary>
         /// 获取字符串的MD5
         /// </summary>
@@ -314,9 +343,11 @@ namespace YooAsset
             byte[] hashBytes = provider.ComputeHash(buffer);
             return ToString(hashBytes);
         }
+
         #endregion
 
         #region CRC32
+
         /// <summary>
         /// 获取字符串的CRC32
         /// </summary>
@@ -372,6 +403,7 @@ namespace YooAsset
             byte[] hashBytes = hash.ComputeHash(buffer);
             return ToString(hashBytes);
         }
+
         #endregion
     }
 }
