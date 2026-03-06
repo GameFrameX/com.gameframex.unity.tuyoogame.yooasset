@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.0...2.3.1) (2026-03-06)
+
+
+### Bug Fixes
+
+* 为多个类型添加Preserve属性以防止代码裁剪 ([632480a](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/632480aa4a006da99cf1f41f0208b7affa7167dc))
+
 # CHANGELOG
 
 All notable changes to this package will be documented in this file.
@@ -233,4 +240,3 @@ SBP库依赖版本升级至2.1.3
 ### Removed
 
 - (#212)  移除了构建报告里的资源冗余信息列表。
-
