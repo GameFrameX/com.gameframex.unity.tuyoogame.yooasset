@@ -14,7 +14,7 @@ namespace YooAsset
         /// </summary>
         public static void SerializeToJson(string savePath, PackageManifest manifest)
         {
-            string json = JsonUtility.ToJson(manifest, true);
+            var json = JsonUtility.ToJson(manifest, true);
             FileUtility.WriteAllText(savePath, json);
         }
 
@@ -23,10 +23,10 @@ namespace YooAsset
         /// </summary>
         public static void SerializeToBinary(string savePath, PackageManifest manifest)
         {
-            using (FileStream fs = new FileStream(savePath, FileMode.Create))
+            using (var fs = new FileStream(savePath, FileMode.Create))
             {
                 // 创建缓存器
-                BufferWriter buffer = new BufferWriter(YooAssetSettings.ManifestFileMaxSize);
+                var buffer = new BufferWriter(YooAssetSettings.ManifestFileMaxSize);
 
                 // 写入文件标记
                 buffer.WriteUInt32(YooAssetSettings.ManifestFileSign);
@@ -45,7 +45,7 @@ namespace YooAsset
 
                 // 写入资源列表
                 buffer.WriteInt32(manifest.AssetList.Count);
-                for (int i = 0; i < manifest.AssetList.Count; i++)
+                for (var i = 0; i < manifest.AssetList.Count; i++)
                 {
                     var packageAsset = manifest.AssetList[i];
                     buffer.WriteUTF8(packageAsset.Address);
@@ -57,7 +57,7 @@ namespace YooAsset
 
                 // 写入资源包列表
                 buffer.WriteInt32(manifest.BundleList.Count);
-                for (int i = 0; i < manifest.BundleList.Count; i++)
+                for (var i = 0; i < manifest.BundleList.Count; i++)
                 {
                     var packageBundle = manifest.BundleList[i];
                     buffer.WriteUTF8(packageBundle.BundleName);
@@ -90,19 +90,23 @@ namespace YooAsset
         public static PackageManifest DeserializeFromBinary(byte[] binaryData)
         {
             // 创建缓存器
-            BufferReader buffer = new BufferReader(binaryData);
+            var buffer = new BufferReader(binaryData);
 
             // 读取文件标记
-            uint fileSign = buffer.ReadUInt32();
+            var fileSign = buffer.ReadUInt32();
             if (fileSign != YooAssetSettings.ManifestFileSign)
+            {
                 throw new Exception("Invalid manifest file !");
+            }
 
             // 读取文件版本
-            string fileVersion = buffer.ReadUTF8();
+            var fileVersion = buffer.ReadUTF8();
             if (fileVersion != YooAssetSettings.ManifestFileVersion)
+            {
                 throw new Exception($"The manifest file version are not compatible : {fileVersion} != {YooAssetSettings.ManifestFileVersion}");
+            }
 
-            PackageManifest manifest = new PackageManifest();
+            var manifest = new PackageManifest();
             {
                 // 读取文件头信息
                 manifest.FileVersion = fileVersion;
@@ -116,12 +120,14 @@ namespace YooAsset
 
                 // 检测配置
                 if (manifest.EnableAddressable && manifest.LocationToLower)
+                {
                     throw new Exception("Addressable not support location to lower !");
+                }
 
                 // 读取资源列表
-                int packageAssetCount = buffer.ReadInt32();
+                var packageAssetCount = buffer.ReadInt32();
                 manifest.AssetList = new List<PackageAsset>(packageAssetCount);
-                for (int i = 0; i < packageAssetCount; i++)
+                for (var i = 0; i < packageAssetCount; i++)
                 {
                     var packageAsset = new PackageAsset();
                     packageAsset.Address = buffer.ReadUTF8();
@@ -133,9 +139,9 @@ namespace YooAsset
                 }
 
                 // 读取资源包列表
-                int packageBundleCount = buffer.ReadInt32();
+                var packageBundleCount = buffer.ReadInt32();
                 manifest.BundleList = new List<PackageBundle>(packageBundleCount);
-                for (int i = 0; i < packageBundleCount; i++)
+                for (var i = 0; i < packageBundleCount; i++)
                 {
                     var packageBundle = new PackageBundle();
                     packageBundle.BundleName = buffer.ReadUTF8();
@@ -165,11 +171,15 @@ namespace YooAsset
             foreach (var packageAsset in manifest.AssetList)
             {
                 // 注意：我们不允许原始路径存在重名
-                string assetPath = packageAsset.AssetPath;
+                var assetPath = packageAsset.AssetPath;
                 if (manifest.AssetDic.ContainsKey(assetPath))
+                {
                     throw new Exception($"AssetPath have existed : {assetPath}");
+                }
                 else
+                {
                     manifest.AssetDic.Add(assetPath, packageAsset);
+                }
             }
 
             return manifest;
@@ -202,7 +212,7 @@ namespace YooAsset
         /// </summary>
         public static string GetRemoteBundleFileExtension(string bundleName)
         {
-            string fileExtension = Path.GetExtension(bundleName);
+            var fileExtension = Path.GetExtension(bundleName);
             return fileExtension;
         }
 
@@ -221,7 +231,7 @@ namespace YooAsset
             }
             else if (nameStyle == (int)EFileNameStyle.BundleName_HashName)
             {
-                string fileName = bundleName.Remove(bundleName.LastIndexOf('.'));
+                var fileName = bundleName.Remove(bundleName.LastIndexOf('.'));
                 return StringUtility.Format("{0}_{1}{2}", fileName, fileHash, fileExtension);
             }
             else

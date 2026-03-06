@@ -69,12 +69,16 @@ namespace YooAsset
         /// 文件名称
         /// </summary>
         private string _fileName;
+
         public string FileName
         {
             get
             {
                 if (string.IsNullOrEmpty(_fileName))
+                {
                     throw new Exception("Should never get here !");
+                }
+
                 return _fileName;
             }
         }
@@ -83,12 +87,16 @@ namespace YooAsset
         /// 文件后缀名
         /// </summary>
         private string _fileExtension;
+
         public string FileExtension
         {
             get
             {
                 if (string.IsNullOrEmpty(_fileExtension))
+                {
                     throw new Exception("Should never get here !");
+                }
+
                 return _fileExtension;
             }
         }
@@ -115,15 +123,23 @@ namespace YooAsset
         public bool HasTag(string[] tags)
         {
             if (tags == null || tags.Length == 0)
+            {
                 return false;
+            }
+
             if (Tags == null || Tags.Length == 0)
+            {
                 return false;
+            }
 
             foreach (var tag in tags)
             {
                 if (Tags.Contains(tag))
+                {
                     return true;
+                }
             }
+
             return false;
         }
 
@@ -133,9 +149,13 @@ namespace YooAsset
         public bool HasAnyTags()
         {
             if (Tags != null && Tags.Length > 0)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         /// <summary>
@@ -144,7 +164,9 @@ namespace YooAsset
         public bool Equals(PackageBundle otherBundle)
         {
             if (FileHash == otherBundle.FileHash)
+            {
                 return true;
+            }
 
             return false;
         }

@@ -5,12 +5,16 @@ namespace YooAsset
     public static class YooAssetSettingsData
     {
         private static YooAssetSettings _setting = null;
+
         public static YooAssetSettings Setting
         {
             get
             {
                 if (_setting == null)
+                {
                     LoadSettingData();
+                }
+
                 return _setting;
             }
         }

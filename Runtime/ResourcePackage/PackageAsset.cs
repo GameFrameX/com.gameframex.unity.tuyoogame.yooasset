@@ -37,15 +37,23 @@ namespace YooAsset
         public bool HasTag(string[] tags)
         {
             if (tags == null || tags.Length == 0)
+            {
                 return false;
+            }
+
             if (AssetTags == null || AssetTags.Length == 0)
+            {
                 return false;
+            }
 
             foreach (var tag in tags)
             {
                 if (AssetTags.Contains(tag))
+                {
                     return true;
+                }
             }
+
             return false;
         }
     }

@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     public class AssetInfo
     {
@@ -30,12 +29,19 @@ namespace YooAsset
             get
             {
                 if (string.IsNullOrEmpty(_providerGUID) == false)
+                {
                     return _providerGUID;
+                }
 
                 if (AssetType == null)
+                {
                     _providerGUID = $"[{AssetPath}][null]";
+                }
                 else
+                {
                     _providerGUID = $"[{AssetPath}][{AssetType.Name}]";
+                }
+
                 return _providerGUID;
             }
         }
@@ -45,10 +51,7 @@ namespace YooAsset
         /// </summary>
         public bool IsInvalid
         {
-            get
-            {
-                return _packageAsset == null;
-            }
+            get { return _packageAsset == null; }
         }
 
         /// <summary>
@@ -59,7 +62,10 @@ namespace YooAsset
             get
             {
                 if (_packageAsset == null)
+                {
                     return string.Empty;
+                }
+
                 return _packageAsset.Address;
             }
         }
@@ -72,7 +78,10 @@ namespace YooAsset
             get
             {
                 if (_packageAsset == null)
+                {
                     return string.Empty;
+                }
+
                 return _packageAsset.AssetPath;
             }
         }
@@ -80,7 +89,9 @@ namespace YooAsset
         internal AssetInfo(string packageName, PackageAsset packageAsset, System.Type assetType)
         {
             if (packageAsset == null)
+            {
                 throw new System.Exception("Should never get here !");
+            }
 
             _providerGUID = string.Empty;
             _packageAsset = packageAsset;
@@ -88,6 +99,7 @@ namespace YooAsset
             AssetType = assetType;
             Error = string.Empty;
         }
+
         internal AssetInfo(string packageName, string error)
         {
             _providerGUID = string.Empty;

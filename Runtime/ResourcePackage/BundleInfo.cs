@@ -1,5 +1,4 @@
-﻿
-namespace YooAsset
+﻿namespace YooAsset
 {
     internal class BundleInfo
     {
@@ -23,6 +22,7 @@ namespace YooAsset
             Bundle = bundle;
             _importFilePath = null;
         }
+
         public BundleInfo(IFileSystem fileSystem, PackageBundle bundle, string importFilePath)
         {
             _fileSystem = fileSystem;
@@ -51,7 +51,7 @@ namespace YooAsset
         /// </summary>
         public FSDownloadFileOperation CreateDownloader(int failedTryAgain, int timeout)
         {
-            DownloadParam downloadParam = new DownloadParam(failedTryAgain, timeout);
+            var downloadParam = new DownloadParam(failedTryAgain, timeout);
             downloadParam.ImportFilePath = _importFilePath;
             return _fileSystem.DownloadFileAsync(Bundle, downloadParam);
         }
