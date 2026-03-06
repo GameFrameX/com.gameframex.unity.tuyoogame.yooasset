@@ -38,7 +38,7 @@ namespace YooAsset
 
                 // 创建驱动器
                 _isInitialize = true;
-                _driver = new UnityEngine.GameObject($"[{nameof(YooAssets)}]");
+                _driver = new GameObject($"[{nameof(YooAssets)}]");
                 _driver.AddComponent<YooAssetsDriver>();
                 UnityEngine.Object.DontDestroyOnLoad(_driver);
                 YooLogger.Log($"{nameof(YooAssets)} initialize !");
@@ -61,7 +61,7 @@ namespace YooAsset
             {
                 OperationSystem.Update();
 
-                for (int i = 0; i < _packages.Count; i++)
+                for (var i = 0; i < _packages.Count; i++)
                 {
                     _packages[i].UpdatePackage();
                 }
@@ -78,6 +78,7 @@ namespace YooAsset
             {
                 OperationSystem.ClearPackageOperation(package.PackageName);
             }
+
             OperationSystem.DestroyAll();
         }
 
@@ -89,10 +90,12 @@ namespace YooAsset
         {
             CheckException(packageName);
             if (ContainsPackage(packageName))
+            {
                 throw new Exception($"Package {packageName} already existed !");
+            }
 
             YooLogger.Log($"Create resource package : {packageName}");
-            ResourcePackage package = new ResourcePackage(packageName);
+            var package = new ResourcePackage(packageName);
             _packages.Add(package);
             return package;
         }
@@ -106,7 +109,10 @@ namespace YooAsset
             CheckException(packageName);
             var package = GetPackageInternal(packageName);
             if (package == null)
+            {
                 YooLogger.Error($"Can not found resource package : {packageName}");
+            }
+
             return package;
         }
 
@@ -127,9 +133,11 @@ namespace YooAsset
         public static bool RemovePackage(string packageName)
         {
             CheckException(packageName);
-            ResourcePackage package = GetPackageInternal(packageName);
+            var package = GetPackageInternal(packageName);
             if (package == null)
+            {
                 return false;
+            }
 
             if (package.InitializeStatus != EOperationStatus.None)
             {
@@ -169,20 +177,29 @@ namespace YooAsset
             foreach (var package in _packages)
             {
                 if (package.PackageName == packageName)
+                {
                     return package;
+                }
             }
+
             return null;
         }
+
         private static void CheckException(string packageName)
         {
             if (_isInitialize == false)
+            {
                 throw new Exception($"{nameof(YooAssets)} not initialize !");
+            }
 
             if (string.IsNullOrEmpty(packageName))
+            {
                 throw new Exception("Package name is null or empty !");
+            }
         }
 
         #region 系统参数
+
         /// <summary>
         /// 设置下载系统参数，自定义下载请求
         /// </summary>
@@ -201,14 +218,17 @@ namespace YooAsset
                 milliseconds = 10;
                 YooLogger.Warning($"MaxTimeSlice minimum value is 10 milliseconds.");
             }
+
             OperationSystem.MaxTimeSlice = milliseconds;
         }
+
         #endregion
 
         #region 调试信息
+
         internal static DebugReport GetDebugReport()
         {
-            DebugReport report = new DebugReport();
+            var report = new DebugReport();
             report.FrameCount = Time.frameCount;
 
             foreach (var package in _packages)
@@ -216,8 +236,10 @@ namespace YooAsset
                 var packageData = package.GetDebugPackageData();
                 report.PackageDatas.Add(packageData);
             }
+
             return report;
         }
+
         #endregion
     }
 }

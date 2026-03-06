@@ -29,7 +29,7 @@ namespace YooAsset
                 return str;
             }
 
-            int index = str.LastIndexOf('.');
+            var index = str.LastIndexOf('.');
             if (index == -1)
             {
                 return str;
@@ -45,7 +45,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2)
         {
-            return System.IO.Path.Combine(path1, path2);
+            return Path.Combine(path1, path2);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2, string path3)
         {
-            return System.IO.Path.Combine(path1, path2, path3);
+            return Path.Combine(path1, path2, path3);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace YooAsset
         /// </summary>
         public static string Combine(string path1, string path2, string path3, string path4)
         {
-            return System.IO.Path.Combine(path1, path2, path3, path4);
+            return Path.Combine(path1, path2, path3, path4);
         }
     }
 
@@ -165,7 +165,7 @@ namespace YooAsset
             // 创建文件夹路径
             CreateFileDirectory(filePath);
 
-            byte[] bytes = Encoding.UTF8.GetBytes(content);
+            var bytes = Encoding.UTF8.GetBytes(content);
             File.WriteAllBytes(filePath, bytes); //避免写入BOM标记
         }
 
@@ -186,7 +186,7 @@ namespace YooAsset
         public static void CreateFileDirectory(string filePath)
         {
             // 获取文件的文件夹路径
-            string directory = Path.GetDirectoryName(filePath);
+            var directory = Path.GetDirectoryName(filePath);
             CreateDirectory(directory);
         }
 
@@ -207,7 +207,7 @@ namespace YooAsset
         /// </summary>
         public static long GetFileSize(string filePath)
         {
-            FileInfo fileInfo = new FileInfo(filePath);
+            var fileInfo = new FileInfo(filePath);
             return fileInfo.Length;
         }
     }
@@ -219,7 +219,7 @@ namespace YooAsset
     {
         private static string ToString(byte[] hashBytes)
         {
-            string result = BitConverter.ToString(hashBytes);
+            var result = BitConverter.ToString(hashBytes);
             result = result.Replace("-", "");
             return result.ToLower();
         }
@@ -231,7 +231,7 @@ namespace YooAsset
         /// </summary>
         public static string StringSHA1(string str)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(str);
+            var buffer = Encoding.UTF8.GetBytes(str);
             return BytesSHA1(buffer);
         }
 
@@ -240,7 +240,7 @@ namespace YooAsset
         /// </summary>
         public static string FileSHA1(string filePath)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return StreamSHA1(fs);
             }
@@ -268,8 +268,8 @@ namespace YooAsset
         public static string StreamSHA1(Stream stream)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
-            HashAlgorithm hash = HashAlgorithm.Create();
-            byte[] hashBytes = hash.ComputeHash(stream);
+            var hash = HashAlgorithm.Create();
+            var hashBytes = hash.ComputeHash(stream);
             return ToString(hashBytes);
         }
 
@@ -279,8 +279,8 @@ namespace YooAsset
         public static string BytesSHA1(byte[] buffer)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
-            HashAlgorithm hash = HashAlgorithm.Create();
-            byte[] hashBytes = hash.ComputeHash(buffer);
+            var hash = HashAlgorithm.Create();
+            var hashBytes = hash.ComputeHash(buffer);
             return ToString(hashBytes);
         }
 
@@ -293,7 +293,7 @@ namespace YooAsset
         /// </summary>
         public static string StringMD5(string str)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(str);
+            var buffer = Encoding.UTF8.GetBytes(str);
             return BytesMD5(buffer);
         }
 
@@ -302,7 +302,7 @@ namespace YooAsset
         /// </summary>
         public static string FileMD5(string filePath)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return StreamMD5(fs);
             }
@@ -329,8 +329,8 @@ namespace YooAsset
         /// </summary>
         public static string StreamMD5(Stream stream)
         {
-            MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider();
-            byte[] hashBytes = provider.ComputeHash(stream);
+            var provider = new MD5CryptoServiceProvider();
+            var hashBytes = provider.ComputeHash(stream);
             return ToString(hashBytes);
         }
 
@@ -339,8 +339,8 @@ namespace YooAsset
         /// </summary>
         public static string BytesMD5(byte[] buffer)
         {
-            MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider();
-            byte[] hashBytes = provider.ComputeHash(buffer);
+            var provider = new MD5CryptoServiceProvider();
+            var hashBytes = provider.ComputeHash(buffer);
             return ToString(hashBytes);
         }
 
@@ -353,7 +353,7 @@ namespace YooAsset
         /// </summary>
         public static string StringCRC32(string str)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(str);
+            var buffer = Encoding.UTF8.GetBytes(str);
             return BytesCRC32(buffer);
         }
 
@@ -362,7 +362,7 @@ namespace YooAsset
         /// </summary>
         public static string FileCRC32(string filePath)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return StreamCRC32(fs);
             }
@@ -389,8 +389,8 @@ namespace YooAsset
         /// </summary>
         public static string StreamCRC32(Stream stream)
         {
-            CRC32Algorithm hash = new CRC32Algorithm();
-            byte[] hashBytes = hash.ComputeHash(stream);
+            var hash = new CRC32Algorithm();
+            var hashBytes = hash.ComputeHash(stream);
             return ToString(hashBytes);
         }
 
@@ -399,8 +399,8 @@ namespace YooAsset
         /// </summary>
         public static string BytesCRC32(byte[] buffer)
         {
-            CRC32Algorithm hash = new CRC32Algorithm();
-            byte[] hashBytes = hash.ComputeHash(buffer);
+            var hash = new CRC32Algorithm();
+            var hashBytes = hash.ComputeHash(buffer);
             return ToString(hashBytes);
         }
 

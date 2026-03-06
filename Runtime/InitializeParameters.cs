@@ -91,7 +91,7 @@ namespace YooAsset
         /// </summary>
         public static FileSystemParameters CreateDefaultEditorFileSystemParameters(SimulateBuildResult simulateBuildResult)
         {
-            string fileSystemClass = typeof(DefaultEditorFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultEditorFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, simulateBuildResult.PackageRootDirectory);
             return fileSystemParams;
         }
@@ -104,7 +104,7 @@ namespace YooAsset
         /// <param name="rootDirectory">内置文件的根路径</param>
         public static FileSystemParameters CreateDefaultBuildinFileSystemParameters(IDecryptionServices decryptionServices = null, EFileVerifyLevel verifyLevel = EFileVerifyLevel.Middle, string rootDirectory = null)
         {
-            string fileSystemClass = typeof(DefaultBuildinFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultBuildinFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, rootDirectory);
             fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
             fileSystemParams.AddParameter(FileSystemParametersDefine.FILE_VERIFY_LEVEL, verifyLevel);
@@ -119,7 +119,7 @@ namespace YooAsset
         /// <param name="rootDirectory">内置文件的根路径</param>
         public static FileSystemParameters CreateDefaultBuildinRawFileSystemParameters(IDecryptionServices decryptionServices = null, EFileVerifyLevel verifyLevel = EFileVerifyLevel.Middle, string rootDirectory = null)
         {
-            string fileSystemClass = typeof(DefaultBuildinFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultBuildinFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, rootDirectory);
             fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
             fileSystemParams.AddParameter(FileSystemParametersDefine.FILE_VERIFY_LEVEL, verifyLevel);
@@ -137,7 +137,7 @@ namespace YooAsset
         /// <param name="rootDirectory">文件系统的根目录</param>
         public static FileSystemParameters CreateDefaultCacheFileSystemParameters(IRemoteServices remoteServices, IDecryptionServices decryptionServices = null, EFileVerifyLevel verifyLevel = EFileVerifyLevel.Middle, string rootDirectory = null)
         {
-            string fileSystemClass = typeof(DefaultCacheFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultCacheFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, rootDirectory);
             fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
             fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
@@ -154,7 +154,7 @@ namespace YooAsset
         /// <param name="rootDirectory">文件系统的根目录</param>
         public static FileSystemParameters CreateDefaultCacheRawFileSystemParameters(IRemoteServices remoteServices, IDecryptionServices decryptionServices = null, EFileVerifyLevel verifyLevel = EFileVerifyLevel.Middle, string rootDirectory = null)
         {
-            string fileSystemClass = typeof(DefaultCacheFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultCacheFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, rootDirectory);
             fileSystemParams.AddParameter(FileSystemParametersDefine.REMOTE_SERVICES, remoteServices);
             fileSystemParams.AddParameter(FileSystemParametersDefine.DECRYPTION_SERVICES, decryptionServices);
@@ -170,7 +170,7 @@ namespace YooAsset
         /// <param name="disableUnityWebCache">禁用Unity的网络缓存</param>
         public static FileSystemParameters CreateDefaultWebFileSystemParameters(bool disableUnityWebCache = false)
         {
-            string fileSystemClass = typeof(DefaultWebFileSystem).FullName;
+            var fileSystemClass = typeof(DefaultWebFileSystem).FullName;
             var fileSystemParams = new FileSystemParameters(fileSystemClass, null);
             fileSystemParams.AddParameter(FileSystemParametersDefine.DISABLE_UNITY_WEB_CACHE, disableUnityWebCache);
             return fileSystemParams;

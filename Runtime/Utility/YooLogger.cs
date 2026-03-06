@@ -11,7 +11,7 @@ namespace YooAsset
         void Log(string message);
         void Warning(string message);
         void Error(string message);
-        void Exception(System.Exception exception);
+        void Exception(Exception exception);
     }
 
     public static class YooLogger
@@ -72,7 +72,7 @@ namespace YooAsset
         /// <summary>
         /// 异常
         /// </summary>
-        public static void Exception(System.Exception exception)
+        public static void Exception(Exception exception)
         {
             if (Logger != null)
             {

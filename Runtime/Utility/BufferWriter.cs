@@ -46,11 +46,12 @@ namespace YooAsset
 
         public void WriteBytes(byte[] data)
         {
-            int count = data.Length;
+            var count = data.Length;
             CheckWriterIndex(count);
             Buffer.BlockCopy(data, 0, _buffer, _index, count);
             _index += count;
         }
+
         public void WriteByte(byte value)
         {
             CheckWriterIndex(1);
@@ -61,20 +62,24 @@ namespace YooAsset
         {
             WriteByte((byte)(value ? 1 : 0));
         }
+
         public void WriteInt16(short value)
         {
             WriteUInt16((ushort)value);
         }
+
         public void WriteUInt16(ushort value)
         {
             CheckWriterIndex(2);
             _buffer[_index++] = (byte)value;
             _buffer[_index++] = (byte)(value >> 8);
         }
+
         public void WriteInt32(int value)
         {
             WriteUInt32((uint)value);
         }
+
         public void WriteUInt32(uint value)
         {
             CheckWriterIndex(4);
@@ -83,10 +88,12 @@ namespace YooAsset
             _buffer[_index++] = (byte)(value >> 16);
             _buffer[_index++] = (byte)(value >> 24);
         }
+
         public void WriteInt64(long value)
         {
             WriteUInt64((ulong)value);
         }
+
         public void WriteUInt64(ulong value)
         {
             CheckWriterIndex(8);
@@ -108,15 +115,18 @@ namespace YooAsset
             }
             else
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(value);
-                int count = bytes.Length;
+                var bytes = Encoding.UTF8.GetBytes(value);
+                var count = bytes.Length;
                 if (count > ushort.MaxValue)
+                {
                     throw new FormatException($"Write string length cannot be greater than {ushort.MaxValue} !");
+                }
 
                 WriteUInt16(Convert.ToUInt16(count));
                 WriteBytes(bytes);
             }
         }
+
         public void WriteInt32Array(int[] values)
         {
             if (values == null)
@@ -125,17 +135,20 @@ namespace YooAsset
             }
             else
             {
-                int count = values.Length;
+                var count = values.Length;
                 if (count > ushort.MaxValue)
+                {
                     throw new FormatException($"Write array length cannot be greater than {ushort.MaxValue} !");
+                }
 
                 WriteUInt16(Convert.ToUInt16(count));
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     WriteInt32(values[i]);
                 }
             }
         }
+
         public void WriteInt64Array(long[] values)
         {
             if (values == null)
@@ -144,17 +157,20 @@ namespace YooAsset
             }
             else
             {
-                int count = values.Length;
+                var count = values.Length;
                 if (count > ushort.MaxValue)
+                {
                     throw new FormatException($"Write array length cannot be greater than {ushort.MaxValue} !");
+                }
 
                 WriteUInt16(Convert.ToUInt16(count));
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     WriteInt64(values[i]);
                 }
             }
         }
+
         public void WriteUTF8Array(string[] values)
         {
             if (values == null)
@@ -163,12 +179,14 @@ namespace YooAsset
             }
             else
             {
-                int count = values.Length;
+                var count = values.Length;
                 if (count > ushort.MaxValue)
+                {
                     throw new FormatException($"Write array length cannot be greater than {ushort.MaxValue} !");
+                }
 
                 WriteUInt16(Convert.ToUInt16(count));
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     WriteUTF8(values[i]);
                 }

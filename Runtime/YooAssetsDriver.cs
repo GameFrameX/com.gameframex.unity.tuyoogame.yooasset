@@ -7,14 +7,14 @@ namespace YooAsset
     {
         private static int LastestUpdateFrame = 0;
 
-        void Update()
+        private void Update()
         {
             DebugCheckDuplicateDriver();
             YooAssets.Update();
         }
 
 #if UNITY_EDITOR
-        void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
             YooAssets.OnApplicationQuit();
         }
@@ -26,7 +26,9 @@ namespace YooAsset
             if (LastestUpdateFrame > 0)
             {
                 if (LastestUpdateFrame == Time.frameCount)
+                {
                     YooLogger.Warning($"There are two {nameof(YooAssetsDriver)} in the scene. Please ensure there is always exactly one driver in the scene.");
+                }
             }
 
             LastestUpdateFrame = Time.frameCount;
