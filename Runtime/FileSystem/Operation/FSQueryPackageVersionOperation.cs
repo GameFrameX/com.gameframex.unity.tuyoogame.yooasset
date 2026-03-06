@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal abstract class FSRequestPackageVersionOperation : AsyncOperationBase
     {
         /// <summary>

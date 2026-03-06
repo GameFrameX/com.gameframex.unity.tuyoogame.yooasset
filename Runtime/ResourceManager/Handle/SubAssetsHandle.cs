@@ -3,14 +3,17 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class SubAssetsHandle : HandleBase, IDisposable
     {
         private Action<SubAssetsHandle> _callback;
 
+        [UnityEngine.Scripting.Preserve]
         internal SubAssetsHandle(ProviderOperation provider) : base(provider)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
@@ -51,6 +54,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
@@ -64,6 +68,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Release()
         {
             ReleaseInternal();
@@ -72,6 +77,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Dispose()
         {
             ReleaseInternal();
@@ -99,6 +105,7 @@ namespace YooAsset
         /// </summary>
         /// <typeparam name="TObject">子资源对象类型</typeparam>
         /// <param name="assetName">子资源对象名称</param>
+        [UnityEngine.Scripting.Preserve]
         public TObject GetSubAssetObject<TObject>(string assetName) where TObject : UnityEngine.Object
         {
             if (IsValidWithWarning == false)
@@ -122,6 +129,7 @@ namespace YooAsset
         /// 获取所有的子资源对象集合
         /// </summary>
         /// <typeparam name="TObject">子资源对象类型</typeparam>
+        [UnityEngine.Scripting.Preserve]
         public TObject[] GetSubAssetObjects<TObject>() where TObject : UnityEngine.Object
         {
             if (IsValidWithWarning == false)

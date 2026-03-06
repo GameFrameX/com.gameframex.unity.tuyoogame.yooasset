@@ -5,8 +5,10 @@ using System;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal abstract class ProviderOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         protected enum ESteps
         {
             None = 0,
@@ -74,6 +76,7 @@ namespace YooAsset
         private readonly List<HandleBase> _handles = new();
 
 
+        [UnityEngine.Scripting.Preserve]
         public ProviderOperation(ResourceManager manager, string providerGUID, AssetInfo assetInfo)
         {
             ResourceMgr = manager;
@@ -91,6 +94,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             IsWaitForAsyncComplete = true;
@@ -118,6 +122,7 @@ namespace YooAsset
         /// <summary>
         /// 销毁资源提供者
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void DestroyProvider()
         {
             IsDestroyed = true;
@@ -146,6 +151,7 @@ namespace YooAsset
         /// <summary>
         /// 是否可以销毁
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool CanDestroyProvider()
         {
             // 注意：在进行资源加载过程时不可以销毁
@@ -160,6 +166,7 @@ namespace YooAsset
         /// <summary>
         /// 创建资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public T CreateHandle<T>() where T : HandleBase
         {
             // 引用计数增加
@@ -198,6 +205,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void ReleaseHandle(HandleBase handle)
         {
             if (RefCount <= 0)
@@ -217,6 +225,7 @@ namespace YooAsset
         /// <summary>
         /// 释放所有资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void ReleaseAllHandles()
         {
             for (var i = _handles.Count - 1; i >= 0; i--)
@@ -229,6 +238,7 @@ namespace YooAsset
         /// <summary>
         /// 处理致命问题
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void ProcessFatalEvent()
         {
             if (LoadBundleFileOp.IsDestroyed)
@@ -244,6 +254,7 @@ namespace YooAsset
         /// <summary>
         /// 结束流程
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void InvokeCompletion(string error, EOperationStatus status)
         {
             DebugEndRecording();
@@ -267,6 +278,7 @@ namespace YooAsset
         /// <summary>
         /// 获取下载报告
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public DownloadStatus GetDownloadStatus()
         {
             var status = new DownloadStatus();
@@ -308,6 +320,7 @@ namespace YooAsset
         // 加载耗时统计
         private Stopwatch _watch = null;
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         public void InitSpawnDebugInfo()
         {
@@ -316,6 +329,7 @@ namespace YooAsset
             SpawnTime = SpawnTimeToString(UnityEngine.Time.realtimeSinceStartup);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string SpawnTimeToString(float spawnTime)
         {
             float h = UnityEngine.Mathf.FloorToInt(spawnTime / 3600f);
@@ -324,6 +338,7 @@ namespace YooAsset
             return h.ToString("00") + ":" + m.ToString("00") + ":" + s.ToString("00");
         }
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         protected void DebugBeginRecording()
         {
@@ -333,6 +348,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         private void DebugEndRecording()
         {
@@ -346,6 +362,7 @@ namespace YooAsset
         /// <summary>
         /// 获取资源包的调试信息列表
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         internal void GetBundleDebugInfos(List<DebugBundleInfo> output)
         {
             var bundleInfo = new DebugBundleInfo();

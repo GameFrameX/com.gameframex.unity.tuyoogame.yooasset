@@ -2,8 +2,10 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class InstantiateOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -25,6 +27,7 @@ namespace YooAsset
         public GameObject Result = null;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal InstantiateOperation(AssetHandle handle, bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             _handle = handle;
@@ -35,11 +38,13 @@ namespace YooAsset
             _worldPositionStays = worldPositionStays;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.Clone;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -78,6 +83,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -99,11 +105,13 @@ namespace YooAsset
         /// <summary>
         /// 取消实例化对象操作
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Cancel()
         {
             SetAbort();
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal static GameObject InstantiateInternal(Object assetObject, bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             if (assetObject == null)

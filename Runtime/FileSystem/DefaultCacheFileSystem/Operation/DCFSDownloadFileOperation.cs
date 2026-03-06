@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class DCFSDownloadNormalFileOperation : DefaultDownloadFileOperation
     {
         private readonly DefaultCacheFileSystem _fileSystem;
@@ -11,17 +12,20 @@ namespace YooAsset
         private string _tempFilePath;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSDownloadNormalFileOperation(DefaultCacheFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -158,12 +162,14 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             var isReuqestLocalFile = IsRequestLocalFile();
@@ -195,6 +201,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest()
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
@@ -205,6 +212,7 @@ namespace YooAsset
             _webRequest.SendWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void DisposeWebRequest()
         {
             if (_webRequest != null)
@@ -216,6 +224,7 @@ namespace YooAsset
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal sealed class DCFSDownloadResumeFileOperation : DefaultDownloadFileOperation
     {
         private readonly DefaultCacheFileSystem _fileSystem;
@@ -226,17 +235,20 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSDownloadResumeFileOperation(DefaultCacheFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _tempFilePath = _fileSystem.GetTempFilePath(Bundle);
             _steps = ESteps.CheckExists;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -387,12 +399,14 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             var isReuqestLocalFile = IsRequestLocalFile();
@@ -424,6 +438,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest(long beginLength)
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
@@ -444,6 +459,7 @@ namespace YooAsset
             _webRequest.SendWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void DisposeWebRequest()
         {
             if (_downloadHandle != null)
@@ -460,6 +476,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void ClearTempFileWhenError()
         {
             if (_fileSystem.ResumeDownloadResponseCodes == null)

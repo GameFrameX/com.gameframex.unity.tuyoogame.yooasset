@@ -3,8 +3,10 @@ using UnityEngine.Networking;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal abstract class DefaultDownloadFileOperation : FSDownloadFileOperation
     {
+        [UnityEngine.Scripting.Preserve]
         protected enum ESteps
         {
             None,
@@ -35,6 +37,7 @@ namespace YooAsset
         protected int FailedTryAgain;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DefaultDownloadFileOperation(PackageBundle bundle, DownloadParam param) : base(bundle)
         {
             Param = param;
@@ -44,6 +47,7 @@ namespace YooAsset
         /// <summary>
         /// 获取网络请求地址
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected string GetRequestURL()
         {
             // 轮流返回请求地址
@@ -61,6 +65,7 @@ namespace YooAsset
         /// <summary>
         /// 重置请求字段
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void ResetRequestFiled()
         {
             // 重置变量
@@ -82,6 +87,7 @@ namespace YooAsset
         /// <summary>
         /// 检测请求超时
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void CheckRequestTimeout()
         {
             // 注意：在连续时间段内无新增下载数据及判定为超时
@@ -110,6 +116,7 @@ namespace YooAsset
         /// <summary>
         /// 检测请求结果
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected bool CheckRequestResult()
         {
             HttpCode = _webRequest.responseCode;
@@ -140,6 +147,7 @@ namespace YooAsset
         /// <summary>
         /// 是否请求的本地文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected bool IsRequestLocalFile()
         {
             //TODO : UNITY_STANDALONE_OSX平台目前无法确定

@@ -3,6 +3,7 @@
     /// <summary>
     /// 查询远端包裹的最新版本
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public abstract class RequestPackageVersionOperation : AsyncOperationBase
     {
         /// <summary>
@@ -11,8 +12,10 @@
         public string PackageVersion { protected set; get; }
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal sealed class RequestPackageVersionImplOperation : RequestPackageVersionOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -26,6 +29,7 @@
         private FSRequestPackageVersionOperation _requestPackageVersionOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal RequestPackageVersionImplOperation(IFileSystem fileSystem, bool appendTimeTicks, int timeout)
         {
             _fileSystem = fileSystem;
@@ -33,11 +37,13 @@
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestPackageVersion;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

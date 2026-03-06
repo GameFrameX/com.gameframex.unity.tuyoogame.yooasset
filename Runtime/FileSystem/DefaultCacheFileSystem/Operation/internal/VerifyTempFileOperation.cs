@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class TempFileElement
     {
         public string TempFilePath { private set; get; }
@@ -14,6 +15,7 @@ namespace YooAsset
         /// </summary>
         public int Result = 0;
 
+        [UnityEngine.Scripting.Preserve]
         public TempFileElement(string filePath, string fileCRC, long fileSize)
         {
             TempFilePath = filePath;
@@ -25,8 +27,10 @@ namespace YooAsset
     /// <summary>
     /// 下载文件验证（线程版）
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class VerifyTempFileOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -44,16 +48,19 @@ namespace YooAsset
         public EFileVerifyResult VerifyResult { protected set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal VerifyTempFileOperation(TempFileElement element)
         {
             _element = element;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.VerifyFile;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -92,6 +99,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -105,11 +113,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private bool BeginVerifyFileWithThread(TempFileElement element)
         {
             return ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), element);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void VerifyInThread(object obj)
         {
             var element = (TempFileElement)obj;

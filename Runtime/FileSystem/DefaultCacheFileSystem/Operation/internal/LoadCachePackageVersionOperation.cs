@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class LoadCachePackageVersionOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -22,16 +24,19 @@ namespace YooAsset
         public string PackageVersion { private set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadCachePackageVersionOperation(DefaultCacheFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestPackageVersion;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

@@ -7,10 +7,12 @@ namespace YooAsset
     /// </summary>
     public delegate UnityWebRequest UnityWebRequestDelegate(string url);
 
+    [UnityEngine.Scripting.Preserve]
     public class DownloadSystemHelper
     {
         public static UnityWebRequestDelegate UnityWebRequestCreater = null;
 
+        [UnityEngine.Scripting.Preserve]
         public static UnityWebRequest NewUnityWebRequestGet(string requestURL)
         {
             UnityWebRequest webRequest;
@@ -29,6 +31,7 @@ namespace YooAsset
         /// <summary>
         /// 获取WWW加载本地资源的路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string ConvertToWWWPath(string path)
         {
 #if UNITY_EDITOR

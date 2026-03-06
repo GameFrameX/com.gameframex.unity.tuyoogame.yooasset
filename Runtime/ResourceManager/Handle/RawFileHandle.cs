@@ -4,14 +4,17 @@ using System.Text;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public class RawFileHandle : HandleBase, IDisposable
     {
         private Action<RawFileHandle> _callback;
 
+        [UnityEngine.Scripting.Preserve]
         internal RawFileHandle(ProviderOperation provider) : base(provider)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
@@ -52,6 +55,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
@@ -65,6 +69,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Release()
         {
             ReleaseInternal();
@@ -73,6 +78,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Dispose()
         {
             ReleaseInternal();
@@ -82,6 +88,7 @@ namespace YooAsset
         /// <summary>
         /// 获取原生文件的二进制数据
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public byte[] GetRawFileData()
         {
             if (IsValidWithWarning == false)
@@ -95,6 +102,7 @@ namespace YooAsset
         /// <summary>
         /// 获取原生文件的文本数据
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string GetRawFileText()
         {
             if (IsValidWithWarning == false)
@@ -108,6 +116,7 @@ namespace YooAsset
         /// <summary>
         /// 获取原生文件的路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string GetRawFilePath()
         {
             if (IsValidWithWarning == false)

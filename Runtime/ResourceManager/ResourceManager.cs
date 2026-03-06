@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class ResourceManager
     {
         // 全局场景句柄集合
@@ -25,6 +26,7 @@ namespace YooAsset
         public readonly string PackageName;
 
 
+        [UnityEngine.Scripting.Preserve]
         public ResourceManager(string packageName)
         {
             PackageName = packageName;
@@ -33,6 +35,7 @@ namespace YooAsset
         /// <summary>
         /// 初始化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Initialize(InitializeParameters initializeParameters, IBundleQuery bundleServices)
         {
             _simulationOnEditor = initializeParameters is EditorSimulateModeParameters;
@@ -42,6 +45,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试卸载指定资源的资源包（包括依赖资源）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void TryUnloadUnusedAsset(AssetInfo assetInfo)
         {
             if (assetInfo.IsInvalid)
@@ -86,6 +90,7 @@ namespace YooAsset
         /// 注意：返回的场景句柄是唯一的，每个场景句柄对应自己的场景提供者对象。
         /// 注意：业务逻辑层应该避免同时加载一个子场景。
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public SceneHandle LoadSceneAsync(AssetInfo assetInfo, LoadSceneParameters loadSceneParams, bool suspendLoad, uint priority)
         {
             if (assetInfo.IsInvalid)
@@ -130,6 +135,7 @@ namespace YooAsset
         /// <summary>
         /// 加载资源对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetAsync(AssetInfo assetInfo, uint priority)
         {
             if (assetInfo.IsInvalid)
@@ -165,6 +171,7 @@ namespace YooAsset
         /// <summary>
         /// 加载子资源对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsAsync(AssetInfo assetInfo, uint priority)
         {
             if (assetInfo.IsInvalid)
@@ -200,6 +207,7 @@ namespace YooAsset
         /// <summary>
         /// 加载所有资源对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsAsync(AssetInfo assetInfo, uint priority)
         {
             if (assetInfo.IsInvalid)
@@ -235,6 +243,7 @@ namespace YooAsset
         /// <summary>
         /// 加载原生文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public RawFileHandle LoadRawFileAsync(AssetInfo assetInfo, uint priority)
         {
             if (assetInfo.IsInvalid)
@@ -268,6 +277,7 @@ namespace YooAsset
         }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal void UnloadSubScene(string sceneName)
         {
             var removeKeys = new List<string>();
@@ -288,6 +298,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void UnloadAllScene()
         {
             // 释放所有场景句柄
@@ -299,6 +310,7 @@ namespace YooAsset
             _sceneHandles.Clear();
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void ClearSceneHandle()
         {
             // 释放资源包下的所有场景
@@ -321,12 +333,14 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadBundleFileOperation CreateMainBundleFileLoader(AssetInfo assetInfo)
         {
             var bundleInfo = _bundleQuery.GetMainBundleInfo(assetInfo);
             return CreateFileLoaderInternal(bundleInfo);
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadDependBundleFileOperation CreateDependFileLoaders(AssetInfo assetInfo)
         {
             var bundleInfos = _bundleQuery.GetDependBundleInfos(assetInfo);
@@ -342,6 +356,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void RemoveBundleProviders(List<ProviderOperation> removeList)
         {
             foreach (var provider in removeList)
@@ -350,11 +365,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal bool HasAnyLoader()
         {
             return _loaderDic.Count > 0;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private LoadBundleFileOperation CreateFileLoaderInternal(BundleInfo bundleInfo)
         {
             // 如果加载器已经存在
@@ -372,6 +389,7 @@ namespace YooAsset
             return loaderOperation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private LoadBundleFileOperation TryGetFileLoader(string bundleName)
         {
             if (_loaderDic.TryGetValue(bundleName, out var value))
@@ -384,6 +402,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private ProviderOperation TryGetProvider(string providerGUID)
         {
             if (_providerDic.TryGetValue(providerGUID, out var value))
@@ -398,6 +417,7 @@ namespace YooAsset
 
         #region 调试信息
 
+        [UnityEngine.Scripting.Preserve]
         internal List<DebugProviderInfo> GetDebugReportInfos()
         {
             var result = new List<DebugProviderInfo>(_providerDic.Count);

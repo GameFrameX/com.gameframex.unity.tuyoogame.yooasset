@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class FileSystemParametersDefine
     {
         public const string FILE_VERIFY_LEVEL = "FILE_VERIFY_LEVEL";

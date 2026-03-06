@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public class DownloadParam
     {
         public readonly int FailedTryAgain;
@@ -20,6 +21,7 @@
         /// </summary>
         public string FallbackURL { set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         public DownloadParam(int failedTryAgain, int timeout)
         {
             FailedTryAgain = failedTryAgain;

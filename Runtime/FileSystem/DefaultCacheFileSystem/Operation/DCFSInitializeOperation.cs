@@ -1,7 +1,9 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DCFSInitializeOperation : FSInitializeFileSystemOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -17,16 +19,19 @@
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSInitializeOperation(DefaultCacheFileSystem fileSystem)
         {
             _fileSytem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckAppFootPrint;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

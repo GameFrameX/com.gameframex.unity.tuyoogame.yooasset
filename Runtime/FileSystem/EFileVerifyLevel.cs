@@ -3,6 +3,7 @@
     /// <summary>
     /// 文件校验等级
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public enum EFileVerifyLevel
     {
         /// <summary>

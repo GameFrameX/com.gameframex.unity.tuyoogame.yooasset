@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class DCFSClearAllBundleFilesOperation : FSClearAllBundleFilesOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -19,16 +21,19 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSClearAllBundleFilesOperation(DefaultCacheFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.GetAllCacheFiles;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

@@ -2,6 +2,7 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal abstract class FSLoadBundleOperation : AsyncOperationBase
     {
         /// <summary>
@@ -22,6 +23,7 @@ namespace YooAsset
         /// <summary>
         /// 终止下载任务
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public abstract void AbortDownloadOperation();
     }
 }

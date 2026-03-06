@@ -2,15 +2,18 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public class SceneHandle : HandleBase
     {
         private System.Action<SceneHandle> _callback;
         internal string PackageName { set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         internal SceneHandle(ProviderOperation provider) : base(provider)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
@@ -51,6 +54,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         internal void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
@@ -96,6 +100,7 @@ namespace YooAsset
         /// <summary>
         /// 激活场景（当同时存在多个场景时用于切换激活场景）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool ActivateScene()
         {
             if (IsValidWithWarning == false)
@@ -117,6 +122,7 @@ namespace YooAsset
         /// <summary>
         /// 解除场景加载挂起操作
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool UnSuspend()
         {
             if (IsValidWithWarning == false)
@@ -145,6 +151,7 @@ namespace YooAsset
         /// <summary>
         /// 是否为主场景
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsMainScene()
         {
             if (IsValidWithWarning == false)
@@ -171,6 +178,7 @@ namespace YooAsset
         /// <summary>
         /// 异步卸载子场景
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public UnloadSceneOperation UnloadAsync()
         {
             var packageName = GetAssetInfo().PackageName;

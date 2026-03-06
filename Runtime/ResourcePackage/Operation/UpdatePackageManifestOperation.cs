@@ -7,12 +7,15 @@ namespace YooAsset
     /// <summary>
     /// 向远端请求并更新清单
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public abstract class UpdatePackageManifestOperation : AsyncOperationBase
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal sealed class UpdatePackageManifestImplOperation : UpdatePackageManifestOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -30,6 +33,7 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal UpdatePackageManifestImplOperation(IPlayMode impl, IFileSystem fileSystem, string packageVersion, int timeout)
         {
             _impl = impl;
@@ -38,11 +42,13 @@ namespace YooAsset
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckParams;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -108,6 +114,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void SavePackageVersion()
         {
             if (_impl.ActiveManifest != null)

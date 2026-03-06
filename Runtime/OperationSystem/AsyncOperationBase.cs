@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public abstract class AsyncOperationBase : IEnumerator, IComparable<AsyncOperationBase>
     {
         private Action<AsyncOperationBase> _callback;
@@ -84,34 +85,42 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public abstract void InternalOnStart();
+        [UnityEngine.Scripting.Preserve]
         public abstract void InternalOnUpdate();
 
+        [UnityEngine.Scripting.Preserve]
         internal virtual void InternalOnAbort()
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public virtual void InternalWaitForAsyncComplete()
         {
             throw new NotImplementedException(GetType().Name);
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal string GetPackageName()
         {
             return _packageName;
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void SetPackageName(string packageName)
         {
             _packageName = packageName;
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void SetStart()
         {
             Status = EOperationStatus.Processing;
             InternalOnStart();
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void SetFinish()
         {
             IsFinish = true;
@@ -128,6 +137,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal void SetAbort()
         {
             if (IsDone == false)
@@ -142,6 +152,7 @@ namespace YooAsset
         /// <summary>
         /// 执行While循环
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected bool ExecuteWhileDone()
         {
             if (IsDone == false)
@@ -165,6 +176,7 @@ namespace YooAsset
         /// <summary>
         /// 清空完成回调
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void ClearCompletedCallback()
         {
             _callback = null;
@@ -173,6 +185,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WaitForAsyncComplete()
         {
             if (IsDone)
@@ -185,6 +198,7 @@ namespace YooAsset
 
         #region 排序接口实现
 
+        [UnityEngine.Scripting.Preserve]
         public int CompareTo(AsyncOperationBase other)
         {
             return other.Priority.CompareTo(Priority);
@@ -194,11 +208,13 @@ namespace YooAsset
 
         #region 异步编程相关
 
+        [UnityEngine.Scripting.Preserve]
         bool IEnumerator.MoveNext()
         {
             return !IsDone;
         }
 
+        [UnityEngine.Scripting.Preserve]
         void IEnumerator.Reset()
         {
         }

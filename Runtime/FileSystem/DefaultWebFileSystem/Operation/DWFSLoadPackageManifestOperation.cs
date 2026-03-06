@@ -1,7 +1,9 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DWFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -19,17 +21,20 @@
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         public DWFSLoadPackageManifestOperation(DefaultWebFileSystem fileSystem, int timeout)
         {
             _fileSystem = fileSystem;
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestWebPackageVersion;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

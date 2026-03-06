@@ -6,12 +6,14 @@ namespace YooAsset
     /// <summary>
     /// 应用程序水印
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class ApplicationFootPrint
     {
         private readonly DefaultCacheFileSystem _fileSystem;
         private string _footPrint;
 
 
+        [UnityEngine.Scripting.Preserve]
         public ApplicationFootPrint(DefaultCacheFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
@@ -20,6 +22,7 @@ namespace YooAsset
         /// <summary>
         /// 读取应用程序水印
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Load(string packageName)
         {
             var footPrintFilePath = _fileSystem.GetSandboxAppFootPrintFilePath();
@@ -36,6 +39,7 @@ namespace YooAsset
         /// <summary>
         /// 检测水印是否发生变化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsDirty()
         {
 #if UNITY_EDITOR
@@ -48,6 +52,7 @@ namespace YooAsset
         /// <summary>
         /// 覆盖掉水印
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Coverage(string packageName)
         {
 #if UNITY_EDITOR

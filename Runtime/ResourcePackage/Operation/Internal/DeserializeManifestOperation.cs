@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DeserializeManifestOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -28,16 +30,19 @@ namespace YooAsset
         /// </summary>
         public PackageManifest Manifest { private set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         public DeserializeManifestOperation(byte[] binaryData)
         {
             _buffer = new BufferReader(binaryData);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.DeserializeFileHeader;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

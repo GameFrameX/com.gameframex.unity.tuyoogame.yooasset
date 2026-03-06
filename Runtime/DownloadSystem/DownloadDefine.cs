@@ -3,6 +3,7 @@
     /// <summary>
     /// 下载器结束
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public struct DownloaderFinishData
     {
         /// <summary>
@@ -19,6 +20,7 @@
     /// <summary>
     /// 下载器相关的更新数据
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public struct DownloadUpdateData
     {
         /// <summary>
@@ -27,6 +29,7 @@
         public string PackageName;
 
         /// <summary>
+        [UnityEngine.Scripting.Preserve]
         /// 下载进度 (0-1f)
         /// </summary>
         public float Progress;
@@ -55,6 +58,7 @@
     /// <summary>
     /// 下载器相关的错误数据
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public struct DownloadErrorData
     {
         /// <summary>
@@ -76,6 +80,7 @@
     /// <summary>
     /// 下载器相关的文件数据
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public struct DownloadFileData
     {
         /// <summary>
@@ -97,6 +102,7 @@
     /// <summary>
     /// 导入文件的信息
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public struct ImportFileInfo
     {
         /// <summary>

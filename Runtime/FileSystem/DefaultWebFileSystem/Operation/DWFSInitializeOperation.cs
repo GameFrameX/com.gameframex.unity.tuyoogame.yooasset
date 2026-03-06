@@ -1,7 +1,9 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DWFSInitializeOperation : FSInitializeFileSystemOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -14,16 +16,19 @@
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         public DWFSInitializeOperation(DefaultWebFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadCatalogFile;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

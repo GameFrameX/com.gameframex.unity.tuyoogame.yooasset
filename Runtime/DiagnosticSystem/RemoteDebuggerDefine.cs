@@ -3,6 +3,7 @@ using System.Text;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class RemoteDebuggerDefine
     {
         public static readonly Guid kMsgSendPlayerToEditor = new("e34a5702dd353724aa315fb8011f08c3");

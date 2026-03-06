@@ -10,11 +10,13 @@ namespace YooAsset
     /// <summary>
     /// 数据存储以小端字节序为标准
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class BufferWriter
     {
         private readonly byte[] _buffer;
         private int _index = 0;
 
+        [UnityEngine.Scripting.Preserve]
         public BufferWriter(int capacity)
         {
             _buffer = new byte[capacity];
@@ -31,6 +33,7 @@ namespace YooAsset
         /// <summary>
         /// 清空缓冲区
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Clear()
         {
             _index = 0;
@@ -39,11 +42,13 @@ namespace YooAsset
         /// <summary>
         /// 将有效数据写入文件流
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WriteToStream(FileStream fileStream)
         {
             fileStream.Write(_buffer, 0, _index);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteBytes(byte[] data)
         {
             var count = data.Length;
@@ -52,22 +57,26 @@ namespace YooAsset
             _index += count;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteByte(byte value)
         {
             CheckWriterIndex(1);
             _buffer[_index++] = value;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteBool(bool value)
         {
             WriteByte((byte)(value ? 1 : 0));
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteInt16(short value)
         {
             WriteUInt16((ushort)value);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteUInt16(ushort value)
         {
             CheckWriterIndex(2);
@@ -75,11 +84,13 @@ namespace YooAsset
             _buffer[_index++] = (byte)(value >> 8);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteInt32(int value)
         {
             WriteUInt32((uint)value);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteUInt32(uint value)
         {
             CheckWriterIndex(4);
@@ -89,11 +100,13 @@ namespace YooAsset
             _buffer[_index++] = (byte)(value >> 24);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteInt64(long value)
         {
             WriteUInt64((ulong)value);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteUInt64(ulong value)
         {
             CheckWriterIndex(8);
@@ -107,6 +120,7 @@ namespace YooAsset
             _buffer[_index++] = (byte)(value >> 56);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteUTF8(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -127,6 +141,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteInt32Array(int[] values)
         {
             if (values == null)
@@ -149,6 +164,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteInt64Array(long[] values)
         {
             if (values == null)
@@ -171,6 +187,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void WriteUTF8Array(string[] values)
         {
             if (values == null)
@@ -193,6 +210,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         private void CheckWriterIndex(int length)
         {

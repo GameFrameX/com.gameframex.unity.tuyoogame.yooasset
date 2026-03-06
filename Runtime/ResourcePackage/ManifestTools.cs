@@ -6,12 +6,14 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal static class ManifestTools
     {
 #if UNITY_EDITOR
         /// <summary>
         /// 序列化（JSON文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void SerializeToJson(string savePath, PackageManifest manifest)
         {
             var json = JsonUtility.ToJson(manifest, true);
@@ -21,6 +23,7 @@ namespace YooAsset
         /// <summary>
         /// 序列化（二进制文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void SerializeToBinary(string savePath, PackageManifest manifest)
         {
             using (var fs = new FileStream(savePath, FileMode.Create))
@@ -79,6 +82,7 @@ namespace YooAsset
         /// <summary>
         /// 反序列化（JSON文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static PackageManifest DeserializeFromJson(string jsonContent)
         {
             return JsonUtility.FromJson<PackageManifest>(jsonContent);
@@ -87,6 +91,7 @@ namespace YooAsset
         /// <summary>
         /// 反序列化（二进制文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static PackageManifest DeserializeFromBinary(byte[] binaryData)
         {
             // 创建缓存器
@@ -189,6 +194,7 @@ namespace YooAsset
         /// <summary>
         /// 注意：该类拷贝自编辑器
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         private enum EFileNameStyle
         {
             /// <summary>
@@ -210,6 +216,7 @@ namespace YooAsset
         /// <summary>
         /// 获取资源文件的后缀名
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetRemoteBundleFileExtension(string bundleName)
         {
             var fileExtension = Path.GetExtension(bundleName);
@@ -219,6 +226,7 @@ namespace YooAsset
         /// <summary>
         /// 获取远端的资源文件名
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetRemoteBundleFileName(int nameStyle, string bundleName, string fileExtension, string fileHash)
         {
             if (nameStyle == (int)EFileNameStyle.HashName)

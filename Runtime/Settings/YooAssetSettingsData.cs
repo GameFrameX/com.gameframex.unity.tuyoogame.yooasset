@@ -2,6 +2,7 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public static class YooAssetSettingsData
     {
         private static YooAssetSettings _setting = null;
@@ -22,6 +23,7 @@ namespace YooAsset
         /// <summary>
         /// 加载配置文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         private static void LoadSettingData()
         {
             _setting = Resources.Load<YooAssetSettings>("YooAssetSettings");
@@ -39,6 +41,7 @@ namespace YooAsset
         /// <summary>
         /// 获取构建报告文件名
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetReportFileName(string packageName, string packageVersion)
         {
             return $"{YooAssetSettings.ReportFileName}_{packageName}_{packageVersion}.json";
@@ -47,6 +50,7 @@ namespace YooAsset
         /// <summary>
         /// 获取清单文件完整名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetManifestBinaryFileName(string packageName, string packageVersion)
         {
             return $"{Setting.ManifestFileName}_{packageName}_{packageVersion}.bytes";
@@ -55,6 +59,7 @@ namespace YooAsset
         /// <summary>
         /// 获取清单文件完整名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetManifestJsonFileName(string packageName, string packageVersion)
         {
             return $"{Setting.ManifestFileName}_{packageName}_{packageVersion}.json";
@@ -63,6 +68,7 @@ namespace YooAsset
         /// <summary>
         /// 获取包裹的哈希文件完整名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetPackageHashFileName(string packageName, string packageVersion)
         {
             return $"{Setting.ManifestFileName}_{packageName}_{packageVersion}.hash";
@@ -71,6 +77,7 @@ namespace YooAsset
         /// <summary>
         /// 获取包裹的版本文件完整名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string GetPackageVersionFileName(string packageName)
         {
             return $"{Setting.ManifestFileName}_{packageName}.version";

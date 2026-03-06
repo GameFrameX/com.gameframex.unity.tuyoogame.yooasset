@@ -4,20 +4,24 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class BundledAssetProvider : ProviderOperation
     {
         private AssetBundle _assetBundle;
         private AssetBundleRequest _cacheRequest;
 
+        [UnityEngine.Scripting.Preserve]
         public BundledAssetProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (IsDone)

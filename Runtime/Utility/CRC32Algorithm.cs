@@ -3,16 +3,19 @@ using System.Security.Cryptography;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class SafeProxy
     {
         private const uint Poly = 0xedb88320u;
         private readonly uint[] _table = new uint[16 * 256];
 
+        [UnityEngine.Scripting.Preserve]
         internal SafeProxy()
         {
             Init(Poly);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void Init(uint poly)
         {
             var table = _table;
@@ -31,6 +34,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public uint Append(uint crc, byte[] input, int offset, int length)
         {
             var crcLocal = uint.MaxValue ^ crc;
@@ -77,6 +81,7 @@ namespace YooAsset
     /// Implementation of CRC-32.
     /// This class supports several convenient static methods returning the CRC as UInt32.
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class CRC32Algorithm : HashAlgorithm
     {
         private uint _currentCrc;
@@ -84,6 +89,7 @@ namespace YooAsset
         /// <summary>
         /// Initializes a new instance of the <see cref="CRC32Algorithm"/> class. 
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public CRC32Algorithm()
         {
 #if !NETCORE13
@@ -94,6 +100,7 @@ namespace YooAsset
         /// <summary>
         /// Resets internal state of the algorithm. Used internally.
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public override void Initialize()
         {
             _currentCrc = 0;
@@ -102,6 +109,7 @@ namespace YooAsset
         /// <summary>
         /// Appends CRC-32 from given buffer
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected override void HashCore(byte[] input, int offset, int length)
         {
             _currentCrc = AppendInternal(_currentCrc, input, offset, length);
@@ -110,6 +118,7 @@ namespace YooAsset
         /// <summary>
         /// Computes CRC-32 from <see cref="HashCore"/>
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected override byte[] HashFinal()
         {
             if (BitConverter.IsLittleEndian)
@@ -135,6 +144,7 @@ namespace YooAsset
         /// <param name="offset">Offset of the input data within the buffer.</param>
         /// <param name="length">Length of the input data in the buffer.</param>
         /// <returns>Accumulated CRC-32 of all buffers processed so far.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint Append(uint initial, byte[] input, int offset, int length)
         {
             if (input == null)
@@ -160,6 +170,7 @@ namespace YooAsset
         /// </param>
         /// <param name="input">Input buffer containing data to be checksummed.</param>
         /// <returns>Accumulated CRC-32 of all buffers processed so far.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint Append(uint initial, byte[] input)
         {
             if (input == null)
@@ -177,6 +188,7 @@ namespace YooAsset
         /// <param name="offset">Offset of the input data within the buffer.</param>
         /// <param name="length">Length of the input data in the buffer.</param>
         /// <returns>CRC-32 of the data in the buffer.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint Compute(byte[] input, int offset, int length)
         {
             return Append(0, input, offset, length);
@@ -187,6 +199,7 @@ namespace YooAsset
         /// </summary>
         /// <param name="input">Input buffer containing data to be checksummed.</param>
         /// <returns>CRC-32 of the buffer.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint Compute(byte[] input)
         {
             return Append(0, input);
@@ -199,6 +212,7 @@ namespace YooAsset
         /// <param name="offset">Offset of the input data within the buffer.</param>
         /// <param name="length">Length of the input data in the buffer.</param>
         /// <returns>CRC-32 of the data in the buffer.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint ComputeAndWriteToEnd(byte[] input, int offset, int length)
         {
             if (length + 4 > input.Length)
@@ -220,6 +234,7 @@ namespace YooAsset
         /// </summary>
         /// <param name="input">Input buffer with data to be checksummed.</param>
         /// <returns>CRC-32 of the data in the buffer.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static uint ComputeAndWriteToEnd(byte[] input)
         {
             if (input.Length < 4)
@@ -237,6 +252,7 @@ namespace YooAsset
         /// <param name="offset">Offset of the input data within the buffer.</param>
         /// <param name="lengthWithCrc">Length of the input data in the buffer with CRC-32 bytes.</param>
         /// <returns>Is checksum valid.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static bool IsValidWithCrcAtEnd(byte[] input, int offset, int lengthWithCrc)
         {
             return Append(0, input, offset, lengthWithCrc) == 0x2144DF1C;
@@ -247,6 +263,7 @@ namespace YooAsset
         /// </summary>
         /// <param name="input">Input buffer with data to be checksummed.</param>
         /// <returns>Is checksum valid.</returns>
+        [UnityEngine.Scripting.Preserve]
         public static bool IsValidWithCrcAtEnd(byte[] input)
         {
             if (input.Length < 4)
@@ -260,6 +277,7 @@ namespace YooAsset
 
         private static readonly SafeProxy _proxy = new();
 
+        [UnityEngine.Scripting.Preserve]
         private static uint AppendInternal(uint initial, byte[] input, int offset, int length)
         {
             if (length > 0)

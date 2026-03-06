@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class LoadWebCatalogFileOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -23,16 +25,19 @@ namespace YooAsset
         /// </summary>
         public string PackageVersion { private set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadWebCatalogFileOperation(DefaultWebFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadCatalog;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

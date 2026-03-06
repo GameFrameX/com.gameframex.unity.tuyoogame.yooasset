@@ -5,6 +5,7 @@ using UnityEngine.Networking.PlayerConnection;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class RemoteDebuggerInRuntime : MonoBehaviour
     {
 #if UNITY_EDITOR
@@ -16,6 +17,7 @@ namespace YooAsset
         /// <summary>
         /// 编辑器下请求报告数据
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void EditorRequestDebugReport()
         {
             if (UnityEditor.EditorApplication.isPlaying)
@@ -25,14 +27,17 @@ namespace YooAsset
             }
         }
 #else
+        [UnityEngine.Scripting.Preserve]
         private void OnEnable()
         {
             PlayerConnection.instance.Register(RemoteDebuggerDefine.kMsgSendEditorToPlayer, OnHandleEditorMessage);
         }
+        [UnityEngine.Scripting.Preserve]
         private void OnDisable()
         {
             PlayerConnection.instance.Unregister(RemoteDebuggerDefine.kMsgSendEditorToPlayer, OnHandleEditorMessage);
         }
+        [UnityEngine.Scripting.Preserve]
         private void OnHandleEditorMessage(MessageEventArgs args)
         {
             var command = RemoteCommand.Deserialize(args.data);

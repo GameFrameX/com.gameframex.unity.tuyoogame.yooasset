@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class DCFSClearUnusedBundleFilesOperation : FSClearUnusedBundleFilesOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -20,17 +22,20 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSClearUnusedBundleFilesOperation(DefaultCacheFileSystem fileSystem, PackageManifest manifest)
         {
             _fileSystem = fileSystem;
             _manifest = manifest;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.GetUnusedCacheFiles;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -76,6 +81,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private List<string> GetUnusedBundleGUIDs()
         {
             var allBundleGUIDs = _fileSystem.GetAllCachedBundleGUIDs();

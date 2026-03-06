@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class CacheFileElement
     {
         public string PackageName { private set; get; }
@@ -18,6 +19,7 @@ namespace YooAsset
         public string DataFileCRC;
         public long DataFileSize;
 
+        [UnityEngine.Scripting.Preserve]
         public CacheFileElement(string packageName, string bundleGUID, string fileRootPath, string dataFilePath, string infoFilePath)
         {
             PackageName = packageName;
@@ -27,6 +29,7 @@ namespace YooAsset
             InfoFilePath = infoFilePath;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void DeleteFiles()
         {
             try
@@ -43,8 +46,10 @@ namespace YooAsset
     /// <summary>
     /// 缓存文件验证（线程版）
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class VerifyCacheFilesOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -66,6 +71,7 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal VerifyCacheFilesOperation(DefaultCacheFileSystem fileSystem, List<CacheFileElement> elements)
         {
             _fileSystem = fileSystem;
@@ -73,12 +79,14 @@ namespace YooAsset
             _verifyLevel = _fileSystem.FileVerifyLevel;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.InitVerify;
             _verifyStartTime = UnityEngine.Time.realtimeSinceStartup;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -144,6 +152,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private float GetProgress()
         {
             if (_verifyTotalCount == 0)
@@ -154,11 +163,13 @@ namespace YooAsset
             return (float)(_succeedCount + _failedCount) / _verifyTotalCount;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private bool BeginVerifyFileWithThread(CacheFileElement element)
         {
             return ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyInThread), element);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void VerifyInThread(object obj)
         {
             var element = (CacheFileElement)obj;
@@ -166,6 +177,7 @@ namespace YooAsset
             _syncContext.Post(VerifyCallback, element);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void VerifyCallback(object obj)
         {
             var element = (CacheFileElement)obj;
@@ -189,6 +201,7 @@ namespace YooAsset
         /// <summary>
         /// 验证缓存文件（子线程内操作）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         private EFileVerifyResult VerifyingCacheFile(CacheFileElement element, EFileVerifyLevel verifyLevel)
         {
             try

@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class UnloadAllAssetsOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -17,16 +19,19 @@ namespace YooAsset
         private readonly ResourceManager _resManager;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal UnloadAllAssetsOperation(ResourceManager resourceManager)
         {
             _resManager = resourceManager;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.AbortDownload;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

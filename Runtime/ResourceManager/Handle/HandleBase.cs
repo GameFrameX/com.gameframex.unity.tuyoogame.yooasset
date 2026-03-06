@@ -3,22 +3,26 @@ using System.Collections;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public abstract class HandleBase : IEnumerator
     {
         private readonly AssetInfo _assetInfo;
         internal ProviderOperation Provider { private set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         internal HandleBase(ProviderOperation provider)
         {
             Provider = provider;
             _assetInfo = provider.MainAssetInfo;
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal abstract void InvokeCallback();
 
         /// <summary>
         /// 获取资源信息
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public AssetInfo GetAssetInfo()
         {
             return _assetInfo;
@@ -27,6 +31,7 @@ namespace YooAsset
         /// <summary>
         /// 获取下载报告
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public DownloadStatus GetDownloadStatus()
         {
             if (IsValidWithWarning == false)
@@ -149,6 +154,7 @@ namespace YooAsset
         /// <summary>
         /// 释放句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         internal void ReleaseInternal()
         {
             if (IsValidWithWarning == false)
@@ -171,11 +177,13 @@ namespace YooAsset
         }
 
         // 协程相关
+        [UnityEngine.Scripting.Preserve]
         bool IEnumerator.MoveNext()
         {
             return !IsDone;
         }
 
+        [UnityEngine.Scripting.Preserve]
         void IEnumerator.Reset()
         {
         }

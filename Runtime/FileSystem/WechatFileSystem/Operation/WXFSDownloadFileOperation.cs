@@ -4,21 +4,25 @@ using UnityEngine.Networking;
 using YooAsset;
 using WeChatWASM;
 
+[UnityEngine.Scripting.Preserve]
 internal class WXFSDownloadFileOperation : DefaultDownloadFileOperation
 {
     private WechatFileSystem _fileSystem;
     private ESteps _steps = ESteps.None;
 
+    [UnityEngine.Scripting.Preserve]
     internal WXFSDownloadFileOperation(WechatFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
     {
         _fileSystem = fileSystem;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _steps = ESteps.CreateRequest;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         // 创建下载器
@@ -84,6 +88,7 @@ internal class WXFSDownloadFileOperation : DefaultDownloadFileOperation
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     private void CreateWebRequest()
     {
         _webRequest = UnityWebRequestAssetBundle.GetAssetBundle(_requestURL);
@@ -92,6 +97,7 @@ internal class WXFSDownloadFileOperation : DefaultDownloadFileOperation
         _webRequest.SendWebRequest();
     }
 
+    [UnityEngine.Scripting.Preserve]
     private void DisposeWebRequest()
     {
         if (_webRequest != null)

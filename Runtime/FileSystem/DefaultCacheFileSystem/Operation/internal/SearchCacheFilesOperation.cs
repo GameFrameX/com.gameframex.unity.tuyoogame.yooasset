@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class SearchCacheFilesOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -26,17 +28,20 @@ namespace YooAsset
         public readonly List<CacheFileElement> Result = new(5000);
 
 
+        [UnityEngine.Scripting.Preserve]
         internal SearchCacheFilesOperation(DefaultCacheFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.Prepare;
             _verifyStartTime = UnityEngine.Time.realtimeSinceStartup;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -70,6 +75,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private bool SearchFiles()
         {
             if (_filesEnumerator == null)
@@ -124,6 +130,7 @@ namespace YooAsset
             return isFindItem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string FindDataFileExtension(DirectoryInfo directoryInfo)
         {
             var dataFileExtension = string.Empty;

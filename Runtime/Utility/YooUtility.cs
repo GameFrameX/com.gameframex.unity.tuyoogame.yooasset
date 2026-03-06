@@ -8,12 +8,14 @@ namespace YooAsset
     /// <summary>
     /// 路径工具类
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public static class PathUtility
     {
         /// <summary>
         /// 路径归一化
         /// 注意：替换为Linux路径格式
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string RegularPath(string path)
         {
             return path.Replace('\\', '/').Replace("\\", "/");
@@ -22,6 +24,7 @@ namespace YooAsset
         /// <summary>
         /// 移除路径里的后缀名
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string RemoveExtension(string str)
         {
             if (string.IsNullOrEmpty(str))
@@ -43,6 +46,7 @@ namespace YooAsset
         /// <summary>
         /// 合并路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string Combine(string path1, string path2)
         {
             return Path.Combine(path1, path2);
@@ -51,6 +55,7 @@ namespace YooAsset
         /// <summary>
         /// 合并路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string Combine(string path1, string path2, string path3)
         {
             return Path.Combine(path1, path2, path3);
@@ -59,6 +64,7 @@ namespace YooAsset
         /// <summary>
         /// 合并路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string Combine(string path1, string path2, string path3, string path4)
         {
             return Path.Combine(path1, path2, path3, path4);
@@ -68,10 +74,12 @@ namespace YooAsset
     /// <summary>
     /// 字符串工具类
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal static class StringUtility
     {
         [ThreadStatic] private static StringBuilder _cacheBuilder = new StringBuilder(2048);
 
+        [UnityEngine.Scripting.Preserve]
         public static string Format(string format, object arg0)
         {
             if (string.IsNullOrEmpty(format))
@@ -84,6 +92,7 @@ namespace YooAsset
             return _cacheBuilder.ToString();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static string Format(string format, object arg0, object arg1)
         {
             if (string.IsNullOrEmpty(format))
@@ -96,6 +105,7 @@ namespace YooAsset
             return _cacheBuilder.ToString();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static string Format(string format, object arg0, object arg1, object arg2)
         {
             if (string.IsNullOrEmpty(format))
@@ -108,6 +118,7 @@ namespace YooAsset
             return _cacheBuilder.ToString();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static string Format(string format, params object[] args)
         {
             if (string.IsNullOrEmpty(format))
@@ -129,11 +140,13 @@ namespace YooAsset
     /// <summary>
     /// 文件工具类
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public static class FileUtility
     {
         /// <summary>
         /// 读取文件的文本数据
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string ReadAllText(string filePath)
         {
             if (File.Exists(filePath) == false)
@@ -147,6 +160,7 @@ namespace YooAsset
         /// <summary>
         /// 读取文件的字节数据
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static byte[] ReadAllBytes(string filePath)
         {
             if (File.Exists(filePath) == false)
@@ -160,6 +174,7 @@ namespace YooAsset
         /// <summary>
         /// 写入文本数据（会覆盖指定路径的文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void WriteAllText(string filePath, string content)
         {
             // 创建文件夹路径
@@ -172,6 +187,7 @@ namespace YooAsset
         /// <summary>
         /// 写入字节数据（会覆盖指定路径的文件）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void WriteAllBytes(string filePath, byte[] data)
         {
             // 创建文件夹路径
@@ -183,6 +199,7 @@ namespace YooAsset
         /// <summary>
         /// 创建文件的文件夹路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void CreateFileDirectory(string filePath)
         {
             // 获取文件的文件夹路径
@@ -193,6 +210,7 @@ namespace YooAsset
         /// <summary>
         /// 创建文件夹路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void CreateDirectory(string directory)
         {
             // If the directory doesn't exist, create it.
@@ -205,6 +223,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件大小（字节数）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static long GetFileSize(string filePath)
         {
             var fileInfo = new FileInfo(filePath);
@@ -215,8 +234,10 @@ namespace YooAsset
     /// <summary>
     /// 哈希工具类
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public static class HashUtility
     {
+        [UnityEngine.Scripting.Preserve]
         private static string ToString(byte[] hashBytes)
         {
             var result = BitConverter.ToString(hashBytes);
@@ -229,6 +250,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字符串的Hash值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StringSHA1(string str)
         {
             var buffer = Encoding.UTF8.GetBytes(str);
@@ -238,6 +260,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的Hash值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileSHA1(string filePath)
         {
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -249,6 +272,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的Hash值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileSHA1Safely(string filePath)
         {
             try
@@ -265,6 +289,7 @@ namespace YooAsset
         /// <summary>
         /// 获取数据流的Hash值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StreamSHA1(Stream stream)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
@@ -276,6 +301,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字节数组的Hash值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string BytesSHA1(byte[] buffer)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
@@ -291,6 +317,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字符串的MD5
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StringMD5(string str)
         {
             var buffer = Encoding.UTF8.GetBytes(str);
@@ -300,6 +327,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的MD5
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileMD5(string filePath)
         {
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -311,6 +339,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的MD5
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileMD5Safely(string filePath)
         {
             try
@@ -327,6 +356,7 @@ namespace YooAsset
         /// <summary>
         /// 获取数据流的MD5
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StreamMD5(Stream stream)
         {
             var provider = new MD5CryptoServiceProvider();
@@ -337,6 +367,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字节数组的MD5
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string BytesMD5(byte[] buffer)
         {
             var provider = new MD5CryptoServiceProvider();
@@ -351,6 +382,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字符串的CRC32
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StringCRC32(string str)
         {
             var buffer = Encoding.UTF8.GetBytes(str);
@@ -360,6 +392,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的CRC32
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileCRC32(string filePath)
         {
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -371,6 +404,7 @@ namespace YooAsset
         /// <summary>
         /// 获取文件的CRC32
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string FileCRC32Safely(string filePath)
         {
             try
@@ -387,6 +421,7 @@ namespace YooAsset
         /// <summary>
         /// 获取数据流的CRC32
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string StreamCRC32(Stream stream)
         {
             var hash = new CRC32Algorithm();
@@ -397,6 +432,7 @@ namespace YooAsset
         /// <summary>
         /// 获取字节数组的CRC32
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static string BytesCRC32(byte[] buffer)
         {
             var hash = new CRC32Algorithm();

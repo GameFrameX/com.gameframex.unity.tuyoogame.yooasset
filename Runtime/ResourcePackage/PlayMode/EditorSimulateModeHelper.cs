@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public static class EditorSimulateModeHelper
     {
         private static System.Type _classType;
@@ -10,6 +11,7 @@ namespace YooAsset
         /// <summary>
         /// 编辑器下模拟构建清单
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static SimulateBuildResult SimulateBuild(string buildPipelineName, string packageName)
         {
             if (_classType == null)
@@ -23,11 +25,13 @@ namespace YooAsset
         /// <summary>
         /// 编辑器下模拟构建清单
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static SimulateBuildResult SimulateBuild(EDefaultBuildPipeline buildPipeline, string packageName)
         {
             return SimulateBuild(buildPipeline.ToString(), packageName);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private static object InvokePublicStaticMethod(System.Type type, string method, params object[] parameters)
         {
             var methodInfo = type.GetMethod(method, BindingFlags.Public | BindingFlags.Static);
@@ -44,13 +48,16 @@ namespace YooAsset
 #else
 namespace YooAsset
 { 
+    [UnityEngine.Scripting.Preserve]
     public static class EditorSimulateModeHelper
     {
+        [UnityEngine.Scripting.Preserve]
         public static SimulateBuildResult SimulateBuild(string buildPipelineName, string packageName) 
         {
             throw new System.Exception("Only support in unity editor !");
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static SimulateBuildResult SimulateBuild(EDefaultBuildPipeline buildPipeline, string packageName)
         {
             throw new System.Exception("Only support in unity editor !");

@@ -1,7 +1,9 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public class DestroyOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -15,16 +17,19 @@
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         public DestroyOperation(ResourcePackage resourcePackage)
         {
             _resourcePackage = resourcePackage;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.UnloadAllAssets;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

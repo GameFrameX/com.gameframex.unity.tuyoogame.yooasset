@@ -3,21 +3,25 @@ using UnityEngine;
 using UnityEngine.Networking;
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class BGFSDownloadFileOperation : DefaultDownloadFileOperation
 {
     private ByteGameFileSystem _fileSystem;
     private ESteps _steps = ESteps.None;
 
+    [UnityEngine.Scripting.Preserve]
     internal BGFSDownloadFileOperation(ByteGameFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
     {
         _fileSystem = fileSystem;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _steps = ESteps.CreateRequest;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         // 创建下载器
@@ -83,6 +87,7 @@ internal class BGFSDownloadFileOperation : DefaultDownloadFileOperation
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     private void CreateWebRequest()
     {
         //TODO : 抖音小游戏没有找到预下载方法
@@ -91,6 +96,7 @@ internal class BGFSDownloadFileOperation : DefaultDownloadFileOperation
         _webRequest.SendWebRequest();
     }
 
+    [UnityEngine.Scripting.Preserve]
     private void DisposeWebRequest()
     {
         if (_webRequest != null)

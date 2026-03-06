@@ -2,8 +2,10 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class LoadCachePackageManifestOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -26,6 +28,7 @@ namespace YooAsset
         public PackageManifest Manifest { private set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadCachePackageManifestOperation(DefaultCacheFileSystem fileSystem, string packageVersion, string packageHash)
         {
             _fileSystem = fileSystem;
@@ -33,11 +36,13 @@ namespace YooAsset
             _packageHash = packageHash;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadFileData;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

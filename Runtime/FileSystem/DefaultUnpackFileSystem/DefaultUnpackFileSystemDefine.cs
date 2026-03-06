@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultUnpackFileSystemDefine
     {
         /// <summary>

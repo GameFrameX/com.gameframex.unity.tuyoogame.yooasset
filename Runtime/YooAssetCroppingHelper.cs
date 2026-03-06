@@ -12,7 +12,7 @@ namespace YooAsset
     {
         private System.Type[] _types;
 
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         private void Start()
         {
             _types = new[]

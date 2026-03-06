@@ -2,8 +2,10 @@
 using System;
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class RequestWechatPackageVersionOperation : AsyncOperationBase
 {
+    [UnityEngine.Scripting.Preserve]
     private enum ESteps
     {
         None,
@@ -24,6 +26,7 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
     public string PackageVersion { private set; get; }
 
 
+    [UnityEngine.Scripting.Preserve]
     public RequestWechatPackageVersionOperation(WechatFileSystem fileSystem, bool appendTimeTicks, int timeout)
     {
         _fileSystem = fileSystem;
@@ -31,12 +34,14 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
         _timeout = timeout;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestWechatPackageVersionOperation));
         _steps = ESteps.RequestPackageVersion;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -86,6 +91,7 @@ internal class RequestWechatPackageVersionOperation : AsyncOperationBase
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     private string GetRequestURL(string fileName)
     {
         // 轮流返回请求地址

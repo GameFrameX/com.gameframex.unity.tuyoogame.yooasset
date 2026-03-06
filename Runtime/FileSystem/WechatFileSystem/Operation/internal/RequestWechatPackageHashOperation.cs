@@ -1,8 +1,10 @@
 ﻿#if UNITY_WEBGL && WECHAT_MINI_GAME
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class RequestWechatPackageHashOperation : AsyncOperationBase
 {
+    [UnityEngine.Scripting.Preserve]
     private enum ESteps
     {
         None,
@@ -23,17 +25,20 @@ internal class RequestWechatPackageHashOperation : AsyncOperationBase
     public string PackageHash { private set; get; }
 
 
+    [UnityEngine.Scripting.Preserve]
     public RequestWechatPackageHashOperation(WechatFileSystem fileSystem, string packageVersion, int timeout)
     {
         _fileSystem = fileSystem;
         _packageVersion = packageVersion;
         _timeout = timeout;
     }
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestWechatPackageHashOperation));
         _steps = ESteps.RequestPackageHash;
     }
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -78,6 +83,7 @@ internal class RequestWechatPackageHashOperation : AsyncOperationBase
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     private string GetRequestURL(string fileName)
     {
         // 轮流返回请求地址

@@ -3,6 +3,7 @@
     /// <summary>
     /// 文件校验结果
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal enum EFileVerifyResult
     {
         /// <summary>

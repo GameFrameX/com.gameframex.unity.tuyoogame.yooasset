@@ -3,8 +3,10 @@ using System.IO;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DBFSInitializeOperation : FSInitializeFileSystemOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -18,16 +20,19 @@ namespace YooAsset
         private LoadBuildinCatalogFileOperation _loadCatalogFileOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal DBFSInitializeOperation(DefaultBuildinFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.InitUnpackFileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

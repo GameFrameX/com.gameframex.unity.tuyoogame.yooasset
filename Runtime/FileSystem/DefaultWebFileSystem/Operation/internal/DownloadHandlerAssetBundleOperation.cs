@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DownloadHandlerAssetBundleOperation : DefaultDownloadFileOperation
     {
         private readonly DefaultWebFileSystem _fileSystem;
@@ -12,16 +13,19 @@ namespace YooAsset
         public AssetBundle Result { private set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DownloadHandlerAssetBundleOperation(DefaultWebFileSystem fileSystem, PackageBundle bundle, DownloadParam param) : base(bundle, param)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -93,12 +97,14 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest()
         {
             _downloadhandler = CreateDownloadHandler();
@@ -108,6 +114,7 @@ namespace YooAsset
             _webRequest.SendWebRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void DisposeWebRequest()
         {
             if (_webRequest != null)
@@ -118,6 +125,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private DownloadHandlerAssetBundle CreateDownloadHandler()
         {
             if (_fileSystem.DisableUnityWebCache)

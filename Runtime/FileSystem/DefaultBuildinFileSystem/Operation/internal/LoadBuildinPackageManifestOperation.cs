@@ -1,7 +1,9 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class LoadBuildinPackageManifestOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -24,6 +26,7 @@
         public PackageManifest Manifest { private set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadBuildinPackageManifestOperation(DefaultBuildinFileSystem fileSystem, string packageVersion, string packageHash)
         {
             _fileSystem = fileSystem;
@@ -31,11 +34,13 @@
             _packageHash = packageHash;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.RequestFileData;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

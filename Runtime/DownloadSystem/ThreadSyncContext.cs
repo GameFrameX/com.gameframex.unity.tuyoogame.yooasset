@@ -9,6 +9,7 @@ namespace YooAsset
     /// 同步其它线程里的回调到主线程里
     /// 注意：Unity3D中需要设置Scripting Runtime Version为.NET4.6
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class ThreadSyncContext : SynchronizationContext
     {
         private readonly ConcurrentQueue<Action> _safeQueue = new();
@@ -16,6 +17,7 @@ namespace YooAsset
         /// <summary>
         /// 更新同步队列
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Update()
         {
             while (true)
@@ -32,6 +34,7 @@ namespace YooAsset
         /// <summary>
         /// 向同步队列里投递一个回调方法
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public override void Post(SendOrPostCallback callback, object state)
         {
             var action = new Action(() => { callback(state); });

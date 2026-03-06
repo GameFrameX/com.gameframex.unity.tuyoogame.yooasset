@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DCFSLoadAssetBundleOperation : FSLoadBundleOperation
     {
+        [UnityEngine.Scripting.Preserve]
         protected enum ESteps
         {
             None,
@@ -23,17 +25,20 @@ namespace YooAsset
         protected ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSLoadAssetBundleOperation(DefaultCacheFileSystem fileSystem, PackageBundle bundle)
         {
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckExist;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -205,6 +210,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             _isWaitForAsyncComplete = true;
@@ -229,6 +235,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void AbortDownloadOperation()
         {
             if (_steps == ESteps.DownloadFile)
@@ -241,8 +248,10 @@ namespace YooAsset
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal class DCFSLoadRawBundleOperation : FSLoadBundleOperation
     {
+        [UnityEngine.Scripting.Preserve]
         protected enum ESteps
         {
             None,
@@ -258,17 +267,20 @@ namespace YooAsset
         protected ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSLoadRawBundleOperation(DefaultCacheFileSystem fileSystem, PackageBundle bundle)
         {
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckExist;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -336,6 +348,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -358,6 +371,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void AbortDownloadOperation()
         {
             if (_steps == ESteps.DownloadFile)

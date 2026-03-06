@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class BundledSceneProvider : ProviderOperation
     {
         public readonly LoadSceneParameters LoadSceneParams;
@@ -20,6 +21,7 @@ namespace YooAsset
             get { return LoadSceneParams.loadSceneMode; }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public BundledSceneProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo, LoadSceneParameters loadSceneParams, bool suspendLoad) : base(manager, providerGUID, assetInfo)
         {
             LoadSceneParams = loadSceneParams;
@@ -27,11 +29,13 @@ namespace YooAsset
             _suspendLoadMode = suspendLoad;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (IsDone)
@@ -147,6 +151,7 @@ namespace YooAsset
         /// <summary>
         /// 解除场景加载挂起操作
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void UnSuspendLoad()
         {
             if (IsDone == false)

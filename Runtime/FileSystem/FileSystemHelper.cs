@@ -3,11 +3,13 @@ using System.IO;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class FileSystemHelper
     {
         /// <summary>
         /// 文件校验
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static EFileVerifyResult FileVerify(string filePath, long fileSize, string fileCRC, EFileVerifyLevel verifyLevel)
         {
             try

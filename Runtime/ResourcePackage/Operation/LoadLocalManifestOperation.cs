@@ -8,12 +8,15 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public abstract class LoadLocalManifestOperation : AsyncOperationBase
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal sealed class LoadLocalManifestImplOperation : LoadLocalManifestOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -34,6 +37,7 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadLocalManifestImplOperation(IPlayMode impl, IFileSystem fileSystem, IFileSystem cacheSystem, string packageVersion, int timeout)
         {
             _impl = impl;
@@ -43,11 +47,13 @@ namespace YooAsset
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckParams;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -140,6 +146,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public void SavePackageVersion()
         {
             if (_impl.ActiveManifest != null)

@@ -2,6 +2,7 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     [CreateAssetMenu(fileName = "YooAssetSettings", menuName = "YooAsset/Create YooAsset Settings")]
     public class YooAssetSettings : ScriptableObject
     {

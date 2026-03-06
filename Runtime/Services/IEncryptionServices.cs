@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public struct EncryptResult
     {
         /// <summary>
@@ -13,6 +14,7 @@
         public byte[] EncryptedData;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public struct EncryptFileInfo
     {
         /// <summary>
@@ -26,8 +28,10 @@
         public string FileLoadPath;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public interface IEncryptionServices
     {
+        [UnityEngine.Scripting.Preserve]
         EncryptResult Encrypt(EncryptFileInfo fileInfo);
     }
 }

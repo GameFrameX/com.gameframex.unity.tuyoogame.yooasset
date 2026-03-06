@@ -2,8 +2,10 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DownloadPackageHashOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -20,6 +22,7 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DownloadPackageHashOperation(DefaultCacheFileSystem fileSystem, string packageVersion, int timeout)
         {
             _fileSystem = fileSystem;
@@ -27,12 +30,14 @@ namespace YooAsset
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(DownloadPackageHashOperation));
             _steps = ESteps.CheckExist;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -85,6 +90,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string GetWebRequestURL(string fileName)
         {
             // 轮流返回请求地址

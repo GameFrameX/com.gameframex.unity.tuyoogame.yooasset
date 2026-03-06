@@ -1,8 +1,10 @@
 ﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class BGFSRequestPackageVersionOperation : FSRequestPackageVersionOperation
 {
+    [UnityEngine.Scripting.Preserve]
     private enum ESteps
     {
         None,
@@ -16,17 +18,20 @@ internal class BGFSRequestPackageVersionOperation : FSRequestPackageVersionOpera
     private ESteps _steps = ESteps.None;
 
 
+    [UnityEngine.Scripting.Preserve]
     internal BGFSRequestPackageVersionOperation(ByteGameFileSystem fileSystem, int timeout)
     {
         _fileSystem = fileSystem;
         _timeout = timeout;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _steps = ESteps.RequestPackageVersion;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)

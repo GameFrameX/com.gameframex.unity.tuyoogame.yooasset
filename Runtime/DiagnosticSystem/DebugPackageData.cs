@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     public class DebugPackageData
     {

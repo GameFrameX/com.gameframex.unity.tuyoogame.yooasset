@@ -9,6 +9,7 @@ namespace YooAsset
     /// <summary>
     /// 清单文件
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     public class PackageManifest
     {
@@ -97,6 +98,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试映射为资源路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string TryMappingToAssetPath(string location)
         {
             if (string.IsNullOrEmpty(location))
@@ -123,6 +125,7 @@ namespace YooAsset
         /// 获取主资源包
         /// 注意：传入的资源路径一定合法有效！
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public PackageBundle GetMainPackageBundle(string assetPath)
         {
             if (AssetDic.TryGetValue(assetPath, out var packageAsset))
@@ -148,6 +151,7 @@ namespace YooAsset
         /// 获取资源依赖列表
         /// 注意：传入的资源路径一定合法有效！
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public PackageBundle[] GetAllDependencies(string assetPath)
         {
             var packageBundle = GetMainPackageBundle(assetPath);
@@ -171,6 +175,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试获取包裹的资源
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool TryGetPackageAsset(string assetPath, out PackageAsset result)
         {
             return AssetDic.TryGetValue(assetPath, out result);
@@ -179,6 +184,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试获取包裹的资源包
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool TryGetPackageBundleByBundleName(string bundleName, out PackageBundle result)
         {
             return BundleDic1.TryGetValue(bundleName, out result);
@@ -187,6 +193,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试获取包裹的资源包
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool TryGetPackageBundleByFileName(string fileName, out PackageBundle result)
         {
             return BundleDic2.TryGetValue(fileName, out result);
@@ -195,6 +202,7 @@ namespace YooAsset
         /// <summary>
         /// 尝试获取包裹的资源包
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool TryGetPackageBundleByBundleGUID(string bundleGUID, out PackageBundle result)
         {
             return BundleDic3.TryGetValue(bundleGUID, out result);
@@ -203,6 +211,7 @@ namespace YooAsset
         /// <summary>
         /// 是否包含资源文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsIncludeBundleFile(string bundleGUID)
         {
             return BundleDic3.ContainsKey(bundleGUID);
@@ -211,6 +220,7 @@ namespace YooAsset
         /// <summary>
         /// 获取资源信息列表
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public AssetInfo[] GetAssetsInfoByTags(string[] tags)
         {
             var result = new List<AssetInfo>(100);
@@ -230,6 +240,7 @@ namespace YooAsset
         /// 资源定位地址转换为资源信息。
         /// </summary>
         /// <returns>如果转换失败会返回一个无效的资源信息类</returns>
+        [UnityEngine.Scripting.Preserve]
         public AssetInfo ConvertLocationToAssetInfo(string location, Type assetType)
         {
             DebugCheckLocation(location);
@@ -257,6 +268,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string ConvertLocationToAssetInfoMapping(string location)
         {
             if (string.IsNullOrEmpty(location))
@@ -285,6 +297,7 @@ namespace YooAsset
         /// 资源GUID转换为资源信息。
         /// </summary>
         /// <returns>如果转换失败会返回一个无效的资源信息类</returns>
+        [UnityEngine.Scripting.Preserve]
         public AssetInfo ConvertAssetGUIDToAssetInfo(string assetGUID, Type assetType)
         {
             if (IncludeAssetGUID == false)
@@ -317,6 +330,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string ConvertAssetGUIDToAssetInfoMapping(string assetGUID)
         {
             if (string.IsNullOrEmpty(assetGUID))
@@ -339,6 +353,7 @@ namespace YooAsset
         /// <summary>
         /// 获取资源包内的主资源列表
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string[] GetBundleIncludeAssets(string assetPath)
         {
             var assetList = new List<string>();
@@ -358,6 +373,7 @@ namespace YooAsset
 
         #region 调试方法
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         private void DebugCheckLocation(string location)
         {

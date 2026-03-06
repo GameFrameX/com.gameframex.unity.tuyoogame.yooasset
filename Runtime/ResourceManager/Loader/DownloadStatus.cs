@@ -1,5 +1,6 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public struct DownloadStatus
     {
         /// <summary>
@@ -22,6 +23,7 @@
         /// </summary>
         public long DownloadedBytes;
 
+        [UnityEngine.Scripting.Preserve]
         public static DownloadStatus CreateDefaultStatus()
         {
             var status = new DownloadStatus();

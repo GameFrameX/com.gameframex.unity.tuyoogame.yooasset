@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class UnloadUnusedAssetsOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -16,16 +18,19 @@ namespace YooAsset
         private readonly ResourceManager _resManager;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal UnloadUnusedAssetsOperation(ResourceManager resourceManager)
         {
             _resManager = resourceManager;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.UnloadUnused;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -69,6 +74,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             while (true)

@@ -3,12 +3,15 @@
     /// <summary>
     /// 清理所有文件
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public abstract class ClearAllBundleFilesOperation : AsyncOperationBase
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     internal sealed class ClearAllBundleFilesImplOperation : ClearAllBundleFilesOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -27,6 +30,7 @@
         private FSClearAllBundleFilesOperation _clearAllBundleFilesOpC;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal ClearAllBundleFilesImplOperation(IPlayMode impl, IFileSystem fileSystemA, IFileSystem fileSystemB, IFileSystem fileSystemC)
         {
             _impl = impl;
@@ -35,11 +39,13 @@
             _fileSystemC = fileSystemC;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.ClearFileSystemA;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

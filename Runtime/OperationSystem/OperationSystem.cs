@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class OperationSystem
     {
         private static readonly List<AsyncOperationBase> _operations = new(1000);
@@ -30,6 +31,7 @@ namespace YooAsset
         /// <summary>
         /// 初始化异步操作系统
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void Initialize()
         {
             _watch = Stopwatch.StartNew();
@@ -38,6 +40,7 @@ namespace YooAsset
         /// <summary>
         /// 更新异步操作系统
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void Update()
         {
             _frameTime = _watch.ElapsedMilliseconds;
@@ -104,6 +107,7 @@ namespace YooAsset
         /// <summary>
         /// 销毁异步操作系统
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void DestroyAll()
         {
             _operations.Clear();
@@ -116,6 +120,7 @@ namespace YooAsset
         /// <summary>
         /// 销毁包裹的所有任务
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void ClearPackageOperation(string packageName)
         {
             // 终止临时队列里的任务
@@ -140,6 +145,7 @@ namespace YooAsset
         /// <summary>
         /// 开始处理异步操作类
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void StartOperation(string packageName, AsyncOperationBase operation)
         {
             _newList.Add(operation);

@@ -7,14 +7,17 @@ namespace YooAsset
     /// <summary>
     /// 内置资源清单目录
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DefaultBuildinFileCatalog : ScriptableObject
     {
+        [UnityEngine.Scripting.Preserve]
         [Serializable]
         public class FileWrapper
         {
             public string BundleGUID;
             public string FileName;
 
+            [UnityEngine.Scripting.Preserve]
             public FileWrapper(string bundleGUID, string fileName)
             {
                 BundleGUID = bundleGUID;

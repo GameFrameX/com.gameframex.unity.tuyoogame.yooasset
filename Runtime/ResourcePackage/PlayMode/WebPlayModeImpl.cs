@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class WebPlayModeImpl : IPlayMode, IBundleQuery
     {
         public readonly string PackageName;
         public IFileSystem WebFileSystem { set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         public WebPlayModeImpl(string packageName)
         {
             PackageName = packageName;
@@ -18,6 +20,7 @@ namespace YooAsset
         /// <summary>
         /// 异步初始化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public InitializationOperation InitializeAsync(WebPlayModeParameters initParameters)
         {
             var operation = new WebPlayModeInitializationOperation(this, initParameters);
@@ -29,6 +32,7 @@ namespace YooAsset
 
         public PackageManifest ActiveManifest { set; get; }
 
+        [UnityEngine.Scripting.Preserve]
         void IPlayMode.UpdatePlayMode()
         {
             if (WebFileSystem != null)
@@ -37,6 +41,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         LoadLocalVersionOperation IPlayMode.LoadLocalVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new LoadLocalVersionImplOperation(WebFileSystem, null, appendTimeTicks, timeout);
@@ -44,6 +49,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         LoadLocalManifestOperation IPlayMode.LoadLocalManifestAsync(string packageVersion, int timeout)
         {
             var operation = new LoadLocalManifestImplOperation(this, WebFileSystem, WebFileSystem, packageVersion, timeout);
@@ -51,6 +57,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         RequestPackageVersionOperation IPlayMode.RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
         {
             var operation = new RequestPackageVersionImplOperation(WebFileSystem, appendTimeTicks, timeout);
@@ -58,6 +65,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         UpdatePackageManifestOperation IPlayMode.UpdatePackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new UpdatePackageManifestImplOperation(this, WebFileSystem, packageVersion, timeout);
@@ -66,6 +74,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         PreDownloadContentOperation IPlayMode.PreDownloadContentAsync(string packageVersion, int timeout)
         {
             var operation = new WebPlayModePreDownloadContentOperation(this);
@@ -73,6 +82,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ClearAllBundleFilesOperation IPlayMode.ClearAllBundleFilesAsync()
         {
             var operation = new ClearAllBundleFilesImplOperation(this, WebFileSystem, null, null);
@@ -80,6 +90,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ClearUnusedBundleFilesOperation IPlayMode.ClearUnusedBundleFilesAsync()
         {
             var operation = new ClearUnusedBundleFilesImplOperation(this, WebFileSystem, null, null);
@@ -87,6 +98,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceDownloaderOperation IPlayMode.CreateResourceDownloaderByAll(int downloadingMaxNumber, int failedTryAgain, int timeout)
         {
             var downloadList = PlayModeHelper.GetDownloadListByAll(ActiveManifest, WebFileSystem);
@@ -94,6 +106,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceDownloaderOperation IPlayMode.CreateResourceDownloaderByTags(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout)
         {
             var downloadList = PlayModeHelper.GetDownloadListByTags(ActiveManifest, tags, WebFileSystem);
@@ -101,6 +114,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceDownloaderOperation IPlayMode.CreateResourceDownloaderByPaths(AssetInfo[] assetInfos, int downloadingMaxNumber, int failedTryAgain, int timeout)
         {
             var downloadList = PlayModeHelper.GetDownloadListByPaths(ActiveManifest, assetInfos, WebFileSystem);
@@ -108,6 +122,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceUnpackerOperation IPlayMode.CreateResourceUnpackerByAll(int upackingMaxNumber, int failedTryAgain, int timeout)
         {
             var unpcakList = PlayModeHelper.GetUnpackListByAll(ActiveManifest, WebFileSystem);
@@ -115,6 +130,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceUnpackerOperation IPlayMode.CreateResourceUnpackerByTags(string[] tags, int upackingMaxNumber, int failedTryAgain, int timeout)
         {
             var unpcakList = PlayModeHelper.GetUnpackListByTags(ActiveManifest, tags, WebFileSystem);
@@ -122,6 +138,7 @@ namespace YooAsset
             return operation;
         }
 
+        [UnityEngine.Scripting.Preserve]
         ResourceImporterOperation IPlayMode.CreateResourceImporterByFilePaths(string[] filePaths, int importerMaxNumber, int failedTryAgain, int timeout)
         {
             var importerList = PlayModeHelper.GetImporterListByFilePaths(ActiveManifest, filePaths, WebFileSystem);
@@ -133,6 +150,7 @@ namespace YooAsset
 
         #region IBundleQuery接口
 
+        [UnityEngine.Scripting.Preserve]
         private BundleInfo CreateBundleInfo(PackageBundle packageBundle, AssetInfo assetInfo)
         {
             if (packageBundle == null)
@@ -149,6 +167,7 @@ namespace YooAsset
             throw new Exception($"Can not found belong file system : {packageBundle.BundleName}");
         }
 
+        [UnityEngine.Scripting.Preserve]
         BundleInfo IBundleQuery.GetMainBundleInfo(AssetInfo assetInfo)
         {
             if (assetInfo.IsInvalid)
@@ -161,6 +180,7 @@ namespace YooAsset
             return CreateBundleInfo(packageBundle, assetInfo);
         }
 
+        [UnityEngine.Scripting.Preserve]
         BundleInfo[] IBundleQuery.GetDependBundleInfos(AssetInfo assetInfo)
         {
             if (assetInfo.IsInvalid)
@@ -180,6 +200,7 @@ namespace YooAsset
             return result.ToArray();
         }
 
+        [UnityEngine.Scripting.Preserve]
         string IBundleQuery.GetMainBundleName(AssetInfo assetInfo)
         {
             if (assetInfo.IsInvalid)
@@ -192,6 +213,7 @@ namespace YooAsset
             return packageBundle.BundleName;
         }
 
+        [UnityEngine.Scripting.Preserve]
         string[] IBundleQuery.GetDependBundleNames(AssetInfo assetInfo)
         {
             if (assetInfo.IsInvalid)
@@ -210,6 +232,7 @@ namespace YooAsset
             return result.ToArray();
         }
 
+        [UnityEngine.Scripting.Preserve]
         bool IBundleQuery.ManifestValid()
         {
             return ActiveManifest != null;

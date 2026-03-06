@@ -8,6 +8,7 @@ using UnityEngine.Scripting;
 [Preserve]
 public static class ByteGameFileSystemCreater
 {
+    [UnityEngine.Scripting.Preserve]
     public static FileSystemParameters CreateByteGameFileSystemParameters(IRemoteServices remoteServices = null)
     {
         var fileSystemClass = typeof(ByteGameFileSystem).FullName;
@@ -16,6 +17,7 @@ public static class ByteGameFileSystemCreater
         return fileSystemParams;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public static FileSystemParameters CreateByteGameFileSystemParameters(string buildinPackRoot)
     {
         var fileSystemClass = typeof(ByteGameFileSystem).FullName;
@@ -30,6 +32,7 @@ public static class ByteGameFileSystemCreater
 /// 抖音小游戏文件系统
 /// 参考：https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/guide/know
 /// </summary>
+[UnityEngine.Scripting.Preserve]
 internal class ByteGameFileSystem : IFileSystem
 {
     [Preserve]
@@ -38,11 +41,13 @@ internal class ByteGameFileSystem : IFileSystem
         private readonly string _webPackageRoot;
         protected readonly Dictionary<string, string> _mapping = new(10000);
 
+        [UnityEngine.Scripting.Preserve]
         public WebRemoteServices(string buildinPackRoot)
         {
             _webPackageRoot = buildinPackRoot;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private string GetFileLoadURL(string fileName)
         {
             if (_mapping.TryGetValue(fileName, out var url) == false)
@@ -55,11 +60,13 @@ internal class ByteGameFileSystem : IFileSystem
             return url;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public string GetRemoteMainURL(string fileName, string packageVersion)
         {
             return GetFileLoadURL(fileName);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public string GetRemoteFallbackURL(string fileName, string packageVersion)
         {
             return GetFileLoadURL(fileName);
@@ -105,6 +112,7 @@ internal class ByteGameFileSystem : IFileSystem
         PackageName = string.Empty;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSInitializeFileSystemOperation InitializeFileSystemAsync()
     {
         var operation = new BGFSInitializeOperation(this);
@@ -112,6 +120,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public FSRequestPackageVersionOperation LoadLocalPackageVersionAsync(bool appendTimeTicks, int timeout)
     {
         var operation = new BGFSRequestPackageVersionOperation(this, timeout);
@@ -119,6 +128,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public FSLoadPackageManifestOperation LoadLocalPackageManifestAsync(string packageVersion, int timeout)
     {
         var operation = new BGFSLoadPackageManifestOperation(this, packageVersion, timeout);
@@ -126,6 +136,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public FSLoadPackageManifestOperation RequestRemotePackageManifestAsync(string packageVersion, int timeout)
     {
         var operation = new BGFSLoadPackageManifestOperation(this, packageVersion, timeout);
@@ -133,6 +144,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public FSRequestPackageVersionOperation RequestRemotePackageVersionAsync(bool appendTimeTicks, int timeout)
     {
         var operation = new BGFSRequestPackageVersionOperation(this, timeout);
@@ -140,6 +152,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSLoadPackageManifestOperation LoadPackageManifestAsync(string packageVersion, int timeout)
     {
         var operation = new BGFSLoadPackageManifestOperation(this, packageVersion, timeout);
@@ -147,6 +160,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSRequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks, int timeout)
     {
         var operation = new BGFSRequestPackageVersionOperation(this, timeout);
@@ -154,6 +168,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSClearAllBundleFilesOperation ClearAllBundleFilesAsync()
     {
         var operation = new FSClearAllBundleFilesCompleteOperation();
@@ -161,6 +176,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync(PackageManifest manifest)
     {
         var operation = new FSClearUnusedBundleFilesCompleteOperation();
@@ -168,6 +184,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
     {
         param.MainURL = RemoteServices.GetRemoteMainURL(bundle.FileName, null);
@@ -177,6 +194,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
     {
         var operation = new BGFSLoadBundleOperation(this, bundle);
@@ -184,6 +202,7 @@ internal class ByteGameFileSystem : IFileSystem
         return operation;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void UnloadBundleFile(PackageBundle bundle, object result)
     {
         var assetBundle = result as AssetBundle;
@@ -193,6 +212,7 @@ internal class ByteGameFileSystem : IFileSystem
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void SetParameter(string name, object value)
     {
         if (name == FileSystemParametersDefine.REMOTE_SERVICES)
@@ -205,6 +225,7 @@ internal class ByteGameFileSystem : IFileSystem
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void OnCreate(string packageName, string rootDirectory)
     {
         PackageName = packageName;
@@ -219,21 +240,25 @@ internal class ByteGameFileSystem : IFileSystem
         _fileSystemManager = StarkSDK.API.GetStarkFileSystemManager();
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual void OnUpdate()
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool Belong(PackageBundle bundle)
     {
         return true;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool Exists(PackageBundle bundle)
     {
         var filePath = GetCacheFileLoadPath(bundle);
         return _fileSystemManager.AccessSync(filePath);
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedDownload(PackageBundle bundle)
     {
         if (Belong(bundle) == false)
@@ -244,21 +269,25 @@ internal class ByteGameFileSystem : IFileSystem
         return Exists(bundle) == false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedUnpack(PackageBundle bundle)
     {
         return false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual bool NeedImport(PackageBundle bundle)
     {
         return false;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual byte[] ReadFileData(PackageBundle bundle)
     {
         throw new System.NotImplementedException();
     }
 
+    [UnityEngine.Scripting.Preserve]
     public virtual string ReadFileText(PackageBundle bundle)
     {
         throw new System.NotImplementedException();
@@ -266,6 +295,7 @@ internal class ByteGameFileSystem : IFileSystem
 
     #region 内部方法
 
+    [UnityEngine.Scripting.Preserve]
     private string GetCacheFileLoadPath(PackageBundle bundle)
     {
         if (_cacheFilePaths.TryGetValue(bundle.BundleGUID, out var filePath) == false)

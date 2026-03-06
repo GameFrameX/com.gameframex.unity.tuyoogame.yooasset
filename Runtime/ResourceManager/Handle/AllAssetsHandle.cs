@@ -3,14 +3,17 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class AllAssetsHandle : HandleBase, IDisposable
     {
         private Action<AllAssetsHandle> _callback;
 
+        [UnityEngine.Scripting.Preserve]
         internal AllAssetsHandle(ProviderOperation provider) : base(provider)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
@@ -51,6 +54,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
@@ -64,6 +68,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Release()
         {
             ReleaseInternal();
@@ -72,6 +77,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Dispose()
         {
             ReleaseInternal();

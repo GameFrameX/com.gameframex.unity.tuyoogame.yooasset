@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     public class PackageAsset
     {
@@ -34,6 +35,7 @@ namespace YooAsset
         /// <summary>
         /// 是否包含Tag
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool HasTag(string[] tags)
         {
             if (tags == null || tags.Length == 0)

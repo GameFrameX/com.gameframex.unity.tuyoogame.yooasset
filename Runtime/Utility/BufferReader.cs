@@ -6,11 +6,13 @@ using System.Diagnostics;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class BufferReader
     {
         private readonly byte[] _buffer;
         private int _index = 0;
 
+        [UnityEngine.Scripting.Preserve]
         public BufferReader(byte[] data)
         {
             _buffer = data;
@@ -42,6 +44,7 @@ namespace YooAsset
             get { return _buffer.Length; }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public byte[] ReadBytes(int count)
         {
             CheckReaderIndex(count);
@@ -51,18 +54,21 @@ namespace YooAsset
             return data;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public byte ReadByte()
         {
             CheckReaderIndex(1);
             return _buffer[_index++];
         }
 
+        [UnityEngine.Scripting.Preserve]
         public bool ReadBool()
         {
             CheckReaderIndex(1);
             return _buffer[_index++] == 1;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public short ReadInt16()
         {
             CheckReaderIndex(2);
@@ -80,11 +86,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public ushort ReadUInt16()
         {
             return (ushort)ReadInt16();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public int ReadInt32()
         {
             CheckReaderIndex(4);
@@ -102,11 +110,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public uint ReadUInt32()
         {
             return (uint)ReadInt32();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public long ReadInt64()
         {
             CheckReaderIndex(8);
@@ -126,11 +136,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public ulong ReadUInt64()
         {
             return (ulong)ReadInt64();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public string ReadUTF8()
         {
             var count = ReadUInt16();
@@ -145,6 +157,7 @@ namespace YooAsset
             return value;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public int[] ReadInt32Array()
         {
             var count = ReadUInt16();
@@ -157,6 +170,7 @@ namespace YooAsset
             return values;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public long[] ReadInt64Array()
         {
             var count = ReadUInt16();
@@ -169,6 +183,7 @@ namespace YooAsset
             return values;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public string[] ReadUTF8Array()
         {
             var count = ReadUInt16();
@@ -181,6 +196,7 @@ namespace YooAsset
             return values;
         }
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         private void CheckReaderIndex(int length)
         {

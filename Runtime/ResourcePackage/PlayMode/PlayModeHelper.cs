@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class PlayModeHelper
     {
+        [UnityEngine.Scripting.Preserve]
         public static IFileSystem CreateFileSystem(string packageName, FileSystemParameters parameters)
         {
             var classType = Type.GetType(parameters.FileSystemClass);
@@ -30,6 +32,7 @@ namespace YooAsset
             return instance;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetDownloadListByAll(PackageManifest manifest, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             var result = new List<BundleInfo>(1000);
@@ -74,6 +77,7 @@ namespace YooAsset
             return result;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetDownloadListByTags(PackageManifest manifest, string[] tags, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             var result = new List<BundleInfo>(1000);
@@ -131,6 +135,7 @@ namespace YooAsset
             return result;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetDownloadListByPaths(PackageManifest manifest, AssetInfo[] assetInfos, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             // 获取资源对象的资源包和所有依赖资源包
@@ -203,6 +208,7 @@ namespace YooAsset
             return result;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetUnpackListByAll(PackageManifest manifest, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             var result = new List<BundleInfo>(1000);
@@ -247,6 +253,7 @@ namespace YooAsset
             return result;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetUnpackListByTags(PackageManifest manifest, string[] tags, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             var result = new List<BundleInfo>(1000);
@@ -295,6 +302,7 @@ namespace YooAsset
             return result;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public static List<BundleInfo> GetImporterListByFilePaths(PackageManifest manifest, string[] filePaths, IFileSystem fileSystemA = null, IFileSystem fileSystemB = null, IFileSystem fileSystemC = null)
         {
             var result = new List<BundleInfo>();

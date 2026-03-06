@@ -4,14 +4,17 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public sealed class AssetHandle : HandleBase, IDisposable
     {
         private Action<AssetHandle> _callback;
 
+        [UnityEngine.Scripting.Preserve]
         internal AssetHandle(ProviderOperation provider) : base(provider)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InvokeCallback()
         {
             _callback?.Invoke(this);
@@ -52,6 +55,7 @@ namespace YooAsset
         /// <summary>
         /// 等待异步执行完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void WaitForAsyncComplete()
         {
             if (IsValidWithWarning == false)
@@ -65,6 +69,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Release()
         {
             ReleaseInternal();
@@ -73,6 +78,7 @@ namespace YooAsset
         /// <summary>
         /// 释放资源句柄
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void Dispose()
         {
             ReleaseInternal();
@@ -99,6 +105,7 @@ namespace YooAsset
         /// 获取资源对象
         /// </summary>
         /// <typeparam name="TAsset">资源类型</typeparam>
+        [UnityEngine.Scripting.Preserve]
         public TAsset GetAssetObject<TAsset>() where TAsset : UnityEngine.Object
         {
             if (IsValidWithWarning == false)
@@ -112,26 +119,31 @@ namespace YooAsset
         /// <summary>
         /// 同步初始化游戏对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public GameObject InstantiateSync()
         {
             return InstantiateSyncInternal(false, Vector3.zero, Quaternion.identity, null, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public GameObject InstantiateSync(Transform parent)
         {
             return InstantiateSyncInternal(false, Vector3.zero, Quaternion.identity, parent, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public GameObject InstantiateSync(Transform parent, bool worldPositionStays)
         {
             return InstantiateSyncInternal(false, Vector3.zero, Quaternion.identity, parent, worldPositionStays);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public GameObject InstantiateSync(Vector3 position, Quaternion rotation)
         {
             return InstantiateSyncInternal(true, position, rotation, null, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public GameObject InstantiateSync(Vector3 position, Quaternion rotation, Transform parent)
         {
             return InstantiateSyncInternal(true, position, rotation, parent, false);
@@ -140,31 +152,37 @@ namespace YooAsset
         /// <summary>
         /// 异步初始化游戏对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public InstantiateOperation InstantiateAsync()
         {
             return InstantiateAsyncInternal(false, Vector3.zero, Quaternion.identity, null, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public InstantiateOperation InstantiateAsync(Transform parent)
         {
             return InstantiateAsyncInternal(false, Vector3.zero, Quaternion.identity, parent, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public InstantiateOperation InstantiateAsync(Transform parent, bool worldPositionStays)
         {
             return InstantiateAsyncInternal(false, Vector3.zero, Quaternion.identity, parent, worldPositionStays);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public InstantiateOperation InstantiateAsync(Vector3 position, Quaternion rotation)
         {
             return InstantiateAsyncInternal(true, position, rotation, null, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public InstantiateOperation InstantiateAsync(Vector3 position, Quaternion rotation, Transform parent)
         {
             return InstantiateAsyncInternal(true, position, rotation, parent, false);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private GameObject InstantiateSyncInternal(bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             if (IsValidWithWarning == false)
@@ -180,6 +198,7 @@ namespace YooAsset
             return InstantiateOperation.InstantiateInternal(Provider.AssetObject, setPositionAndRotation, position, rotation, parent, worldPositionStays);
         }
 
+        [UnityEngine.Scripting.Preserve]
         private InstantiateOperation InstantiateAsyncInternal(bool setPositionAndRotation, Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays)
         {
             var packageName = GetAssetInfo().PackageName;

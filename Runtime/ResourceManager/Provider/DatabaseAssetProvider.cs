@@ -4,17 +4,21 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal sealed class DatabaseAssetProvider : ProviderOperation
     {
+        [UnityEngine.Scripting.Preserve]
         public DatabaseAssetProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
 #if UNITY_EDITOR

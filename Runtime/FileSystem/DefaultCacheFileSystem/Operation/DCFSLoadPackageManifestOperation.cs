@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class DCFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -26,6 +28,7 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DCFSLoadPackageManifestOperation(DefaultCacheFileSystem fileSystem, string packageVersion, bool isRemote, int timeout)
         {
             _fileSystem = fileSystem;
@@ -34,11 +37,13 @@ namespace YooAsset
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = _isRemote ? ESteps.DownloadPackageHash : ESteps.LoadCachePackageHash;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -154,6 +159,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void ClearCacheFatalFile()
         {
             // 注意：如果加载沙盒内的清单报错，为了避免流程被卡住，主动把损坏的文件删除。

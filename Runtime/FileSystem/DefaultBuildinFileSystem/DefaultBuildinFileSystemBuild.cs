@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public class DefaultBuildinFileSystemBuild : UnityEditor.Build.IPreprocessBuildWithReport
     {
         public int callbackOrder
@@ -16,6 +17,7 @@ namespace YooAsset
         /// 在构建应用程序前自动生成内置资源目录文件。
         /// 原理：搜索StreamingAssets目录下的所有资源文件，然后将这些文件信息写入文件，并存储在Resources目录下。
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
         {
             YooLogger.Log("Begin to create catalog file !");
@@ -45,6 +47,7 @@ namespace YooAsset
         /// <summary>
         /// 生成包裹的内置资源目录文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void CreateBuildinCatalogFile(string packageName, string pacakgeDirectory)
         {
             // 获取资源清单版本

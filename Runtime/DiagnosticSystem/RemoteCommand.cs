@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal enum ERemoteCommand
     {
         /// <summary>
@@ -12,6 +13,7 @@ namespace YooAsset
         SampleOnce = 0,
     }
 
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     internal class RemoteCommand
     {
@@ -29,6 +31,7 @@ namespace YooAsset
         /// <summary>
         /// 序列化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static byte[] Serialize(RemoteCommand command)
         {
             return Encoding.UTF8.GetBytes(JsonUtility.ToJson(command));
@@ -37,6 +40,7 @@ namespace YooAsset
         /// <summary>
         /// 反序列化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static RemoteCommand Deserialize(byte[] data)
         {
             return JsonUtility.FromJson<RemoteCommand>(Encoding.UTF8.GetString(data));

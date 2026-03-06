@@ -3,6 +3,7 @@
     /// <summary>
     /// 初始化操作
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public abstract class InitializationOperation : AsyncOperationBase
     {
     }
@@ -10,8 +11,10 @@
     /// <summary>
     /// 编辑器下模拟模式
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class EditorSimulateModeInitializationOperation : InitializationOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -25,17 +28,20 @@
         private FSInitializeFileSystemOperation _initFileSystemOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal EditorSimulateModeInitializationOperation(EditorSimulateModeImpl impl, EditorSimulateModeParameters parameters)
         {
             _impl = impl;
             _parameters = parameters;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.CreateFileSystem)
@@ -91,8 +97,10 @@
     /// <summary>
     /// 离线运行模式
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class OfflinePlayModeInitializationOperation : InitializationOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -108,17 +116,20 @@
         private FSLoadPackageManifestOperation _loadPackageManifestOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal OfflinePlayModeInitializationOperation(OfflinePlayModeImpl impl, OfflinePlayModeParameters parameters)
         {
             _impl = impl;
             _parameters = parameters;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -179,8 +190,10 @@
     /// <summary>
     /// 联机运行模式
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class HostPlayModeInitializationOperation : InitializationOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -198,17 +211,20 @@
         private FSInitializeFileSystemOperation _initCacheFileSystemOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal HostPlayModeInitializationOperation(HostPlayModeImpl impl, HostPlayModeParameters parameters)
         {
             _impl = impl;
             _parameters = parameters;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -357,8 +373,10 @@
     /// <summary>
     /// WebGL运行模式
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class WebPlayModeInitializationOperation : InitializationOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -372,17 +390,20 @@
         private FSInitializeFileSystemOperation _initWebFileSystemOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal WebPlayModeInitializationOperation(WebPlayModeImpl impl, WebPlayModeParameters parameters)
         {
             _impl = impl;
             _parameters = parameters;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateFileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

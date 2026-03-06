@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class UnityWebTextRequestOperation : UnityWebRequestOperation
     {
         private UnityWebRequestAsyncOperation _requestOperation;
@@ -17,15 +18,18 @@ namespace YooAsset
             get { return _requestOperation; }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CreateRequest;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -68,12 +72,14 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal override void InternalOnAbort()
         {
             _steps = ESteps.Done;
             DisposeRequest();
         }
 
+        [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest()
         {
             _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);

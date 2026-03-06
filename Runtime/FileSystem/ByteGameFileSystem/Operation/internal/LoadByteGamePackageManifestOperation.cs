@@ -1,8 +1,10 @@
 ﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
 {
+    [UnityEngine.Scripting.Preserve]
     private enum ESteps
     {
         None,
@@ -27,6 +29,7 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
     public PackageManifest Manifest { private set; get; }
 
 
+    [UnityEngine.Scripting.Preserve]
     internal LoadByteGamePackageManifestOperation(ByteGameFileSystem fileSystem, string packageVersion, string packageHash, int timeout)
     {
         _fileSystem = fileSystem;
@@ -35,12 +38,14 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
         _timeout = timeout;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(LoadByteGamePackageManifestOperation));
         _steps = ESteps.RequestFileData;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -121,6 +126,7 @@ internal class LoadByteGamePackageManifestOperation : AsyncOperationBase
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     private string GetRequestURL(string fileName)
     {
         // 轮流返回请求地址

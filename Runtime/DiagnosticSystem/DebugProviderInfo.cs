@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     public class DebugProviderInfo : IComparer<DebugProviderInfo>, IComparable<DebugProviderInfo>
     {
@@ -47,11 +48,13 @@ namespace YooAsset
         /// </summary>
         public List<DebugBundleInfo> DependBundleInfos;
 
+        [UnityEngine.Scripting.Preserve]
         public int CompareTo(DebugProviderInfo other)
         {
             return Compare(this, other);
         }
 
+        [UnityEngine.Scripting.Preserve]
         public int Compare(DebugProviderInfo a, DebugProviderInfo b)
         {
             return string.CompareOrdinal(a.AssetPath, b.AssetPath);

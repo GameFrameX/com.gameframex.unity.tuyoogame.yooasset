@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public static partial class YooAssets
     {
         private static bool _isInitialize = false;
@@ -24,6 +25,7 @@ namespace YooAsset
         /// 初始化资源系统
         /// </summary>
         /// <param name="logger">自定义日志处理</param>
+        [UnityEngine.Scripting.Preserve]
         public static void Initialize(ILogger logger = null)
         {
             if (_isInitialize)
@@ -55,6 +57,7 @@ namespace YooAsset
         /// <summary>
         /// 更新资源系统
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         internal static void Update()
         {
             if (_isInitialize)
@@ -71,6 +74,7 @@ namespace YooAsset
         /// <summary>
         /// 应用程序退出处理
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         internal static void OnApplicationQuit()
         {
             // 说明：在编辑器下确保播放被停止时IO类操作被终止。
@@ -86,6 +90,7 @@ namespace YooAsset
         /// 创建资源包
         /// </summary>
         /// <param name="packageName">资源包名称</param>
+        [UnityEngine.Scripting.Preserve]
         public static ResourcePackage CreatePackage(string packageName)
         {
             CheckException(packageName);
@@ -104,6 +109,7 @@ namespace YooAsset
         /// 获取资源包
         /// </summary>
         /// <param name="packageName">资源包名称</param>
+        [UnityEngine.Scripting.Preserve]
         public static ResourcePackage GetPackage(string packageName)
         {
             CheckException(packageName);
@@ -120,6 +126,7 @@ namespace YooAsset
         /// 尝试获取资源包
         /// </summary>
         /// <param name="packageName">资源包名称</param>
+        [UnityEngine.Scripting.Preserve]
         public static ResourcePackage TryGetPackage(string packageName)
         {
             CheckException(packageName);
@@ -130,6 +137,7 @@ namespace YooAsset
         /// 移除资源包
         /// </summary>
         /// <param name="packageName">资源包名称</param>
+        [UnityEngine.Scripting.Preserve]
         public static bool RemovePackage(string packageName)
         {
             CheckException(packageName);
@@ -154,6 +162,7 @@ namespace YooAsset
         /// 检测资源包是否存在
         /// </summary>
         /// <param name="packageName">资源包名称</param>
+        [UnityEngine.Scripting.Preserve]
         public static bool ContainsPackage(string packageName)
         {
             CheckException(packageName);
@@ -165,6 +174,7 @@ namespace YooAsset
         /// 开启一个异步操作
         /// </summary>
         /// <param name="operation">异步操作对象</param>
+        [UnityEngine.Scripting.Preserve]
         public static void StartOperation(GameAsyncOperation operation)
         {
             // 注意：游戏业务逻辑的包裹填写为空
@@ -172,6 +182,7 @@ namespace YooAsset
         }
 
 
+        [UnityEngine.Scripting.Preserve]
         private static ResourcePackage GetPackageInternal(string packageName)
         {
             foreach (var package in _packages)
@@ -185,6 +196,7 @@ namespace YooAsset
             return null;
         }
 
+        [UnityEngine.Scripting.Preserve]
         private static void CheckException(string packageName)
         {
             if (_isInitialize == false)
@@ -203,6 +215,7 @@ namespace YooAsset
         /// <summary>
         /// 设置下载系统参数，自定义下载请求
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void SetDownloadSystemUnityWebRequest(UnityWebRequestDelegate createDelegate)
         {
             DownloadSystemHelper.UnityWebRequestCreater = createDelegate;
@@ -211,6 +224,7 @@ namespace YooAsset
         /// <summary>
         /// 设置异步系统参数，每帧执行消耗的最大时间切片（单位：毫秒）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void SetOperationSystemMaxTimeSlice(long milliseconds)
         {
             if (milliseconds < 10)
@@ -226,6 +240,7 @@ namespace YooAsset
 
         #region 调试信息
 
+        [UnityEngine.Scripting.Preserve]
         internal static DebugReport GetDebugReport()
         {
             var report = new DebugReport();

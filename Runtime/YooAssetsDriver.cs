@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class YooAssetsDriver : MonoBehaviour
     {
         private static int LastestUpdateFrame = 0;
 
+        [UnityEngine.Scripting.Preserve]
         private void Update()
         {
             DebugCheckDuplicateDriver();
@@ -14,12 +16,14 @@ namespace YooAsset
         }
 
 #if UNITY_EDITOR
+        [UnityEngine.Scripting.Preserve]
         private void OnApplicationQuit()
         {
             YooAssets.OnApplicationQuit();
         }
 #endif
 
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         private void DebugCheckDuplicateDriver()
         {

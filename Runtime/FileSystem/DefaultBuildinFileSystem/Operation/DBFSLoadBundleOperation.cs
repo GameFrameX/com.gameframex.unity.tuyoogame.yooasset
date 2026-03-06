@@ -6,8 +6,10 @@ namespace YooAsset
     /// <summary>
     /// 加载AssetBundle文件
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DBFSLoadAssetBundleOperation : FSLoadBundleOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -23,12 +25,14 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DBFSLoadAssetBundleOperation(DefaultBuildinFileSystem fileSystem, PackageBundle bundle)
         {
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DownloadProgress = 1f;
@@ -36,6 +40,7 @@ namespace YooAsset
             _steps = ESteps.LoadAssetBundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -130,6 +135,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             _isWaitForAsyncComplete = true;
@@ -144,6 +150,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void AbortDownloadOperation()
         {
         }
@@ -152,8 +159,10 @@ namespace YooAsset
     /// <summary>
     /// 加载原生文件
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal class DBFSLoadRawBundleOperation : FSLoadBundleOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -166,12 +175,14 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
+        [UnityEngine.Scripting.Preserve]
         internal DBFSLoadRawBundleOperation(DefaultBuildinFileSystem fileSystem, PackageBundle bundle)
         {
             _fileSystem = fileSystem;
             _bundle = bundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DownloadProgress = 1f;
@@ -179,6 +190,7 @@ namespace YooAsset
             _steps = ESteps.LoadBuildinRawBundle;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -205,6 +217,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalWaitForAsyncComplete()
         {
             while (true)
@@ -217,6 +230,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void AbortDownloadOperation()
         {
         }

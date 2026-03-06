@@ -3,6 +3,7 @@
     /// <summary>
     /// 获取本地的最新版本
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public abstract class LoadLocalVersionOperation : AsyncOperationBase
     {
         /// <summary>
@@ -14,8 +15,10 @@
     /// <summary>
     /// 获取本地的最新版本
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     internal sealed class LoadLocalVersionImplOperation : LoadLocalVersionOperation
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -32,6 +35,7 @@
         private FSRequestPackageVersionOperation _loadBuildinPackageVersionOp;
         private ESteps _steps = ESteps.None;
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadLocalVersionImplOperation(IFileSystem fileSystem, IFileSystem cacheSystem, bool appendTimeTicks, int timeout)
         {
             _buildinFileSystem = fileSystem;
@@ -40,6 +44,7 @@
             _timeout = timeout;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             if (_cacheFileSystem != null)
@@ -52,6 +57,7 @@
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

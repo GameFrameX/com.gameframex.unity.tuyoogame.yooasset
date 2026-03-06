@@ -2,8 +2,10 @@
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class LoadEditorPackageVersionOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -20,16 +22,19 @@ namespace YooAsset
         public string PackageVersion { private set; get; }
 
 
+        [UnityEngine.Scripting.Preserve]
         internal LoadEditorPackageVersionOperation(DefaultEditorFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.LoadVersion;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

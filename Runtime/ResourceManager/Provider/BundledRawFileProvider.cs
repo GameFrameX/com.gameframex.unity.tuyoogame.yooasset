@@ -1,16 +1,20 @@
 ﻿namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     internal class BundledRawFileProvider : ProviderOperation
     {
+        [UnityEngine.Scripting.Preserve]
         public BundledRawFileProvider(ResourceManager manager, string providerGUID, AssetInfo assetInfo) : base(manager, providerGUID, assetInfo)
         {
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             DebugBeginRecording();
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (IsDone)

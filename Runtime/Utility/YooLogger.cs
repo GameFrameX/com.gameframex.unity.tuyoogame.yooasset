@@ -6,14 +6,20 @@ namespace YooAsset
     /// <summary>
     /// 自定义日志处理
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public interface ILogger
     {
+        [UnityEngine.Scripting.Preserve]
         void Log(string message);
+        [UnityEngine.Scripting.Preserve]
         void Warning(string message);
+        [UnityEngine.Scripting.Preserve]
         void Error(string message);
+        [UnityEngine.Scripting.Preserve]
         void Exception(Exception exception);
     }
 
+    [UnityEngine.Scripting.Preserve]
     public static class YooLogger
     {
         public static ILogger Logger = null;
@@ -21,6 +27,7 @@ namespace YooAsset
         /// <summary>
         /// 日志
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
         public static void Log(string info)
         {
@@ -37,6 +44,7 @@ namespace YooAsset
         /// <summary>
         /// 警告
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void Warning(string info)
         {
             if (Logger != null)
@@ -52,6 +60,7 @@ namespace YooAsset
         /// <summary>
         /// 错误
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void Error(string info)
         {
             if (Logger != null)
@@ -64,6 +73,7 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         private static string GetTime()
         {
             return $"[YooAsset]:[{DateTime.Now:HH:mm:ss.fff}]:";
@@ -72,6 +82,7 @@ namespace YooAsset
         /// <summary>
         /// 异常
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void Exception(Exception exception)
         {
             if (Logger != null)

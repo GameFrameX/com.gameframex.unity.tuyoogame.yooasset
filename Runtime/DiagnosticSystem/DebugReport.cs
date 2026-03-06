@@ -9,6 +9,7 @@ namespace YooAsset
     /// <summary>
     /// 资源系统调试信息
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     public class DebugReport
     {
@@ -26,6 +27,7 @@ namespace YooAsset
         /// <summary>
         /// 序列化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static byte[] Serialize(DebugReport debugReport)
         {
             return Encoding.UTF8.GetBytes(JsonUtility.ToJson(debugReport));
@@ -34,6 +36,7 @@ namespace YooAsset
         /// <summary>
         /// 反序列化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static DebugReport Deserialize(byte[] data)
         {
             return JsonUtility.FromJson<DebugReport>(Encoding.UTF8.GetString(data));

@@ -6,8 +6,10 @@ namespace YooAsset
     /// <summary>
     /// 场景卸载异步操作类
     /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public sealed class UnloadSceneOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         private enum ESteps
         {
             None,
@@ -22,11 +24,13 @@ namespace YooAsset
         private readonly ProviderOperation _provider;
         private AsyncOperation _asyncOp = null;
 
+        [UnityEngine.Scripting.Preserve]
         internal UnloadSceneOperation(string error)
         {
             _error = error;
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal UnloadSceneOperation(ProviderOperation provider)
         {
             _error = null;
@@ -49,11 +53,13 @@ namespace YooAsset
             }
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
             _steps = ESteps.CheckError;
         }
 
+        [UnityEngine.Scripting.Preserve]
         public override void InternalOnUpdate()
         {
             if (_steps == ESteps.None || _steps == ESteps.Done)

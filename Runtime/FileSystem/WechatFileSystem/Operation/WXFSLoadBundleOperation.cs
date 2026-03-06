@@ -2,8 +2,10 @@
 using UnityEngine.Networking;
 using YooAsset;
 
+[UnityEngine.Scripting.Preserve]
 internal class WXFSLoadBundleOperation : FSLoadBundleOperation
 {
+    [UnityEngine.Scripting.Preserve]
     private enum ESteps
     {
         None,
@@ -17,6 +19,7 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
     private ESteps _steps = ESteps.None;
     private string _packagerVersion;
 
+    [UnityEngine.Scripting.Preserve]
     internal WXFSLoadBundleOperation(WechatFileSystem fileSystem, PackageBundle bundle,string packagerVersion)
     {
         _fileSystem = fileSystem;
@@ -24,11 +27,13 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         _packagerVersion = packagerVersion;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnStart()
     {
         _steps = ESteps.LoadBundleFile;
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalOnUpdate()
     {
         if (_steps == ESteps.None || _steps == ESteps.Done)
@@ -69,6 +74,7 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void InternalWaitForAsyncComplete()
     {
         if (_steps != ESteps.Done)
@@ -80,10 +86,12 @@ internal class WXFSLoadBundleOperation : FSLoadBundleOperation
         }
     }
 
+    [UnityEngine.Scripting.Preserve]
     public override void AbortDownloadOperation()
     {
     }
 
+    [UnityEngine.Scripting.Preserve]
     private bool CheckRequestResult()
     {
 #if UNITY_2020_3_OR_NEWER

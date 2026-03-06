@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace YooAsset
 {
+    [UnityEngine.Scripting.Preserve]
     public abstract class UnityWebRequestOperation : AsyncOperationBase
     {
+        [UnityEngine.Scripting.Preserve]
         protected enum ESteps
         {
             None,
@@ -31,6 +33,7 @@ namespace YooAsset
             get { return _requestURL; }
         }
 
+        [UnityEngine.Scripting.Preserve]
         internal UnityWebRequestOperation(string url, int timeout)
         {
             _requestURL = url;
@@ -40,6 +43,7 @@ namespace YooAsset
         /// <summary>
         /// 释放下载器
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void DisposeRequest()
         {
             if (_webRequest != null)
@@ -52,6 +56,7 @@ namespace YooAsset
         /// <summary>
         /// 检测超时
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected void CheckRequestTimeout()
         {
             // 注意：在连续时间段内无新增下载数据及判定为超时
@@ -75,6 +80,7 @@ namespace YooAsset
         /// <summary>
         /// 检测请求结果
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected bool CheckRequestResult()
         {
 #if UNITY_2020_3_OR_NEWER
