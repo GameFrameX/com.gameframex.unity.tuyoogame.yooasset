@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.1...2.3.2) (2026-03-11)
+
+
+### Bug Fixes
+
+* 移除未使用的命名空间以简化代码 ([b689da8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/b689da8d4fba08899bc269675332614ca67d996d))
+
 ## [2.3.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.0...2.3.1) (2026-03-06)
 
 
