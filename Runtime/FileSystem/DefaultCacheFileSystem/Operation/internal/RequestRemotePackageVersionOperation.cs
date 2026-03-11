@@ -1,7 +1,4 @@
-﻿using TTSDK;
-using UnityEngine;
-
-namespace YooAsset
+﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
     internal class RequestRemotePackageVersionOperation : AsyncOperationBase
