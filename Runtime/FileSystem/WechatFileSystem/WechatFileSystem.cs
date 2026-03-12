@@ -63,12 +63,8 @@ internal class WechatFileSystem : IFileSystem
         {
             if (_mapping.TryGetValue(fileName, out string url) == false)
             {
-                if (string.IsNullOrEmpty(packageVersion))
-                    url = _webPackageRoot + fileName;
-                else
-                    url = _webPackageRoot + packageVersion + "/" + fileName;
-                //string filePath = string.IsNullOrEmpty(packageVersion) ? PathUtility.Combine(_webPackageRoot, fileName) : PathUtility.Combine(_webPackageRoot,packageVersion, fileName);
-                //url = filePath;// DownloadSystemHelper.ConvertToWWWPath(filePath);
+                var filePath = PathUtility.Combine(_webPackageRoot, fileName);
+                url = DownloadSystemHelper.ConvertToWWWPath(filePath);
                 _mapping.Add(fileName, url);
             }
             //Debug.LogError($"WeChatFileSystem GetFileLoadURL url:{url}");
