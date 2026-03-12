@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.2...2.3.3) (2026-03-12)
+
+
+### Bug Fixes
+
+* **FileSystem:** 统一微信文件系统URL生成逻辑 ([d377664](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/d377664037a782567b4b9b51a22a02e8835bc711))
+
 ## [2.3.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.1...2.3.2) (2026-03-11)
 
 
