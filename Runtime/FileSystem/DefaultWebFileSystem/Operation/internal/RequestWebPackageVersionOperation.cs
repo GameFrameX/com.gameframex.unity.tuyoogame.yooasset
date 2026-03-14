@@ -13,6 +13,7 @@
 
         private readonly DefaultWebFileSystem _fileSystem;
         private readonly int _timeout;
+        private readonly bool _appendTimeTicks;
         private UnityWebTextRequestOperation _webTextRequestOp;
         private ESteps _steps = ESteps.None;
 
@@ -23,10 +24,11 @@
 
 
         [UnityEngine.Scripting.Preserve]
-        internal RequestWebPackageVersionOperation(DefaultWebFileSystem fileSystem, int timeout)
+        internal RequestWebPackageVersionOperation(DefaultWebFileSystem fileSystem, int timeout, bool appendTimeTicks)
         {
             _fileSystem = fileSystem;
             _timeout = timeout;
+            _appendTimeTicks = appendTimeTicks;
         }
 
         [UnityEngine.Scripting.Preserve]
@@ -49,7 +51,7 @@
                 {
                     var filePath = _fileSystem.GetWebPackageVersionFilePath();
                     var url = DownloadSystemHelper.ConvertToWWWPath(filePath);
-                    _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
+                    _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout, _appendTimeTicks);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
                 }
 

@@ -53,14 +53,7 @@
                 {
                     var fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
                     var url = GetWebRequestURL(fileName);
-                    _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
-                    if (_webTextRequestOp.requestOperation.webRequest != null)
-                    {
-                        var web = _webTextRequestOp.requestOperation.webRequest;
-                        web.SetRequestHeader("Cache-Control", "no-cache");
-                        web.SetRequestHeader("Pragma", "no-cache");
-                    }
-
+                    _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout, _appendTimeTicks);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
                 }
 

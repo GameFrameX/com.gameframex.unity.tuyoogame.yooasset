@@ -46,7 +46,7 @@
             {
                 if (_requestWebPackageVersionOp == null)
                 {
-                    _requestWebPackageVersionOp = new RequestWebPackageVersionOperation(_fileSystem, _timeout);
+                    _requestWebPackageVersionOp = new RequestWebPackageVersionOperation(_fileSystem, _timeout, false);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _requestWebPackageVersionOp);
                 }
 
@@ -72,7 +72,7 @@
                 if (_requestWebPackageHashOp == null)
                 {
                     var packageVersion = _requestWebPackageVersionOp.PackageVersion;
-                    _requestWebPackageHashOp = new RequestWebPackageHashOperation(_fileSystem, packageVersion, _timeout);
+                    _requestWebPackageHashOp = new RequestWebPackageHashOperation(_fileSystem, packageVersion, _timeout, false);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _requestWebPackageHashOp);
                 }
 

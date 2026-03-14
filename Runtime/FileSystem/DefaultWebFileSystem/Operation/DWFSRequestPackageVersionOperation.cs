@@ -42,7 +42,7 @@
             {
                 if (_requestWebPackageVersionOp == null)
                 {
-                    _requestWebPackageVersionOp = new RequestWebPackageVersionOperation(_fileSystem, _timeout);
+                    _requestWebPackageVersionOp = new RequestWebPackageVersionOperation(_fileSystem, _timeout, false);
                     OperationSystem.StartOperation(_fileSystem.PackageName, _requestWebPackageVersionOp);
                 }
 
