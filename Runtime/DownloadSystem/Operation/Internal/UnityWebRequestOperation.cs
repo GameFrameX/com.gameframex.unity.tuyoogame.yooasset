@@ -22,6 +22,8 @@ namespace YooAsset
         protected readonly string _requestURL;
         protected ESteps _steps = ESteps.None;
 
+        protected bool _appendTimeTicks = false;
+
         // 超时相关
         protected readonly float _timeout;
         protected ulong _latestDownloadBytes;
@@ -34,9 +36,10 @@ namespace YooAsset
         }
 
         [UnityEngine.Scripting.Preserve]
-        internal UnityWebRequestOperation(string url, int timeout)
+        internal UnityWebRequestOperation(string url, int timeout, bool appendTimeTicks)
         {
             _requestURL = url;
+            _appendTimeTicks = appendTimeTicks;
             _timeout = timeout;
         }
 

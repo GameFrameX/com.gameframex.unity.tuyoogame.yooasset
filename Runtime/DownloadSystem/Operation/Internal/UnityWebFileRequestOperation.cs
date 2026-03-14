@@ -1,4 +1,5 @@
-﻿using UnityEngine.Networking;
+﻿using System;
+using UnityEngine.Networking;
 using UnityEngine;
 
 namespace YooAsset
@@ -10,7 +11,7 @@ namespace YooAsset
         private readonly string _fileSavePath;
 
         [UnityEngine.Scripting.Preserve]
-        internal UnityWebFileRequestOperation(string url, string fileSavePath, int timeout = 60) : base(url, timeout)
+        internal UnityWebFileRequestOperation(string url, string fileSavePath, int timeout = 60, bool appendTimeTicks = false) : base(url, timeout, appendTimeTicks)
         {
             _fileSavePath = fileSavePath;
         }
@@ -73,7 +74,13 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest()
         {
-            _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
+            var requestURL = _requestURL;
+            if (_appendTimeTicks)
+            {
+                requestURL += $"?time_ticks={DateTime.Now.Ticks}";
+            }
+
+            _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(requestURL);
             var handler = new DownloadHandlerFile(_fileSavePath);
             handler.removeFileOnAbort = true;
             _webRequest.downloadHandler = handler;

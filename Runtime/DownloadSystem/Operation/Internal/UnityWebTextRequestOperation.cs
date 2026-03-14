@@ -1,4 +1,5 @@
-﻿using UnityEngine.Networking;
+﻿using System;
+using UnityEngine.Networking;
 using UnityEngine;
 
 namespace YooAsset
@@ -13,13 +14,9 @@ namespace YooAsset
         /// </summary>
         public string Result { private set; get; }
 
-        public UnityWebRequestAsyncOperation requestOperation
-        {
-            get { return _requestOperation; }
-        }
 
         [UnityEngine.Scripting.Preserve]
-        internal UnityWebTextRequestOperation(string url, int timeout = 60) : base(url, timeout)
+        internal UnityWebTextRequestOperation(string url, int timeout = 60, bool appendTimeTicks = false) : base(url, timeout, appendTimeTicks)
         {
         }
 
@@ -82,7 +79,13 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private void CreateWebRequest()
         {
-            _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(_requestURL);
+            var requestURL = _requestURL;
+            if (_appendTimeTicks)
+            {
+                requestURL += $"?time_ticks={DateTime.Now.Ticks}";
+            }
+
+            _webRequest = DownloadSystemHelper.NewUnityWebRequestGet(requestURL);
             var handler = new DownloadHandlerBuffer();
             _webRequest.downloadHandler = handler;
             _webRequest.disposeDownloadHandlerOnDispose = true;
