@@ -1,3 +1,11 @@
+# [2.4.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.3...2.4.0) (2026-03-14)
+
+
+### Features
+
+* **DownloadSystem:** 添加 URL 时间戳参数支持 ([a4cb97f](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/a4cb97fb55d2d56eda699e317d96c4073a8db44c))
+* **FileSystem:** 使用时间戳参数替代 HTTP 缓存头 ([6c71656](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/6c7165665cb8febd419da9a4695fd296be27a694))
+
 ## [2.3.3](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.2...2.3.3) (2026-03-12)
 
 
