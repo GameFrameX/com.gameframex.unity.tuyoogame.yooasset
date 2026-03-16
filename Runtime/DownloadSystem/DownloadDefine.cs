@@ -29,9 +29,9 @@
         public string PackageName;
 
         /// <summary>
-        [UnityEngine.Scripting.Preserve]
         /// 下载进度 (0-1f)
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public float Progress;
 
         /// <summary>
