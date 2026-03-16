@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.4.0...2.5.0) (2026-03-16)
+
+
+### Features
+
+* **ResourceManager:** 添加资源加载耗时统计功能 ([fa5cf5f](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/fa5cf5fdc2beda52f5f926e033c738b7b6ea881f))
+
 # [2.4.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.3.3...2.4.0) (2026-03-14)
 
 
