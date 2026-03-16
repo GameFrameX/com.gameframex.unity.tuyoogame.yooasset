@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.5.0...2.5.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* **OperationSystem:** 将 GetPackageName 方法从 internal 改为 public ([9ddcdf7](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/9ddcdf7fced77c3f12e9572daa12c04e4d438098))
+
 # [2.5.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.4.0...2.5.0) (2026-03-16)
 
 
