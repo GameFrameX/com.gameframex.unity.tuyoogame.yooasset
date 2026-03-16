@@ -32,6 +32,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
+            BeginLoadTimeRecord();
             DebugBeginRecording();
         }
 

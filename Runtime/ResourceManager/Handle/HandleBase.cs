@@ -91,6 +91,22 @@ namespace YooAsset
         }
 
         /// <summary>
+        /// 加载耗时
+        /// </summary>
+        public long Duration
+        {
+            get
+            {
+                if (IsValidWithWarning == false)
+                {
+                    return 0;
+                }
+
+                return Provider.Duration;
+            }
+        }
+
+        /// <summary>
         /// 是否加载完毕
         /// </summary>
         public bool IsDone

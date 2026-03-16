@@ -258,6 +258,7 @@ namespace YooAsset
         protected void InvokeCompletion(string error, EOperationStatus status)
         {
             DebugEndRecording();
+            EndLoadTimeRecord();
 
             _steps = ESteps.Done;
             Error = error;
@@ -316,6 +317,22 @@ namespace YooAsset
         /// 加载耗时（单位：毫秒）
         /// </summary>
         public long LoadingTime { protected set; get; }
+        /// <summary>
+        /// 加载耗时（单位：毫秒）
+        /// </summary>
+        public long Duration { private set; get; }
+
+        /// <summary>
+        /// 加载开始时间（单位：秒）
+        /// 使用UnityEngine.Time.realtimeSinceStartup记录，初始值为-1表示未开始
+        /// </summary>
+        private float _loadingStartTime = -1f;
+
+        /// <summary>
+        /// 加载结束时间（单位：秒）
+        /// 使用UnityEngine.Time.realtimeSinceStartup记录，初始值为-1表示未结束
+        /// </summary>
+        private float _loadingEndTime = -1f;
 
         // 加载耗时统计
         private Stopwatch _watch = null;
@@ -357,6 +374,46 @@ namespace YooAsset
                 LoadingTime = _watch.ElapsedMilliseconds;
                 _watch = null;
             }
+        }
+        /// <summary>
+        /// 开始记录加载时间（单位：秒）
+        /// 仅当尚未记录时，以 UnityEngine.Time.realtimeSinceStartup 赋值 _loadingStartTime
+        /// </summary>
+        [UnityEngine.Scripting.Preserve]
+        protected void BeginLoadTimeRecord()
+        {
+            if (_loadingStartTime < 0f)
+            {
+                _loadingStartTime = UnityEngine.Time.realtimeSinceStartup;
+            }
+        }
+
+        /// <summary>
+        /// 结束加载时间记录并计算总耗时
+        /// 1. 若 _loadingEndTime 未记录，则以当前 realtimeSinceStartup 赋值  
+        /// 2. 若 _loadingStartTime 仍未记录（异常场景），则将其设为与 _loadingEndTime 相同，避免负值  
+        /// 3. 计算耗时（毫秒），负值则取 0，最终写入 Duration 字段  
+        /// </summary>
+        [UnityEngine.Scripting.Preserve]
+        private void EndLoadTimeRecord()
+        {
+            if (_loadingEndTime < 0f)
+            {
+                _loadingEndTime = UnityEngine.Time.realtimeSinceStartup;
+            }
+
+            if (_loadingStartTime < 0f)
+            {
+                _loadingStartTime = _loadingEndTime;
+            }
+
+            var duration = (_loadingEndTime - _loadingStartTime) * 1000f;
+            if (duration < 0f)
+            {
+                duration = 0f;
+            }
+
+            Duration = (long)duration;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace YooAsset
+namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
     internal class BundledRawFileProvider : ProviderOperation
@@ -11,6 +11,7 @@
         [UnityEngine.Scripting.Preserve]
         public override void InternalOnStart()
         {
+            BeginLoadTimeRecord();
             DebugBeginRecording();
         }
 
