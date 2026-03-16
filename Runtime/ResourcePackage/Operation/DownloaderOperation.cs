@@ -18,16 +18,16 @@ namespace YooAsset
         private const int MAX_LOADER_COUNT = 64;
 
         [UnityEngine.Scripting.Preserve]
-        public delegate void OnDownloadOver(bool isSucceed);
+        public delegate void OnDownloadOver(DownloaderFinishData data);
 
         [UnityEngine.Scripting.Preserve]
-        public delegate void OnDownloadProgress(int totalDownloadCount, int currentDownloadCount, long totalDownloadBytes, long currentDownloadBytes);
+        public delegate void OnDownloadProgress(DownloadUpdateData data);
 
         [UnityEngine.Scripting.Preserve]
-        public delegate void OnDownloadError(string fileName, string error);
+        public delegate void OnDownloadError(DownloadErrorData data);
 
         [UnityEngine.Scripting.Preserve]
-        public delegate void OnStartDownloadFile(string fileName, long sizeBytes);
+        public delegate void OnStartDownloadFile(DownloadFileData data);
 
         private readonly string _packageName;
         private readonly int _downloadingMaxNumber;
@@ -179,7 +179,16 @@ namespace YooAsset
                     _lastDownloadBytes = downloadBytes;
                     _lastDownloadCount = _cachedDownloadCount;
                     Progress = (float)_lastDownloadBytes / TotalDownloadBytes;
-                    OnDownloadProgressCallback?.Invoke(TotalDownloadCount, _lastDownloadCount, TotalDownloadBytes, _lastDownloadBytes);
+                    var downloadUpdateData = new DownloadUpdateData
+                    {
+                        PackageName = _packageName,
+                        Progress = Progress,
+                        TotalDownloadCount = TotalDownloadCount,
+                        CurrentDownloadCount = _lastDownloadCount,
+                        TotalDownloadBytes = TotalDownloadBytes,
+                        CurrentDownloadBytes = _lastDownloadBytes,
+                    };
+                    OnDownloadProgressCallback?.Invoke(downloadUpdateData);
                 }
 
                 // 动态创建新的下载器到最大数量限制
@@ -198,7 +207,13 @@ namespace YooAsset
                         var downloader = bundleInfo.CreateDownloader(_failedTryAgain, _timeout);
                         _downloaders.Add(downloader);
                         _bundleInfoList.RemoveAt(index);
-                        OnStartDownloadFileCallback?.Invoke(bundleInfo.Bundle.BundleName, bundleInfo.Bundle.FileSize);
+                        var downloadFileData = new DownloadFileData
+                        {
+                            PackageName = _packageName,
+                            FileName = bundleInfo.Bundle.BundleName,
+                            FileSize = bundleInfo.Bundle.FileSize,
+                        };
+                        OnStartDownloadFileCallback?.Invoke(downloadFileData);
                     }
                 }
 
@@ -212,15 +227,31 @@ namespace YooAsset
                         _steps = ESteps.Done;
                         Status = EOperationStatus.Failed;
                         Error = $"Failed to download file : {bundleName}";
-                        OnDownloadErrorCallback?.Invoke(bundleName, failedDownloader.Error);
-                        OnDownloadOverCallback?.Invoke(false);
+                        var downloadErrorData = new DownloadErrorData
+                        {
+                            PackageName = _packageName,
+                            FileName = bundleName,
+                            ErrorInfo = failedDownloader.Error,
+                        };
+                        OnDownloadErrorCallback?.Invoke(downloadErrorData);
+                        var downloadFinishData = new DownloaderFinishData
+                        {
+                            PackageName = _packageName,
+                            Succeed = false,
+                        };
+                        OnDownloadOverCallback?.Invoke(downloadFinishData);
                     }
                     else
                     {
                         // 结算成功
                         _steps = ESteps.Done;
                         Status = EOperationStatus.Succeed;
-                        OnDownloadOverCallback?.Invoke(true);
+                        var downloadFinishData = new DownloaderFinishData
+                        {
+                            PackageName = _packageName,
+                            Succeed = true,
+                        };
+                        OnDownloadOverCallback?.Invoke(downloadFinishData);
                     }
                 }
             }
