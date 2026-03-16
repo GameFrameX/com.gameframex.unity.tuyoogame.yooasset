@@ -102,7 +102,7 @@ namespace YooAsset
         }
 
         [UnityEngine.Scripting.Preserve]
-        internal string GetPackageName()
+        public string GetPackageName()
         {
             return _packageName;
         }
