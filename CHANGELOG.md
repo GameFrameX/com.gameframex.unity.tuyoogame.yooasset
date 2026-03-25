@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.5.1...2.6.0) (2026-03-25)
+
+
+### Features
+
+* **FGUI:** FGUI的打包规则 ([d44f300](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/d44f3002b21d6f1a7490607fb8ab6e2bb04ebe6d))
+
 ## [2.5.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.5.0...2.5.1) (2026-03-16)
 
 
