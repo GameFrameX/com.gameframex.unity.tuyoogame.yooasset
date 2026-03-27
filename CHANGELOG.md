@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.6.0...2.7.0) (2026-03-27)
+
+
+### Features
+
+* **微信小程序:** 添加 WeChatConfigHandler 以优化预加载性能 ([829c732](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/829c7323a124f11d6cb3a794d7913f7adc9e1618))
+
 # [2.6.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.5.1...2.6.0) (2026-03-25)
 
 
