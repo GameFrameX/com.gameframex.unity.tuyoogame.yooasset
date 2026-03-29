@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.7.0...2.8.0) (2026-03-29)
+
+
+### Features
+
+* **文件系统:** 添加抖音小游戏配置处理器 ([7930af8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/7930af8dc7496e0bc92e1ec5e31e36e5ca94b395))
+
 # [2.7.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.6.0...2.7.0) (2026-03-27)
 
 
