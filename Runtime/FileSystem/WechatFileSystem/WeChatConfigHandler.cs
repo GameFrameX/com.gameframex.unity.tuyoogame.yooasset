@@ -29,7 +29,7 @@
 
 using UnityEngine;
 
-#if UNITY_WEBGL && WECHAT_MINI_GAME
+#if UNITY_WEBGL && ENABLE_WECHAT_MINI_GAME
 
 public class WeChatConfigHandler : MonoBehaviour
 {
