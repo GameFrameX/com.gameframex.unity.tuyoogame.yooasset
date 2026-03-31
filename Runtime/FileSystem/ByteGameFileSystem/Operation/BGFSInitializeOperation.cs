@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL && DOUYIN_MINI_GAME
+﻿#if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
 using YooAsset;
 
 [UnityEngine.Scripting.Preserve]
