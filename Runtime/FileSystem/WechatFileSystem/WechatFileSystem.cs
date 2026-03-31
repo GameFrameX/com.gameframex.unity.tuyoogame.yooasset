@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YooAsset;
-using WeChatWASM;
 
 [UnityEngine.Scripting.Preserve]
 public static class WechatFileSystemCreater
@@ -73,7 +72,7 @@ internal class WechatFileSystem : IFileSystem
     }
 
     private readonly Dictionary<string, string> _cacheFilePaths = new Dictionary<string, string>(10000);
-    private WXFileSystemManager _fileSystemManager;
+    private WeChatWASM.WXFileSystemManager _fileSystemManager;
     private string _fileCacheRoot = string.Empty;
 
     /// <summary>
@@ -207,8 +206,8 @@ internal class WechatFileSystem : IFileSystem
             RemoteServices = new WebRemoteServices(webRoot);
         }
         
-        _fileSystemManager = WXBase.GetFileSystemManager();
-        _fileCacheRoot = WX.env.USER_DATA_PATH; //注意：如果有子目录，请修改此处！
+        _fileSystemManager = WeChatWASM.WXBase.GetFileSystemManager();
+        _fileCacheRoot = WeChatWASM.WX.env.USER_DATA_PATH; //注意：如果有子目录，请修改此处！
     }
 
     [UnityEngine.Scripting.Preserve]
