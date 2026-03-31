@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.8.0...2.8.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* **编译条件:** 将微信小游戏条件编译符号从WECHAT_MINI_GAME改为ENABLE_WECHAT_MINI_GAME ([22ce828](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/22ce828db5b3ad59bd3cc3cbb14f78a7682bdbc6))
+
 # [2.8.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.7.0...2.8.0) (2026-03-29)
 
 
