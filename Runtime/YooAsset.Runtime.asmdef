@@ -12,32 +12,6 @@
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": [
-    {
-      "name": "com.qq.weixin.minigame",
-      "expression": "",
-      "define": "WECHAT_MINI_GAME"
-    },
-    {
-      "name": "com.gameframex.unity.weixin.minigame",
-      "expression": "",
-      "define": "WECHAT_MINI_GAME"
-    },
-    {
-      "name": "com.qq.weixin.minigame",
-      "expression": "",
-      "define": "ENABLE_WECHAT_MINI_GAME"
-    },
-    {
-      "name": "com.gameframex.unity.weixin.minigame",
-      "expression": "",
-      "define": "ENABLE_WECHAT_MINI_GAME"
-    },
-    {
-      "name": "com.bytedance.starksdk",
-      "expression": "",
-      "define": "DOUYIN_MINI_GAME"
-    }
-  ],
+  "versionDefines": [],
   "noEngineReferences": false
 }
