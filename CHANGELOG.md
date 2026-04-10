@@ -1,3 +1,19 @@
+# [2.9.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.8.1...2.9.0) (2026-04-10)
+
+
+### Bug Fixes
+
+* **DefaultBuildinFileSystem:** 未找到内置目录文件时操作视为成功 ([88ee8c3](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/88ee8c3c35e813a47d697756e42952e866188d5a))
+* **FileSystem:** 当StreamingAssets根目录不存在时跳过生成目录 ([4a23518](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/4a235189b1f6fe2e1cd3e8a89ac9f27407018ea3))
+* 在编辑器环境下禁用KSWASM预加载并调整文件缓存路径 ([bb7414f](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/bb7414f32c65d57a17592f7bad0bf05fca083ce9))
+
+
+### Features
+
+* **filesystem:** 新增快手小游戏文件系统支持 ([b6361ab](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/b6361ab81e87c65bfd3af6353d64ff91860e7539))
+* 新增快手文件系统相关元数据文件 ([993489c](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/993489c75e4498a6b772cec3bdf2b14ca247ea5e))
+* 添加快手和抖音小游戏平台支持 ([376b571](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/376b571e0b61cd35862e5036a631b3f3927aa14b))
+
 ## [2.8.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.8.0...2.8.1) (2026-03-31)
 
 
