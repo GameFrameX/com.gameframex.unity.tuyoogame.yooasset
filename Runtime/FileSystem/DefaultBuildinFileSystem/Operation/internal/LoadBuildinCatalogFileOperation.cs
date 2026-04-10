@@ -43,9 +43,9 @@ namespace YooAsset
                 var catalog = Resources.Load<DefaultBuildinFileCatalog>(catalogFilePath);
                 if (catalog == null)
                 {
+                    YooLogger.Warning($"BuildinCatalog file not found : {catalogFilePath}. Skip loading buildin catalog.");
                     _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Failed to load catalog file : {catalogFilePath}";
+                    Status = EOperationStatus.Succeed;
                     return;
                 }
 
