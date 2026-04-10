@@ -215,6 +215,10 @@ internal class KuaiShouFileSystem : IFileSystem
         }
 
         _fileSystemManager = KSWASM.KSBase.GetFileSystemManager();
+#if UNITY_EDITOR
+        _fileCacheRoot = Application.persistentDataPath;
+        return;
+#endif
         _fileCacheRoot = KSWASM.KSBase.env.USER_DATA_PATH; //注意：如果有子目录，请修改此处！
     }
 

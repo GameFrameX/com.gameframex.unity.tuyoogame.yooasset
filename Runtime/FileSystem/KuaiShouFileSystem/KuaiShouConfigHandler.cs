@@ -42,8 +42,9 @@ public class KuaiShouConfigHandler : MonoBehaviour
         {
             return;
         }
-
+#if !UNITY_EDITOR
         KSWASM.KSBase.PreloadConcurrent(10);
+#endif
         _timer = 0f;
     }
 }
