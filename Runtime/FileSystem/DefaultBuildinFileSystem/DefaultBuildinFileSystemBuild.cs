@@ -33,7 +33,8 @@ namespace YooAsset
             var rootDirectory = new DirectoryInfo(rootPath);
             if (rootDirectory.Exists == false)
             {
-                throw new System.Exception($"Can not found StreamingAssets root directory : {rootPath}");
+                Debug.LogWarning($"BuildinCatalog: StreamingAssets root directory not found : {rootPath}. Skip generating catalog.");
+                return;
             }
 
             // 搜索所有Package目录
