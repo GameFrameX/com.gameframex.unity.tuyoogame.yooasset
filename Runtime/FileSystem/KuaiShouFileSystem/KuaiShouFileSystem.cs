@@ -53,7 +53,7 @@ internal class KuaiShouFileSystem : IFileSystem
         }
 
         [UnityEngine.Scripting.Preserve]
-        string IRemoteServices.GetRemoteMainURL(string fileName, string packageVersion)
+        string IRemoteServices.GetRemoteMainURL(string fileName,string packageVersion)
         {
             return GetFileLoadURL(fileName, packageVersion);
         }
@@ -73,7 +73,6 @@ internal class KuaiShouFileSystem : IFileSystem
                 url = DownloadSystemHelper.ConvertToWWWPath(filePath);
                 _mapping.Add(fileName, url);
             }
-
             //Debug.LogError($"WeChatFileSystem GetFileLoadURL url:{url}");
             return url;
         }
@@ -164,8 +163,8 @@ internal class KuaiShouFileSystem : IFileSystem
     [UnityEngine.Scripting.Preserve]
     public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadParam param)
     {
-        param.MainURL = RemoteServices.GetRemoteMainURL(bundle.FileName, PackageVersion);
-        param.FallbackURL = RemoteServices.GetRemoteFallbackURL(bundle.FileName, PackageVersion);
+        param.MainURL = RemoteServices.GetRemoteMainURL(bundle.FileName,PackageVersion);
+        param.FallbackURL = RemoteServices.GetRemoteFallbackURL(bundle.FileName,PackageVersion);
         var operation = new KSFSDownloadFileOperation(this, bundle, param);
         OperationSystem.StartOperation(PackageName, operation);
         return operation;
@@ -174,7 +173,7 @@ internal class KuaiShouFileSystem : IFileSystem
     [UnityEngine.Scripting.Preserve]
     public virtual FSLoadBundleOperation LoadBundleFile(PackageBundle bundle)
     {
-        var operation = new KSFSLoadBundleOperation(this, bundle, PackageVersion);
+        var operation = new KSFSLoadBundleOperation(this, bundle,PackageVersion);
         OperationSystem.StartOperation(PackageName, operation);
         return operation;
     }
@@ -182,7 +181,7 @@ internal class KuaiShouFileSystem : IFileSystem
     [UnityEngine.Scripting.Preserve]
     public virtual void UnloadBundleFile(PackageBundle bundle, object result)
     {
-        var assetBundle = (result as KSWASM.KSAssetBundle);
+        AssetBundle assetBundle = result as AssetBundle;
         if (assetBundle != null)
         {
             assetBundle.Unload(true);
@@ -213,7 +212,7 @@ internal class KuaiShouFileSystem : IFileSystem
             string webRoot = PathUtility.Combine(Application.streamingAssetsPath, YooAssetSettingsData.Setting.DefaultYooFolderName, packageName);
             RemoteServices = new WebRemoteServices(webRoot);
         }
-
+        
         _fileSystemManager = KSWASM.KSBase.GetFileSystemManager();
 #if UNITY_EDITOR
         _fileCacheRoot = Application.persistentDataPath;

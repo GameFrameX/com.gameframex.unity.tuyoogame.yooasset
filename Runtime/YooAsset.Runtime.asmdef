@@ -3,8 +3,7 @@
   "rootNamespace": "YooAsset",
   "references": [
     "StarkWebGL",
-    "Wx",
-    "kuaishou.runtime"
+    "Wx"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

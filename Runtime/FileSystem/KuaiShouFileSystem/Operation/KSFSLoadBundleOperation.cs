@@ -20,7 +20,7 @@ internal class KSFSLoadBundleOperation : FSLoadBundleOperation
     private string _packagerVersion;
 
     [UnityEngine.Scripting.Preserve]
-    internal KSFSLoadBundleOperation(KuaiShouFileSystem fileSystem, PackageBundle bundle, string packagerVersion)
+    internal KSFSLoadBundleOperation(KuaiShouFileSystem fileSystem, PackageBundle bundle,string packagerVersion)
     {
         _fileSystem = fileSystem;
         _bundle = bundle;
@@ -49,7 +49,7 @@ internal class KSFSLoadBundleOperation : FSLoadBundleOperation
         if (_webRequest == null)
         {
             string mainURL = _fileSystem.RemoteServices.GetRemoteMainURL(_bundle.FileName, _packagerVersion);
-            _webRequest = KSWASM.KSAssetBundle.GetAssetBundle(mainURL);
+            _webRequest = UnityWebRequestAssetBundle.GetAssetBundle(mainURL);
             _webRequest.SendWebRequest();
         }
 
@@ -64,7 +64,9 @@ internal class KSFSLoadBundleOperation : FSLoadBundleOperation
         if (CheckRequestResult())
         {
             _steps = ESteps.Done;
-            Result = (_webRequest.downloadHandler as KSWASM.DownloadHandlerKSAssetBundle)?.assetBundle;
+            Result = (_webRequest.downloadHandler as DownloadHandlerAssetBundle)?.assetBundle;
+
+
             Status = EOperationStatus.Succeed;
         }
         else
