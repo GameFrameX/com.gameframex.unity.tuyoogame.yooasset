@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultCacheFileSystemDefine
+    public static class DefaultCacheFileSystemDefine
     {
         /// <summary>
         /// 保存的数据文件名称

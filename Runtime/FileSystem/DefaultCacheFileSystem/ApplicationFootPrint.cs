@@ -7,7 +7,7 @@ namespace YooAsset
     /// 应用程序水印
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class ApplicationFootPrint
+    public class ApplicationFootPrint
     {
         private readonly DefaultCacheFileSystem _fileSystem;
         private string _footPrint;

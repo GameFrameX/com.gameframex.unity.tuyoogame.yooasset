@@ -6,7 +6,7 @@ namespace YooAsset
     /// 模拟文件系统
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultEditorFileSystem : IFileSystem
+    public class DefaultEditorFileSystem : IFileSystem
     {
         protected string _packageRoot;
 

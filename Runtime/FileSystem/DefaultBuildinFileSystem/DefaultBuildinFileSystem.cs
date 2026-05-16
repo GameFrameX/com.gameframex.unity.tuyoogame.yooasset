@@ -9,7 +9,7 @@ namespace YooAsset
     /// 内置文件系统
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultBuildinFileSystem : IFileSystem
+    public class DefaultBuildinFileSystem : IFileSystem
     {
         [UnityEngine.Scripting.Preserve]
         private class UnpackRemoteServices : IRemoteServices

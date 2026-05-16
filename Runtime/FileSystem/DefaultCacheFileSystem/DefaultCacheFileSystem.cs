@@ -11,7 +11,7 @@ namespace YooAsset
     /// 说明：正在进行的下载器会在ResourcePackage销毁的时候执行Abort操作！
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultCacheFileSystem : IFileSystem
+    public class DefaultCacheFileSystem : IFileSystem
     {
         [UnityEngine.Scripting.Preserve]
         public class FileWrapper

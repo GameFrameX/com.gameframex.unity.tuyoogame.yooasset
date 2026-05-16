@@ -8,7 +8,7 @@ namespace YooAsset
     /// 内置资源清单目录
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultBuildinFileCatalog : ScriptableObject
+    public class DefaultBuildinFileCatalog : ScriptableObject
     {
         [UnityEngine.Scripting.Preserve]
         [Serializable]

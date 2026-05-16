@@ -9,7 +9,7 @@ namespace YooAsset
     /// Web文件系统
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class DefaultWebFileSystem : IFileSystem
+    public class DefaultWebFileSystem : IFileSystem
     {
         [UnityEngine.Scripting.Preserve]
         public class FileWrapper
