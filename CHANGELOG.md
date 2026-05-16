@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.0...2.9.1) (2026-05-16)
+
+
+### Bug Fixes
+
+* **PlayModeHelper:** 支持从所有已加载程序集中搜索文件系统类类型 ([7dce4b4](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/7dce4b49bd8c06dc2c233ffbdaa4a982493ffded))
+
 # [2.9.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.8.1...2.9.0) (2026-04-10)
 
 
