@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal interface IBundleQuery
+    public interface IBundleQuery
     {
         /// <summary>
         /// 获取主资源包信息

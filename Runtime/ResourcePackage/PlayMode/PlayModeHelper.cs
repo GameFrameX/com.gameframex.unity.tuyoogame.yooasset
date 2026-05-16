@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class PlayModeHelper
+    public static class PlayModeHelper
     {
         [UnityEngine.Scripting.Preserve]
         public static IFileSystem CreateFileSystem(string packageName, FileSystemParameters parameters)

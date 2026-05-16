@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal interface IPlayMode
+    public interface IPlayMode
     {
         /// <summary>
         /// 当前激活的清单
