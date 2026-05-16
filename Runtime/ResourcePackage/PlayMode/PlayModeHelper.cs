@@ -12,6 +12,17 @@ namespace YooAsset
             var classType = Type.GetType(parameters.FileSystemClass);
             if (classType == null)
             {
+                // 搜索所有已加载的程序集（支持从子包中查找）
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    classType = assembly.GetType(parameters.FileSystemClass);
+                    if (classType != null)
+                        break;
+                }
+            }
+
+            if (classType == null)
+            {
                 YooLogger.Error($"Can not found file system class type {parameters.FileSystemClass}");
                 return null;
             }
