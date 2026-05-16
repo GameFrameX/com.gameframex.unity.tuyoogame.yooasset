@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal abstract class FSDownloadFileOperation : AsyncOperationBase
+    public abstract class FSDownloadFileOperation : AsyncOperationBase
     {
         public PackageBundle Bundle { private set; get; }
 

@@ -1,15 +1,15 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal abstract class FSClearUnusedBundleFilesOperation : AsyncOperationBase
+    public abstract class FSClearUnusedBundleFilesOperation : AsyncOperationBase
     {
     }
 
     [UnityEngine.Scripting.Preserve]
-    internal sealed class FSClearUnusedBundleFilesCompleteOperation : FSClearUnusedBundleFilesOperation
+    public sealed class FSClearUnusedBundleFilesCompleteOperation : FSClearUnusedBundleFilesOperation
     {
         [UnityEngine.Scripting.Preserve]
-        internal FSClearUnusedBundleFilesCompleteOperation()
+        public FSClearUnusedBundleFilesCompleteOperation()
         {
         }
 

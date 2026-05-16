@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class DeserializeManifestOperation : AsyncOperationBase
+    public class DeserializeManifestOperation : AsyncOperationBase
     {
         [UnityEngine.Scripting.Preserve]
         private enum ESteps

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class UnityWebTextRequestOperation : UnityWebRequestOperation
+    public class UnityWebTextRequestOperation : UnityWebRequestOperation
     {
         private UnityWebRequestAsyncOperation _requestOperation;
 
@@ -16,7 +16,7 @@ namespace YooAsset
 
 
         [UnityEngine.Scripting.Preserve]
-        internal UnityWebTextRequestOperation(string url, int timeout = 60, bool appendTimeTicks = false) : base(url, timeout, appendTimeTicks)
+        public UnityWebTextRequestOperation(string url, int timeout = 60, bool appendTimeTicks = false) : base(url, timeout, appendTimeTicks)
         {
         }
 

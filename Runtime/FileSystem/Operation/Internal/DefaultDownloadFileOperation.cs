@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal abstract class DefaultDownloadFileOperation : FSDownloadFileOperation
+    public abstract class DefaultDownloadFileOperation : FSDownloadFileOperation
     {
         [UnityEngine.Scripting.Preserve]
         protected enum ESteps
@@ -38,7 +38,7 @@ namespace YooAsset
 
 
         [UnityEngine.Scripting.Preserve]
-        internal DefaultDownloadFileOperation(PackageBundle bundle, DownloadParam param) : base(bundle)
+        public DefaultDownloadFileOperation(PackageBundle bundle, DownloadParam param) : base(bundle)
         {
             Param = param;
             FailedTryAgain = param.FailedTryAgain;

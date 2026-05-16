@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal interface IFileSystem
+    public interface IFileSystem
     {
         /// <summary>
         /// 包裹名称

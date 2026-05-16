@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class OperationSystem
+    public class OperationSystem
     {
         private static readonly List<AsyncOperationBase> _operations = new(1000);
         private static readonly List<AsyncOperationBase> _newList = new(1000);

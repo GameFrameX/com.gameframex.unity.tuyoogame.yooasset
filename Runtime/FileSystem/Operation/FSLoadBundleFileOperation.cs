@@ -3,7 +3,7 @@
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal abstract class FSLoadBundleOperation : AsyncOperationBase
+    public abstract class FSLoadBundleOperation : AsyncOperationBase
     {
         /// <summary>
         /// 加载结果
