@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class BufferReader
+    public class BufferReader
     {
         private readonly byte[] _buffer;
         private int _index = 0;

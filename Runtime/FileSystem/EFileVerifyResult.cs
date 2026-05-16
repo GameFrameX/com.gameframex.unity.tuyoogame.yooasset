@@ -4,7 +4,7 @@
     /// 文件校验结果
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal enum EFileVerifyResult
+    public enum EFileVerifyResult
     {
         /// <summary>
         /// 验证异常

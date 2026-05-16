@@ -1,7 +1,7 @@
 ﻿namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class BundleInfo
+    public class BundleInfo
     {
         private readonly string _importFilePath;
         private readonly IFileSystem _fileSystem;

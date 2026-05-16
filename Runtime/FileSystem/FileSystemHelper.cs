@@ -4,7 +4,7 @@ using System.IO;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    internal class FileSystemHelper
+    public static class FileSystemHelper
     {
         /// <summary>
         /// 文件校验

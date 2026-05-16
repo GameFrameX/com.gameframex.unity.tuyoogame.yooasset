@@ -11,7 +11,7 @@ namespace YooAsset
     /// 数据存储以小端字节序为标准
     /// </summary>
     [UnityEngine.Scripting.Preserve]
-    internal class BufferWriter
+    public class BufferWriter
     {
         private readonly byte[] _buffer;
         private int _index = 0;
