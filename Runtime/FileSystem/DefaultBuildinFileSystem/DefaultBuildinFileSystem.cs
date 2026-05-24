@@ -15,7 +15,7 @@ namespace YooAsset
         private class UnpackRemoteServices : IRemoteServices
         {
             private readonly string _buildinPackageRoot;
-            protected readonly Dictionary<string, string> _mapping = new(10000);
+            protected readonly Dictionary<string, string> _mapping = new Dictionary<string, string>(10000);
 
             [UnityEngine.Scripting.Preserve]
             public UnpackRemoteServices(string buildinPackRoot)
@@ -61,9 +61,9 @@ namespace YooAsset
             }
         }
 
-        protected readonly Dictionary<string, FileWrapper> _wrappers = new(10000);
-        protected readonly Dictionary<string, Stream> _loadedStream = new(10000);
-        protected readonly Dictionary<string, string> _buildinFilePaths = new(10000);
+        protected readonly Dictionary<string, FileWrapper> _wrappers = new Dictionary<string, FileWrapper>(10000);
+        protected readonly Dictionary<string, Stream> _loadedStream = new Dictionary<string, Stream>(10000);
+        protected readonly Dictionary<string, string> _buildinFilePaths = new Dictionary<string, string>(10000);
         protected IFileSystem _unpackFileSystem;
         protected string _packageRoot;
 

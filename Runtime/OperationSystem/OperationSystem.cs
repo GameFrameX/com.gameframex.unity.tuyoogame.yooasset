@@ -7,8 +7,8 @@ namespace YooAsset
     [UnityEngine.Scripting.Preserve]
     public class OperationSystem
     {
-        private static readonly List<AsyncOperationBase> _operations = new(1000);
-        private static readonly List<AsyncOperationBase> _newList = new(1000);
+        private static readonly List<AsyncOperationBase> _operations = new List<AsyncOperationBase>(1000);
+        private static readonly List<AsyncOperationBase> _newList = new List<AsyncOperationBase>(1000);
 
         // 计时器相关
         private static Stopwatch _watch;

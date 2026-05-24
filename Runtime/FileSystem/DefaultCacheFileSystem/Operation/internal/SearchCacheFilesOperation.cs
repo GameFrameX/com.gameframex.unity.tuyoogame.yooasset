@@ -25,7 +25,7 @@ namespace YooAsset
         /// <summary>
         /// 需要验证的元素
         /// </summary>
-        public readonly List<CacheFileElement> Result = new(5000);
+        public readonly List<CacheFileElement> Result = new List<CacheFileElement>(5000);
 
 
         [UnityEngine.Scripting.Preserve]

@@ -31,13 +31,13 @@ namespace YooAsset
             }
         }
 
-        protected readonly Dictionary<string, DefaultDownloadFileOperation> _downloaders = new(1000);
-        protected readonly Dictionary<string, FileWrapper> _wrappers = new(10000);
-        protected readonly Dictionary<string, Stream> _loadedStream = new(10000);
-        protected readonly Dictionary<string, string> _dataFilePaths = new(10000);
-        protected readonly Dictionary<string, string> _infoFilePaths = new(10000);
-        protected readonly Dictionary<string, string> _tempFilePaths = new(10000);
-        protected readonly List<string> _removeList = new(1000);
+        protected readonly Dictionary<string, DefaultDownloadFileOperation> _downloaders = new Dictionary<string, DefaultDownloadFileOperation>(1000);
+        protected readonly Dictionary<string, FileWrapper> _wrappers = new Dictionary<string, FileWrapper>(10000);
+        protected readonly Dictionary<string, Stream> _loadedStream = new Dictionary<string, Stream>(10000);
+        protected readonly Dictionary<string, string> _dataFilePaths = new Dictionary<string, string>(10000);
+        protected readonly Dictionary<string, string> _infoFilePaths = new Dictionary<string, string>(10000);
+        protected readonly Dictionary<string, string> _tempFilePaths = new Dictionary<string, string>(10000);
+        protected readonly List<string> _removeList = new List<string>(1000);
         protected string _packageRoot;
         protected string _saveFileRoot;
         protected string _tempFileRoot;
@@ -440,7 +440,7 @@ namespace YooAsset
 
         #region 内部方法
 
-        private readonly BufferWriter _sharedBuffer = new(1024);
+        private readonly BufferWriter _sharedBuffer = new BufferWriter(1024);
 
         [UnityEngine.Scripting.Preserve]
         public void WriteInfoFile(string filePath, string dataFileCRC, long dataFileSize)

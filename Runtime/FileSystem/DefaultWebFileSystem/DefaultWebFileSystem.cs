@@ -23,8 +23,8 @@ namespace YooAsset
             }
         }
 
-        protected readonly Dictionary<string, FileWrapper> _wrappers = new(10000);
-        protected readonly Dictionary<string, string> _webFilePaths = new(10000);
+        protected readonly Dictionary<string, FileWrapper> _wrappers = new Dictionary<string, FileWrapper>(10000);
+        protected readonly Dictionary<string, string> _webFilePaths = new Dictionary<string, string>(10000);
         protected string _webPackageRoot = string.Empty;
 
         /// <summary>

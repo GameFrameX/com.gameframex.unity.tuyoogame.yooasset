@@ -16,8 +16,8 @@ namespace YooAsset
         }
 
         private readonly ResourceManager _resourceManager;
-        private readonly List<ProviderOperation> _providers = new(100);
-        private readonly List<ProviderOperation> _removeList = new(100);
+        private readonly List<ProviderOperation> _providers = new List<ProviderOperation>(100);
+        private readonly List<ProviderOperation> _removeList = new List<ProviderOperation>(100);
         private FSLoadBundleOperation _loadBundleOp;
         private ESteps _steps = ESteps.None;
 

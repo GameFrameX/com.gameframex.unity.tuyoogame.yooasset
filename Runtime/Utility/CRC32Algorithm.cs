@@ -275,7 +275,7 @@ namespace YooAsset
         }
 
 
-        private static readonly SafeProxy _proxy = new();
+        private static readonly SafeProxy _proxy = new SafeProxy();
 
         [UnityEngine.Scripting.Preserve]
         private static uint AppendInternal(uint initial, byte[] input, int offset, int length)

@@ -11,11 +11,11 @@ namespace YooAsset
     internal class ResourceManager
     {
         // 全局场景句柄集合
-        private static readonly Dictionary<string, SceneHandle> _sceneHandles = new(100);
+        private static readonly Dictionary<string, SceneHandle> _sceneHandles = new Dictionary<string, SceneHandle>(100);
         private static long _sceneCreateCount = 0;
 
-        internal readonly Dictionary<string, ProviderOperation> _providerDic = new(5000);
-        internal readonly Dictionary<string, LoadBundleFileOperation> _loaderDic = new(5000);
+        internal readonly Dictionary<string, ProviderOperation> _providerDic = new Dictionary<string, ProviderOperation>(5000);
+        internal readonly Dictionary<string, LoadBundleFileOperation> _loaderDic = new Dictionary<string, LoadBundleFileOperation>(5000);
 
         private bool _simulationOnEditor;
         private IBundleQuery _bundleQuery;

@@ -73,7 +73,7 @@ namespace YooAsset
         protected LoadBundleFileOperation LoadBundleFileOp { private set; get; }
         protected LoadDependBundleFileOperation LoadDependBundleFileOp { private set; get; }
         protected bool IsWaitForAsyncComplete { private set; get; } = false;
-        private readonly List<HandleBase> _handles = new();
+        private readonly List<HandleBase> _handles = new List<HandleBase>(256);
 
 
         [UnityEngine.Scripting.Preserve]

@@ -17,6 +17,6 @@ namespace YooAsset
         /// <summary>
         /// 调试数据列表
         /// </summary>
-        public List<DebugProviderInfo> ProviderInfos = new(1000);
+        public List<DebugProviderInfo> ProviderInfos = new List<DebugProviderInfo>(1000);
     }
 }

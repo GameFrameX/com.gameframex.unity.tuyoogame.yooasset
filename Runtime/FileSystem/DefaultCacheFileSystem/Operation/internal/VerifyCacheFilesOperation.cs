@@ -58,7 +58,7 @@ namespace YooAsset
             Done,
         }
 
-        private readonly ThreadSyncContext _syncContext = new();
+        private readonly ThreadSyncContext _syncContext = new ThreadSyncContext();
         private readonly DefaultCacheFileSystem _fileSystem;
         private List<CacheFileElement> _waitingList;
         private List<CacheFileElement> _verifyingList;

@@ -34,9 +34,9 @@ namespace YooAsset
         private readonly int _failedTryAgain;
         private readonly int _timeout;
         private readonly List<BundleInfo> _bundleInfoList;
-        private readonly List<FSDownloadFileOperation> _downloaders = new(MAX_LOADER_COUNT);
-        private readonly List<FSDownloadFileOperation> _removeList = new(MAX_LOADER_COUNT);
-        private readonly List<FSDownloadFileOperation> _failedList = new(MAX_LOADER_COUNT);
+        private readonly List<FSDownloadFileOperation> _downloaders = new List<FSDownloadFileOperation>(MAX_LOADER_COUNT);
+        private readonly List<FSDownloadFileOperation> _removeList = new List<FSDownloadFileOperation>(MAX_LOADER_COUNT);
+        private readonly List<FSDownloadFileOperation> _failedList = new List<FSDownloadFileOperation>(MAX_LOADER_COUNT);
 
         // 数据相关
         private bool _isPause = false;

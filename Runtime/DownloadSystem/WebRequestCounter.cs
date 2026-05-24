@@ -10,7 +10,7 @@ namespace YooAsset
         /// <summary>
         /// 记录网络请求失败事件的次数
         /// </summary>
-        private static readonly Dictionary<string, int> _requestFailedRecorder = new(1000);
+        private static readonly Dictionary<string, int> _requestFailedRecorder = new Dictionary<string, int>(1000);
 
         /// <summary>
         /// 记录请求失败事件

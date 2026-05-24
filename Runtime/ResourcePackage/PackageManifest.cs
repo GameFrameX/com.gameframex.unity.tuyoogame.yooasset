@@ -56,12 +56,12 @@ namespace YooAsset
         /// <summary>
         /// 资源列表（主动收集的资源列表）
         /// </summary>
-        public List<PackageAsset> AssetList = new();
+        public List<PackageAsset> AssetList = new List<PackageAsset>(4096);
 
         /// <summary>
         /// 资源包列表
         /// </summary>
-        public List<PackageBundle> BundleList = new();
+        public List<PackageBundle> BundleList = new List<PackageBundle>(4096);
 
 
         /// <summary>

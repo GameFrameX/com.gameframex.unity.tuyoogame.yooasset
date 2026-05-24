@@ -12,7 +12,7 @@ namespace YooAsset
     [UnityEngine.Scripting.Preserve]
     internal sealed class ThreadSyncContext : SynchronizationContext
     {
-        private readonly ConcurrentQueue<Action> _safeQueue = new();
+        private readonly ConcurrentQueue<Action> _safeQueue = new ConcurrentQueue<Action>();
 
         /// <summary>
         /// 更新同步队列

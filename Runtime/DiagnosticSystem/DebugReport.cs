@@ -21,7 +21,7 @@ namespace YooAsset
         /// <summary>
         /// 调试的包裹数据列表
         /// </summary>
-        public List<DebugPackageData> PackageDatas = new(10);
+        public List<DebugPackageData> PackageDatas = new List<DebugPackageData>(10);
 
 
         /// <summary>
