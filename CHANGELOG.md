@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.1...2.9.2) (2026-05-28)
+
+
+### Bug Fixes
+
+* **ci:** 统一 .github 工作流配置 ([7d13f4a](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/7d13f4aac3053167b4609d87ed7c1f313676ede2))
+
 ## [2.9.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.0...2.9.1) (2026-05-16)
 
 
