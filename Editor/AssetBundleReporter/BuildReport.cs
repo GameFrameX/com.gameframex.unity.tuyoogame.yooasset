@@ -32,15 +32,40 @@ namespace YooAsset.Editor
         /// </summary>
         public List<ReportIndependAsset> IndependAssets = new List<ReportIndependAsset>();
 
+        [NonSerialized]
+        private Dictionary<string, ReportBundleInfo> _bundleInfoCache;
+        [NonSerialized]
+        private Dictionary<string, ReportAssetInfo> _assetInfoCache;
+
+        private void BuildIndexCache()
+        {
+            if (_bundleInfoCache != null && _assetInfoCache != null)
+            {
+                return;
+            }
+
+            _bundleInfoCache = new Dictionary<string, ReportBundleInfo>(BundleInfos.Count);
+            foreach (var bundleInfo in BundleInfos)
+            {
+                _bundleInfoCache[bundleInfo.BundleName] = bundleInfo;
+            }
+
+            _assetInfoCache = new Dictionary<string, ReportAssetInfo>(AssetInfos.Count);
+            foreach (var assetInfo in AssetInfos)
+            {
+                _assetInfoCache[assetInfo.AssetPath] = assetInfo;
+            }
+        }
+
         /// <summary>
         /// 获取资源包信息类
         /// </summary>
         public ReportBundleInfo GetBundleInfo(string bundleName)
         {
-            foreach (var bundleInfo in BundleInfos)
+            BuildIndexCache();
+            if (_bundleInfoCache.TryGetValue(bundleName, out ReportBundleInfo bundleInfo))
             {
-                if (bundleInfo.BundleName == bundleName)
-                    return bundleInfo;
+                return bundleInfo;
             }
             throw new Exception($"Not found bundle : {bundleName}");
         }
@@ -50,10 +75,10 @@ namespace YooAsset.Editor
         /// </summary>
         public ReportAssetInfo GetAssetInfo(string assetPath)
         {
-            foreach (var assetInfo in AssetInfos)
+            BuildIndexCache();
+            if (_assetInfoCache.TryGetValue(assetPath, out ReportAssetInfo assetInfo))
             {
-                if (assetInfo.AssetPath == assetPath)
-                    return assetInfo;
+                return assetInfo;
             }
             throw new Exception($"Not found asset : {assetPath}");
         }
