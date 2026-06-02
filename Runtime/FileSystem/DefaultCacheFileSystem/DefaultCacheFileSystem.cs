@@ -610,6 +610,8 @@ namespace YooAsset
 
             try
             {
+                FileUtility.CreateFileDirectory(dataFilePath);
+
                 if (File.Exists(infoFilePath))
                 {
                     File.Delete(infoFilePath);
@@ -620,8 +622,6 @@ namespace YooAsset
                     File.Delete(dataFilePath);
                 }
 
-                FileUtility.CreateFileDirectory(dataFilePath);
-
                 // 拷贝数据文件
                 var fileInfo = new FileInfo(copyPath);
                 fileInfo.CopyTo(dataFilePath);
@@ -631,6 +631,15 @@ namespace YooAsset
             }
             catch (Exception e)
             {
+                // 回滚：清理可能残留的文件
+                if (File.Exists(dataFilePath))
+                {
+                    File.Delete(dataFilePath);
+                }
+                if (File.Exists(infoFilePath))
+                {
+                    File.Delete(infoFilePath);
+                }
                 YooLogger.Error($"Failed to write cache file ! {e.Message}");
                 return false;
             }
@@ -653,7 +662,7 @@ namespace YooAsset
                     var fileInfo = new FileInfo(dataFilePath);
                     if (fileInfo.Exists)
                     {
-                        fileInfo.Directory.Delete(true);
+                        fileInfo.Delete();
                     }
 
                     _wrappers.Remove(bundleGUID);
