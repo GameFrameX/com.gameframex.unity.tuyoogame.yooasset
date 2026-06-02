@@ -142,10 +142,7 @@ namespace YooAsset
                 return;
             }
 
-            if (assetBundle != null)
-            {
-                assetBundle.Unload(true);
-            }
+            assetBundle.Unload(true);
         }
 
         [UnityEngine.Scripting.Preserve]
