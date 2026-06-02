@@ -18,7 +18,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public static string RegularPath(string path)
         {
-            return path.Replace('\\', '/').Replace("\\", "/");
+            return path.Replace('\\', '/');
         }
 
         /// <summary>
