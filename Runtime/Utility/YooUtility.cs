@@ -227,9 +227,11 @@ namespace YooAsset
         public static string StreamSHA1(Stream stream)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
-            var hash = HashAlgorithm.Create();
-            var hashBytes = hash.ComputeHash(stream);
-            return ToString(hashBytes);
+            using (var hash = SHA1.Create())
+            {
+                var hashBytes = hash.ComputeHash(stream);
+                return ToString(hashBytes);
+            }
         }
 
         /// <summary>
@@ -239,9 +241,11 @@ namespace YooAsset
         public static string BytesSHA1(byte[] buffer)
         {
             // 说明：创建的是SHA1类的实例，生成的是160位的散列码
-            var hash = HashAlgorithm.Create();
-            var hashBytes = hash.ComputeHash(buffer);
-            return ToString(hashBytes);
+            using (var hash = SHA1.Create())
+            {
+                var hashBytes = hash.ComputeHash(buffer);
+                return ToString(hashBytes);
+            }
         }
 
         #endregion
@@ -293,9 +297,11 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public static string StreamMD5(Stream stream)
         {
-            var provider = new MD5CryptoServiceProvider();
-            var hashBytes = provider.ComputeHash(stream);
-            return ToString(hashBytes);
+            using (var provider = MD5.Create())
+            {
+                var hashBytes = provider.ComputeHash(stream);
+                return ToString(hashBytes);
+            }
         }
 
         /// <summary>
@@ -304,9 +310,11 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public static string BytesMD5(byte[] buffer)
         {
-            var provider = new MD5CryptoServiceProvider();
-            var hashBytes = provider.ComputeHash(buffer);
-            return ToString(hashBytes);
+            using (var provider = MD5.Create())
+            {
+                var hashBytes = provider.ComputeHash(buffer);
+                return ToString(hashBytes);
+            }
         }
 
         #endregion
