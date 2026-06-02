@@ -294,6 +294,12 @@ namespace YooAsset
                 return;
             }
 
+            if (downloader.Status != EOperationStatus.None)
+            {
+                YooLogger.Error("The other downloader is running, can not combine !");
+                return;
+            }
+
             var temper = new HashSet<string>();
             foreach (var bundleInfo in _bundleInfoList)
             {
