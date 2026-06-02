@@ -24,7 +24,14 @@ namespace YooAsset
         /// </summary>
         public static bool IsBusy
         {
-            get { return _watch.ElapsedMilliseconds - _frameTime >= MaxTimeSlice; }
+            get
+            {
+                if (_watch == null)
+                {
+                    return false;
+                }
+                return _watch.ElapsedMilliseconds - _frameTime >= MaxTimeSlice;
+            }
         }
 
 
