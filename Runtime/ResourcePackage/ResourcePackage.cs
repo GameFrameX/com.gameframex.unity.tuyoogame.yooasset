@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -140,6 +139,11 @@ namespace YooAsset
         {
             if (_isInitialize && _initializeStatus == EOperationStatus.Failed)
             {
+                // 清理上次初始化失败遗留的旧对象
+                _resourceManager = null;
+                _bundleQuery = null;
+                _playModeImpl = null;
+
                 _isInitialize = false;
                 _initializeStatus = EOperationStatus.None;
                 _initializeError = string.Empty;
@@ -161,7 +165,9 @@ namespace YooAsset
 
 #if !UNITY_EDITOR
             if (parameters is EditorSimulateModeParameters)
-                throw new Exception($"Editor simulate mode only support unity editor.");
+            {
+                throw new Exception($"EditorSimulateMode can only be used in Unity Editor. Please use OfflinePlayMode or HostPlayMode for runtime builds.");
+            }
 #endif
 
             // 鉴定运行模式
@@ -229,7 +235,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public LoadLocalVersionOperation RequestLocalVersionAsync(bool appendTimeTicks = true, int timeout = 60)
         {
-            DebugCheckInitialize(false);
+            CheckInitializeState(false);
             return _playModeImpl.LoadLocalVersionAsync(appendTimeTicks, timeout);
         }
 
@@ -241,7 +247,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public LoadLocalManifestOperation RequestLocalManifestAsync(string packageVersion, int timeout = 60)
         {
-            DebugCheckInitialize(false);
+            CheckInitializeState(false);
 
             // 注意：强烈建议在更新之前保持加载器为空！
             if (_resourceManager.HasAnyLoader())
@@ -260,7 +266,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public RequestPackageVersionOperation RequestPackageVersionAsync(bool appendTimeTicks = true, int timeout = 60)
         {
-            DebugCheckInitialize(false);
+            CheckInitializeState(false);
             return _playModeImpl.RequestPackageVersionAsync(appendTimeTicks, timeout);
         }
 
@@ -272,7 +278,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public UpdatePackageManifestOperation UpdatePackageManifestAsync(string packageVersion, int timeout = 60)
         {
-            DebugCheckInitialize(false);
+            CheckInitializeState(false);
 
             // 注意：强烈建议在更新之前保持加载器为空！
             if (_resourceManager.HasAnyLoader())
@@ -291,7 +297,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public PreDownloadContentOperation PreDownloadContentAsync(string packageVersion, int timeout = 60)
         {
-            DebugCheckInitialize(false);
+            CheckInitializeState(false);
             return _playModeImpl.PreDownloadContentAsync(packageVersion, timeout);
         }
 
@@ -301,7 +307,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ClearAllBundleFilesOperation ClearAllBundleFilesAsync()
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.ClearAllBundleFilesAsync();
         }
 
@@ -311,7 +317,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ClearUnusedBundleFilesOperation ClearUnusedBundleFilesAsync()
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.ClearUnusedBundleFilesAsync();
         }
 
@@ -321,7 +327,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public string GetPackageVersion()
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.ActiveManifest.PackageVersion;
         }
 
@@ -333,7 +339,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public UnloadAllAssetsOperation UnloadAllAssetsAsync()
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var operation = new UnloadAllAssetsOperation(_resourceManager);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
@@ -346,7 +352,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public UnloadUnusedAssetsOperation UnloadUnusedAssetsAsync()
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var operation = new UnloadUnusedAssetsOperation(_resourceManager);
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
@@ -359,7 +365,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public void TryUnloadUnusedAsset(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             _resourceManager.TryUnloadUnusedAsset(assetInfo);
         }
@@ -371,7 +377,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public void TryUnloadUnusedAsset(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             _resourceManager.TryUnloadUnusedAsset(assetInfo);
         }
 
@@ -386,7 +392,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public bool IsNeedDownloadFromRemote(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             return IsNeedDownloadFromRemoteInternal(assetInfo);
         }
@@ -398,7 +404,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public bool IsNeedDownloadFromRemote(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return IsNeedDownloadFromRemoteInternal(assetInfo);
         }
 
@@ -409,7 +415,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo[] GetAssetInfos(string tag)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var tags = new string[] { tag, };
             return _playModeImpl.ActiveManifest.GetAssetsInfoByTags(tags);
         }
@@ -421,7 +427,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo[] GetAssetInfos(string[] tags)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.ActiveManifest.GetAssetsInfoByTags(tags);
         }
 
@@ -432,7 +438,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo GetAssetInfo(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return ConvertLocationToAssetInfo(location, null);
         }
 
@@ -444,7 +450,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo GetAssetInfo(string location, Type type)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return ConvertLocationToAssetInfo(location, type);
         }
 
@@ -455,7 +461,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo GetAssetInfoByGUID(string assetGUID)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return ConvertAssetGUIDToAssetInfo(assetGUID, null);
         }
 
@@ -467,7 +473,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetInfo GetAssetInfoByGUID(string assetGUID, Type type)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return ConvertAssetGUIDToAssetInfo(assetGUID, type);
         }
 
@@ -478,7 +484,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public bool CheckLocationValid(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetPath = _playModeImpl.ActiveManifest.TryMappingToAssetPath(location);
             return string.IsNullOrEmpty(assetPath) == false;
         }
@@ -521,7 +527,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public RawFileHandle LoadRawFileSync(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadRawFileInternal(assetInfo, true, 0);
         }
 
@@ -532,7 +538,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public RawFileHandle LoadRawFileSync(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             return LoadRawFileInternal(assetInfo, true, 0);
         }
@@ -545,7 +551,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public RawFileHandle LoadRawFileAsync(AssetInfo assetInfo, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadRawFileInternal(assetInfo, false, priority);
         }
 
@@ -557,7 +563,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public RawFileHandle LoadRawFileAsync(string location, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             return LoadRawFileInternal(assetInfo, false, priority);
         }
@@ -588,7 +594,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SceneHandle LoadSceneSync(string location, LoadSceneMode sceneMode = LoadSceneMode.Single, LocalPhysicsMode physicsMode = LocalPhysicsMode.None)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             return LoadSceneInternal(assetInfo, true, sceneMode, physicsMode, false, 0);
         }
@@ -602,7 +608,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SceneHandle LoadSceneSync(AssetInfo assetInfo, LoadSceneMode sceneMode = LoadSceneMode.Single, LocalPhysicsMode physicsMode = LocalPhysicsMode.None)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadSceneInternal(assetInfo, true, sceneMode, physicsMode, false, 0);
         }
 
@@ -617,7 +623,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SceneHandle LoadSceneAsync(string location, LoadSceneMode sceneMode = LoadSceneMode.Single, LocalPhysicsMode physicsMode = LocalPhysicsMode.None, bool suspendLoad = false, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             return LoadSceneInternal(assetInfo, false, sceneMode, physicsMode, suspendLoad, priority);
         }
@@ -633,14 +639,14 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SceneHandle LoadSceneAsync(AssetInfo assetInfo, LoadSceneMode sceneMode = LoadSceneMode.Single, LocalPhysicsMode physicsMode = LocalPhysicsMode.None, bool suspendLoad = false, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadSceneInternal(assetInfo, false, sceneMode, physicsMode, suspendLoad, priority);
         }
 
         [UnityEngine.Scripting.Preserve]
         private SceneHandle LoadSceneInternal(AssetInfo assetInfo, bool waitForAsyncComplete, LoadSceneMode sceneMode, LocalPhysicsMode physicsMode, bool suspendLoad, uint priority)
         {
-            DebugCheckAssetLoadType(assetInfo.AssetType);
+            CheckAssetLoadType(assetInfo.AssetType);
             var loadSceneParams = new LoadSceneParameters(sceneMode, physicsMode);
             var handle = _resourceManager.LoadSceneAsync(assetInfo, loadSceneParams, suspendLoad, priority);
             if (waitForAsyncComplete)
@@ -662,7 +668,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetSync(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadAssetInternal(assetInfo, true, 0);
         }
 
@@ -674,7 +680,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetSync<TObject>(string location) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadAssetInternal(assetInfo, true, 0);
         }
@@ -687,7 +693,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetSync(string location, Type type)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAssetInternal(assetInfo, true, 0);
         }
@@ -699,7 +705,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetSync(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAssetInternal(assetInfo, true, 0);
@@ -714,7 +720,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetAsync(AssetInfo assetInfo, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadAssetInternal(assetInfo, false, priority);
         }
 
@@ -727,7 +733,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetAsync<TObject>(string location, uint priority = 0) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadAssetInternal(assetInfo, false, priority);
         }
@@ -741,7 +747,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetAsync(string location, Type type, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAssetInternal(assetInfo, false, priority);
         }
@@ -754,7 +760,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AssetHandle LoadAssetAsync(string location, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAssetInternal(assetInfo, false, priority);
@@ -764,7 +770,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private AssetHandle LoadAssetInternal(AssetInfo assetInfo, bool waitForAsyncComplete, uint priority)
         {
-            DebugCheckAssetLoadType(assetInfo.AssetType);
+            CheckAssetLoadType(assetInfo.AssetType);
             var handle = _resourceManager.LoadAssetAsync(assetInfo, priority);
             if (waitForAsyncComplete)
             {
@@ -785,7 +791,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsSync(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadSubAssetsInternal(assetInfo, true, 0);
         }
 
@@ -797,7 +803,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsSync<TObject>(string location) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadSubAssetsInternal(assetInfo, true, 0);
         }
@@ -810,7 +816,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsSync(string location, Type type)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadSubAssetsInternal(assetInfo, true, 0);
         }
@@ -822,7 +828,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsSync(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadSubAssetsInternal(assetInfo, true, 0);
@@ -837,7 +843,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsAsync(AssetInfo assetInfo, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadSubAssetsInternal(assetInfo, false, priority);
         }
 
@@ -850,7 +856,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsAsync<TObject>(string location, uint priority = 0) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadSubAssetsInternal(assetInfo, false, priority);
         }
@@ -864,7 +870,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsAsync(string location, Type type, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadSubAssetsInternal(assetInfo, false, priority);
         }
@@ -877,7 +883,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public SubAssetsHandle LoadSubAssetsAsync(string location, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadSubAssetsInternal(assetInfo, false, priority);
@@ -887,7 +893,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private SubAssetsHandle LoadSubAssetsInternal(AssetInfo assetInfo, bool waitForAsyncComplete, uint priority)
         {
-            DebugCheckAssetLoadType(assetInfo.AssetType);
+            CheckAssetLoadType(assetInfo.AssetType);
             var handle = _resourceManager.LoadSubAssetsAsync(assetInfo, priority);
             if (waitForAsyncComplete)
             {
@@ -908,7 +914,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsSync(AssetInfo assetInfo)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadAllAssetsInternal(assetInfo, true, 0);
         }
 
@@ -920,7 +926,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsSync<TObject>(string location) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadAllAssetsInternal(assetInfo, true, 0);
         }
@@ -933,7 +939,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsSync(string location, Type type)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAllAssetsInternal(assetInfo, true, 0);
         }
@@ -945,7 +951,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsSync(string location)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAllAssetsInternal(assetInfo, true, 0);
@@ -960,7 +966,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsAsync(AssetInfo assetInfo, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return LoadAllAssetsInternal(assetInfo, false, priority);
         }
 
@@ -973,7 +979,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsAsync<TObject>(string location, uint priority = 0) where TObject : UnityEngine.Object
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, typeof(TObject));
             return LoadAllAssetsInternal(assetInfo, false, priority);
         }
@@ -987,7 +993,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsAsync(string location, Type type, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAllAssetsInternal(assetInfo, false, priority);
         }
@@ -1000,7 +1006,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public AllAssetsHandle LoadAllAssetsAsync(string location, uint priority = 0)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var type = typeof(UnityEngine.Object);
             var assetInfo = ConvertLocationToAssetInfo(location, type);
             return LoadAllAssetsInternal(assetInfo, false, priority);
@@ -1010,7 +1016,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private AllAssetsHandle LoadAllAssetsInternal(AssetInfo assetInfo, bool waitForAsyncComplete, uint priority)
         {
-            DebugCheckAssetLoadType(assetInfo.AssetType);
+            CheckAssetLoadType(assetInfo.AssetType);
             var handle = _resourceManager.LoadAllAssetsAsync(assetInfo, priority);
             if (waitForAsyncComplete)
             {
@@ -1033,7 +1039,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateResourceDownloader(int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceDownloaderByAll(downloadingMaxNumber, failedTryAgain, timeout);
         }
 
@@ -1047,7 +1053,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateResourceDownloader(string tag, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceDownloaderByTags(new string[] { tag, }, downloadingMaxNumber, failedTryAgain, timeout);
         }
 
@@ -1061,7 +1067,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateResourceDownloader(string[] tags, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceDownloaderByTags(tags, downloadingMaxNumber, failedTryAgain, timeout);
         }
 
@@ -1075,7 +1081,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateBundleDownloader(string location, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfo = ConvertLocationToAssetInfo(location, null);
             var assetInfos = new AssetInfo[] { assetInfo, };
             return _playModeImpl.CreateResourceDownloaderByPaths(assetInfos, downloadingMaxNumber, failedTryAgain, timeout);
@@ -1091,7 +1097,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateBundleDownloader(string[] locations, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfos = new List<AssetInfo>(locations.Length);
             foreach (var location in locations)
             {
@@ -1112,7 +1118,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateBundleDownloader(AssetInfo assetInfo, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             var assetInfos = new AssetInfo[] { assetInfo, };
             return _playModeImpl.CreateResourceDownloaderByPaths(assetInfos, downloadingMaxNumber, failedTryAgain, timeout);
         }
@@ -1127,7 +1133,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceDownloaderOperation CreateBundleDownloader(AssetInfo[] assetInfos, int downloadingMaxNumber, int failedTryAgain, int timeout = 60)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceDownloaderByPaths(assetInfos, downloadingMaxNumber, failedTryAgain, timeout);
         }
 
@@ -1143,7 +1149,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceUnpackerOperation CreateResourceUnpacker(int unpackingMaxNumber, int failedTryAgain)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceUnpackerByAll(unpackingMaxNumber, failedTryAgain, int.MaxValue);
         }
 
@@ -1156,7 +1162,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceUnpackerOperation CreateResourceUnpacker(string tag, int unpackingMaxNumber, int failedTryAgain)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceUnpackerByTags(new string[] { tag, }, unpackingMaxNumber, failedTryAgain, int.MaxValue);
         }
 
@@ -1169,7 +1175,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceUnpackerOperation CreateResourceUnpacker(string[] tags, int unpackingMaxNumber, int failedTryAgain)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceUnpackerByTags(tags, unpackingMaxNumber, failedTryAgain, int.MaxValue);
         }
 
@@ -1187,7 +1193,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public ResourceImporterOperation CreateResourceImporter(string[] filePaths, int importerMaxNumber, int failedTryAgain)
         {
-            DebugCheckInitialize();
+            CheckInitializeState();
             return _playModeImpl.CreateResourceImporterByFilePaths(filePaths, importerMaxNumber, failedTryAgain, int.MaxValue);
         }
 
@@ -1211,9 +1217,11 @@ namespace YooAsset
 
         #region 调试方法
 
+        /// <summary>
+        /// 核心防御性检查：始终生效，不依赖 Conditional
+        /// </summary>
         [UnityEngine.Scripting.Preserve]
-        [Conditional("DEBUG")]
-        private void DebugCheckInitialize(bool checkActiveManifest = true)
+        private void CheckInitializeState(bool checkActiveManifest = true)
         {
             if (_initializeStatus == EOperationStatus.None)
             {
@@ -1233,9 +1241,11 @@ namespace YooAsset
             }
         }
 
+        /// <summary>
+        /// 核心防御性检查：始终生效，不依赖 Conditional
+        /// </summary>
         [UnityEngine.Scripting.Preserve]
-        [Conditional("DEBUG")]
-        private void DebugCheckAssetLoadType(Type type)
+        private void CheckAssetLoadType(Type type)
         {
             if (type == null)
             {
