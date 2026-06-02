@@ -12,33 +12,33 @@ namespace YooAsset.Editor
         /// <summary>
         /// 压缩选项
         /// </summary>
-        public ECompressOption CompressOption = ECompressOption.Uncompressed;
+        public ECompressOption CompressOption { get; set; } = ECompressOption.Uncompressed;
 
         /// <summary>
         /// 禁止写入类型树结构（可以降低包体和内存并提高加载效率）
         /// </summary>
-        public bool DisableWriteTypeTree = false;
+        public bool DisableWriteTypeTree { get; set; } = false;
 
         /// <summary>
         /// 忽略类型树变化
         /// </summary>
-        public bool IgnoreTypeTreeChanges = true;
+        public bool IgnoreTypeTreeChanges { get; set; } = true;
 
 
         /// <summary>
         /// 生成代码防裁剪配置
         /// </summary>
-        public bool WriteLinkXML = true;
+        public bool WriteLinkXML { get; set; } = true;
 
         /// <summary>
         /// 缓存服务器地址
         /// </summary>
-        public string CacheServerHost;
+        public string CacheServerHost { get; set; }
 
         /// <summary>
         /// 缓存服务器端口
         /// </summary>
-        public int CacheServerPort;
+        public int CacheServerPort { get; set; }
 
 
         /// <summary>

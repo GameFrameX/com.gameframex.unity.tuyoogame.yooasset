@@ -12,68 +12,68 @@ namespace YooAsset.Editor
         /// <summary>
         /// 构建输出的根目录
         /// </summary>
-        public string BuildOutputRoot;
+        public string BuildOutputRoot { get; set; }
 
         /// <summary>
         /// 内置文件的根目录
         /// </summary>
-        public string BuildinFileRoot;
+        public string BuildinFileRoot { get; set; }
 
         /// <summary>
         /// 构建管线
         /// </summary>
-        public string BuildPipeline;
+        public string BuildPipeline { get; set; }
 
         /// <summary>
         /// 构建的平台
         /// </summary>
-        public BuildTarget BuildTarget;
+        public BuildTarget BuildTarget { get; set; }
 
         /// <summary>
         /// 构建模式
         /// </summary>
-        public EBuildMode BuildMode;
+        public EBuildMode BuildMode { get; set; }
 
         /// <summary>
         /// 构建的包裹名称
         /// </summary>
-        public string PackageName;
+        public string PackageName { get; set; }
 
         /// <summary>
         /// 构建的包裹版本
         /// </summary>
-        public string PackageVersion;
+        public string PackageVersion { get; set; }
 
 
         /// <summary>
         /// 是否启用共享资源打包
         /// </summary>
-        public bool EnableSharePackRule = false;
+        public bool EnableSharePackRule { get; set; } = false;
 
         /// <summary>
         /// 验证构建结果
         /// </summary>
-        public bool VerifyBuildingResult = false;
+        public bool VerifyBuildingResult { get; set; } = false;
 
         /// <summary>
         /// 资源包名称样式
         /// </summary>
-        public EFileNameStyle FileNameStyle;
+        public EFileNameStyle FileNameStyle { get; set; }
 
         /// <summary>
         /// 内置文件的拷贝选项
         /// </summary>
-        public EBuildinFileCopyOption BuildinFileCopyOption;
+        public EBuildinFileCopyOption BuildinFileCopyOption { get; set; }
 
         /// <summary>
         /// 内置文件的拷贝参数
         /// </summary>
-        public string BuildinFileCopyParams;
+        public string BuildinFileCopyParams { get; set; }
 
         /// <summary>
         /// 资源包加密服务类
         /// </summary>
-        public IEncryptionServices EncryptionServices;
+        public IEncryptionServices EncryptionServices { get; set; }
 
 
         private string _pipelineOutputDirectory = string.Empty;
