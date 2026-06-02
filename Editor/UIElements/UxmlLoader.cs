@@ -35,7 +35,9 @@ namespace YooAsset.Editor
             // 全局搜索并加载
             string[] guids = AssetDatabase.FindAssets(windowType.Name);
             if (guids.Length == 0)
+            {
                 throw new System.Exception($"Not found any assets : {windowType.Name}");
+            }
 
             foreach (string assetGUID in guids)
             {

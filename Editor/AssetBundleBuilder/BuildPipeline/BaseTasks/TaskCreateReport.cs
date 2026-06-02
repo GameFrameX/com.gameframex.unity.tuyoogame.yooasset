@@ -21,7 +21,9 @@ namespace YooAsset.Editor
 #if UNITY_2019_4_OR_NEWER
                 UnityEditor.PackageManager.PackageInfo packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(BuildReport).Assembly);
                 if (packageInfo != null)
+                {
                     buildReport.Summary.YooVersion = packageInfo.version;
+                }
 #endif
                 buildReport.Summary.UnityVersion = UnityEngine.Application.unityVersion;
                 buildReport.Summary.BuildDate = DateTime.Now.ToString();
@@ -194,7 +196,9 @@ namespace YooAsset.Editor
             foreach (var packageBundle in manifest.BundleList)
             {
                 if (packageBundle.Encrypted)
+                {
                     fileCount++;
+                }
             }
             return fileCount;
         }
@@ -204,7 +208,9 @@ namespace YooAsset.Editor
             foreach (var packageBundle in manifest.BundleList)
             {
                 if (packageBundle.Encrypted)
+                {
                     fileBytes += packageBundle.FileSize;
+                }
             }
             return fileBytes;
         }

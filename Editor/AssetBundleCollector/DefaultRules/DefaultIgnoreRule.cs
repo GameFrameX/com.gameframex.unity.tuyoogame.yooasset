@@ -31,13 +31,19 @@ namespace YooAsset.Editor
 
             // 忽略文件夹
             if (AssetDatabase.IsValidFolder(assetInfo.AssetPath))
+            {
                 return true;
+            }
 
             // 忽略编辑器下的类型资源
             if (assetInfo.AssetType == typeof(LightingDataAsset))
+            {
                 return true;
+            }
             if (assetInfo.AssetType == typeof(LightmapParameters))
+            {
                 return true;
+            }
 
             // 忽略Unity引擎无法识别的文件
             if (assetInfo.AssetType == typeof(UnityEditor.DefaultAsset))
@@ -68,13 +74,19 @@ namespace YooAsset.Editor
 
             // 忽略文件夹
             if (AssetDatabase.IsValidFolder(assetInfo.AssetPath))
+            {
                 return true;
+            }
 
             // 忽略编辑器下的类型资源
             if (assetInfo.AssetType == typeof(LightingDataAsset))
+            {
                 return true;
+            }
             if (assetInfo.AssetType == typeof(LightmapParameters))
+            {
                 return true;
+            }
 
             return DefaultIgnoreRule.IgnoreFileExtensions.Contains(assetInfo.FileExtension);
         }

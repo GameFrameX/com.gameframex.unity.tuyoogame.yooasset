@@ -42,12 +42,16 @@ namespace YooAsset.Editor
         public void CheckConfigError()
         {
             if (AssetBundleCollectorSettingData.HasActiveRuleName(ActiveRuleName) == false)
+            {
                 throw new Exception($"Invalid {nameof(IActiveRule)} class type : {ActiveRuleName} in group : {GroupName}");
+            }
 
             // 检测分组是否激活
             IActiveRule activeRule = AssetBundleCollectorSettingData.GetActiveRuleInstance(ActiveRuleName);
             if (activeRule.IsActiveGroup() == false)
+            {
                 return;
+            }
 
             foreach (var collector in Collectors)
             {
@@ -92,9 +96,13 @@ namespace YooAsset.Editor
                 foreach (var collectAsset in temper)
                 {
                     if (result.ContainsKey(collectAsset.AssetInfo.AssetPath) == false)
+                    {
                         result.Add(collectAsset.AssetInfo.AssetPath, collectAsset);
+                    }
                     else
+                    {
                         throw new Exception($"The collecting asset file is existed : {collectAsset.AssetInfo.AssetPath} in group : {GroupName}");
+                    }
                 }
             }
 
@@ -109,12 +117,18 @@ namespace YooAsset.Editor
                         string address = collectAssetPair.Value.Address;
                         string assetPath = collectAssetPair.Value.AssetInfo.AssetPath;
                         if (string.IsNullOrEmpty(address))
+                        {
                             continue;
+                        }
 
                         if (addressTemper.TryGetValue(address, out var existed) == false)
+                        {
                             addressTemper.Add(address, assetPath);
+                        }
                         else
+                        {
                             throw new Exception($"The address is existed : {address} in group : {GroupName} \nAssetPath:\n     {existed}\n     {assetPath}");
+                        }
                     }
                 }
             }

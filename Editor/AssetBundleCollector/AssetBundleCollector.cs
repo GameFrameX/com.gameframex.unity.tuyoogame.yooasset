@@ -57,19 +57,29 @@ namespace YooAsset.Editor
         public bool IsValid()
         {
             if (AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(CollectPath) == null)
+            {
                 return false;
+            }
 
             if (CollectorType == ECollectorType.None)
+            {
                 return false;
+            }
 
             if (AssetBundleCollectorSettingData.HasAddressRuleName(AddressRuleName) == false)
+            {
                 return false;
+            }
 
             if (AssetBundleCollectorSettingData.HasPackRuleName(PackRuleName) == false)
+            {
                 return false;
+            }
 
             if (AssetBundleCollectorSettingData.HasFilterRuleName(FilterRuleName) == false)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -81,19 +91,29 @@ namespace YooAsset.Editor
         {
             string assetGUID = AssetDatabase.AssetPathToGUID(CollectPath);
             if (string.IsNullOrEmpty(assetGUID))
+            {
                 throw new Exception($"Invalid collect path : {CollectPath}");
+            }
 
             if (CollectorType == ECollectorType.None)
+            {
                 throw new Exception($"{nameof(ECollectorType)}.{ECollectorType.None} is invalid in collector : {CollectPath}");
+            }
 
             if (AssetBundleCollectorSettingData.HasPackRuleName(PackRuleName) == false)
+            {
                 throw new Exception($"Invalid {nameof(IPackRule)} class type : {PackRuleName} in collector : {CollectPath}");
+            }
 
             if (AssetBundleCollectorSettingData.HasFilterRuleName(FilterRuleName) == false)
+            {
                 throw new Exception($"Invalid {nameof(IFilterRule)} class type : {FilterRuleName} in collector : {CollectPath}");
+            }
 
             if (AssetBundleCollectorSettingData.HasAddressRuleName(AddressRuleName) == false)
+            {
                 throw new Exception($"Invalid {nameof(IAddressRule)} class type : {AddressRuleName} in collector : {CollectPath}");
+            }
         }
 
         /// <summary>
@@ -143,7 +163,9 @@ namespace YooAsset.Editor
             if (command.BuildMode == EBuildMode.SimulateBuild)
             {
                 if (CollectorType != ECollectorType.MainAssetCollector)
+                {
                     return new List<CollectAssetInfo>();
+                }
             }
 
             Dictionary<string, CollectAssetInfo> result = new Dictionary<string, CollectAssetInfo>(1000);
@@ -191,15 +213,23 @@ namespace YooAsset.Editor
                         string address = collectInfoPair.Value.Address;
                         string assetPath = collectInfoPair.Value.AssetInfo.AssetPath;
                         if (string.IsNullOrEmpty(address))
+                        {
                             continue;
+                        }
 
                         if (address.StartsWith("Assets/") || address.StartsWith("assets/"))
+                        {
                             throw new Exception($"The address can not set asset path in collector : {CollectPath} \nAssetPath: {assetPath}");
+                        }
 
                         if (addressTemper.TryGetValue(address, out var existed) == false)
+                        {
                             addressTemper.Add(address, assetPath);
+                        }
                         else
+                        {
                             throw new Exception($"The address is existed : {address} in collector : {CollectPath} \nAssetPath:\n     {existed}\n     {assetPath}");
+                        }
                     }
                 }
             }
@@ -221,9 +251,13 @@ namespace YooAsset.Editor
 
             // 注意：模拟构建模式下不需要收集依赖资源
             if (command.BuildMode == EBuildMode.SimulateBuild)
+            {
                 collectAssetInfo.DependAssets = new List<AssetInfo>();
+            }
             else
+            {
                 collectAssetInfo.DependAssets = GetAllDependencies(command, assetInfo.AssetPath);
+            }
 
             return collectAssetInfo;
         }
@@ -237,10 +271,14 @@ namespace YooAsset.Editor
         private string GetAddress(CollectCommand command, AssetBundleCollectorGroup group, AssetInfo assetInfo)
         {
             if (command.EnableAddressable == false)
+            {
                 return string.Empty;
+            }
 
             if (CollectorType != ECollectorType.MainAssetCollector)
+            {
                 return string.Empty;
+            }
 
             IAddressRule addressRuleInstance = AssetBundleCollectorSettingData.GetAddressRuleInstance(AddressRuleName);
             string adressValue = addressRuleInstance.GetAssetAddress(new AddressRuleData(assetInfo.AssetPath, CollectPath, group.GroupName, UserData));
@@ -278,11 +316,15 @@ namespace YooAsset.Editor
             {
                 // 注意：排除主资源对象
                 if (assetPath == mainAssetPath)
+                {
                     continue;
+                }
 
                 AssetInfo assetInfo = new AssetInfo(assetPath);
                 if (command.IgnoreRule.IsIgnore(assetInfo) == false)
+                {
                     result.Add(assetInfo);
+                }
             }
             return result;
         }

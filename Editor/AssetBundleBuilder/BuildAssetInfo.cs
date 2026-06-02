@@ -64,7 +64,9 @@ namespace YooAsset.Editor
         public void SetDependAssetInfos(List<BuildAssetInfo> dependAssetInfos)
         {
             if (AllDependAssetInfos != null)
+            {
                 throw new System.Exception("Should never get here !");
+            }
 
             AllDependAssetInfos = dependAssetInfos;
         }
@@ -75,7 +77,9 @@ namespace YooAsset.Editor
         public void SetBundleName(string bundleName)
         {
             if (HasBundleName())
+            {
                 throw new System.Exception("Should never get here !");
+            }
 
             BundleName = bundleName;
         }
@@ -87,7 +91,9 @@ namespace YooAsset.Editor
         public void AddAssetTags(List<string> tags)
         {
             if (_isAddAssetTags)
+            {
                 throw new Exception("Should never get here !");
+            }
             _isAddAssetTags = true;
 
             foreach (var tag in tags)
@@ -105,10 +111,14 @@ namespace YooAsset.Editor
         public void AddReferenceBundleName(string bundleName)
         {
             if (string.IsNullOrEmpty(bundleName))
+            {
                 throw new Exception("Should never get here !");
+            }
 
             if (_referenceBundleNames.Contains(bundleName) == false)
+            {
                 _referenceBundleNames.Add(bundleName);
+            }
         }
 
         /// <summary>
@@ -117,9 +127,13 @@ namespace YooAsset.Editor
         public bool HasBundleName()
         {
             if (string.IsNullOrEmpty(BundleName))
+            {
                 return false;
+            }
             else
+            {
                 return true;
+            }
         }
 
         /// <summary>

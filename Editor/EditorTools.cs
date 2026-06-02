@@ -69,7 +69,9 @@ namespace YooAsset.Editor
                 if (parentType.IsAssignableFrom(type))
                 {
                     if (type.Name == parentType.Name)
+                    {
                         continue;
+                    }
                     result.Add(type);
                 }
             }
@@ -148,9 +150,13 @@ namespace YooAsset.Editor
             // 注意：获取指定目录下的所有资源对象（包括子文件夹）
             string[] guids;
             if (searchType == EAssetSearchType.All)
+            {
                 guids = AssetDatabase.FindAssets(string.Empty, searchInFolders);
+            }
             else
+            {
                 guids = AssetDatabase.FindAssets($"t:{searchType}", searchInFolders);
+            }
 
             // 注意：AssetDatabase.FindAssets()可能会获取到重复的资源
             HashSet<string> result = new HashSet<string>();
@@ -189,7 +195,9 @@ namespace YooAsset.Editor
         {
             string openPath = EditorUtility.OpenFolderPanel(title, defaultPath, defaultName);
             if (string.IsNullOrEmpty(openPath))
+            {
                 return null;
+            }
 
             if (openPath.Contains("/Assets") == false)
             {
@@ -209,7 +217,9 @@ namespace YooAsset.Editor
         {
             string openPath = EditorUtility.OpenFilePanel(title, defaultPath, extension);
             if (string.IsNullOrEmpty(openPath))
+            {
                 return null;
+            }
 
             if (openPath.Contains("/Assets") == false)
             {
@@ -306,7 +316,9 @@ namespace YooAsset.Editor
             {
                 var scene = EditorSceneManager.GetSceneAt(i);
                 if (scene.isDirty)
+                {
                     return true;
+            }
             }
             return false;
         }
@@ -316,13 +328,17 @@ namespace YooAsset.Editor
         public static string RemoveFirstChar(string str)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return str;
+            }
             return str.Substring(1);
         }
         public static string RemoveLastChar(string str)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return str;
+            }
             return str.Substring(0, str.Length - 1);
         }
         public static List<string> StringToStringList(string str, char separator)
@@ -421,7 +437,9 @@ namespace YooAsset.Editor
         public static void MoveFile(string filePath, string destPath)
         {
             if (File.Exists(destPath))
+            {
                 File.Delete(destPath);
+            }
 
             FileInfo fileInfo = new FileInfo(filePath);
             fileInfo.MoveTo(destPath);
@@ -437,7 +455,9 @@ namespace YooAsset.Editor
 
             // If the destination directory doesn't exist, create it.
             if (Directory.Exists(destPath) == false)
+            {
                 Directory.CreateDirectory(destPath);
+            }
 
             string[] fileList = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
             foreach (string file in fileList)
@@ -454,7 +474,9 @@ namespace YooAsset.Editor
         public static void CopyFile(string sourcePath, string destPath, bool overwrite)
         {
             if (File.Exists(sourcePath) == false)
+            {
                 throw new FileNotFoundException(sourcePath);
+            }
 
             // 创建目录
             CreateFileDirectory(destPath);
@@ -470,7 +492,9 @@ namespace YooAsset.Editor
         public static void ClearFolder(string directoryPath)
         {
             if (Directory.Exists(directoryPath) == false)
+            {
                 return;
+            }
 
             // 删除文件
             string[] allFiles = Directory.GetFiles(directoryPath);
@@ -492,6 +516,10 @@ namespace YooAsset.Editor
         /// </summary>
         public static long GetFileSize(string filePath)
         {
+            if (File.Exists(filePath) == false)
+            {
+                return 0;
+            }
             FileInfo fileInfo = new FileInfo(filePath);
             return fileInfo.Length;
         }
@@ -502,7 +530,9 @@ namespace YooAsset.Editor
         public static string ReadFileAllText(string filePath)
         {
             if (File.Exists(filePath) == false)
+            {
                 return string.Empty;
+            }
 
             return File.ReadAllText(filePath, Encoding.UTF8);
         }
@@ -513,7 +543,9 @@ namespace YooAsset.Editor
         public static string[] ReadFileAllLine(string filePath)
         {
             if (File.Exists(filePath) == false)
+            {
                 return null;
+            }
 
             return File.ReadAllLines(filePath, Encoding.UTF8);
         }
@@ -525,9 +557,13 @@ namespace YooAsset.Editor
         {
             string signature = ReadStringToNull(fileData, 20);
             if (signature == "UnityFS" || signature == "UnityRaw" || signature == "UnityWeb" || signature == "\xFA\xFA\xFA\xFA\xFA\xFA\xFA\xFA")
+            {
                 return true;
+            }
             else
+            {
                 return false;
+        }
         }
         private static string ReadStringToNull(byte[] data, int maxLength)
         {
@@ -535,19 +571,27 @@ namespace YooAsset.Editor
             for (int i = 0; i < data.Length; i++)
             {
                 if (i >= maxLength)
+                {
                     break;
+                }
 
                 byte bt = data[i];
                 if (bt == 0)
+                {
                     break;
+                }
 
                 bytes.Add(bt);
             }
 
             if (bytes.Count == 0)
+            {
                 return string.Empty;
+            }
             else
+            {
                 return Encoding.UTF8.GetString(bytes.ToArray());
+        }
         }
         #endregion
 
@@ -566,13 +610,19 @@ namespace YooAsset.Editor
         public static string RemoveExtension(string str)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return str;
+            }
 
             int index = str.LastIndexOf('.');
             if (index == -1)
+            {
                 return str;
+            }
             else
+            {
                 return str.Remove(index); //"assets/config/test.unity3d" --> "assets/config/test"
+        }
         }
 
         /// <summary>
@@ -618,11 +668,15 @@ namespace YooAsset.Editor
             {
                 string fullPath = infoList[i].FullName;
                 if (infoList[i].Name == folderName)
+                {
                     return fullPath;
+                }
 
                 string result = FindFolder(fullPath, folderName);
                 if (string.IsNullOrEmpty(result) == false)
+                {
                     return result;
+            }
             }
             return string.Empty;
         }
@@ -638,22 +692,34 @@ namespace YooAsset.Editor
         public static string Substring(string content, string key, bool includeKey, bool firstMatch = true)
         {
             if (string.IsNullOrEmpty(key))
+            {
                 return content;
+            }
 
             int startIndex = -1;
             if (firstMatch)
+            {
                 startIndex = content.IndexOf(key); //返回子字符串第一次出现位置		
+            }
             else
+            {
                 startIndex = content.LastIndexOf(key); //返回子字符串最后出现的位置
+            }
 
             // 如果没有找到匹配的关键字
             if (startIndex == -1)
+            {
                 return content;
+            }
 
             if (includeKey)
+            {
                 return content.Substring(startIndex);
+            }
             else
+            {
                 return content.Substring(startIndex + key.Length);
+        }
         }
         #endregion
     }

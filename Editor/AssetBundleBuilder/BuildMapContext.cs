@@ -48,7 +48,9 @@ namespace YooAsset.Editor
         {
             string bundleName = assetInfo.BundleName;
             if (string.IsNullOrEmpty(bundleName))
+            {
                 throw new Exception("Should never get here !");
+            }
 
             if (_bundleInfoDic.TryGetValue(bundleName, out BuildBundleInfo bundleInfo))
             {

@@ -76,9 +76,13 @@ namespace YooAsset.Editor
                 foreach (var dependAsset in collectAssetInfo.DependAssets)
                 {
                     if (allBuildAssetInfos.TryGetValue(dependAsset.AssetPath, out BuildAssetInfo value))
+                    {
                         dependAssetInfos.Add(value);
+                    }
                     else
+                    {
                         throw new Exception("Should never get here !");
+                    }
                 }
                 allBuildAssetInfos[collectAssetInfo.AssetInfo.AssetPath].SetDependAssetInfos(dependAssetInfos);
             }
@@ -129,7 +133,9 @@ namespace YooAsset.Editor
             foreach (var buildAssetInfo in allBuildAssetInfos.Values)
             {
                 if (buildAssetInfo.HasBundleName() == false)
+                {
                     removeBuildList.Add(buildAssetInfo);
+                }
             }
             foreach (var removeValue in removeBuildList)
             {
@@ -154,7 +160,9 @@ namespace YooAsset.Editor
         {
             // 1. 检测依赖资源收集器是否存在
             if (allCollectAssets.Exists(x => x.CollectorType == ECollectorType.DependAssetCollector) == false)
+            {
                 return;
+            }
 
             // 2. 获取所有主资源的依赖资源集合
             HashSet<string> allDependAsset = new HashSet<string>();
@@ -166,7 +174,9 @@ namespace YooAsset.Editor
                     foreach (var dependAsset in collectAsset.DependAssets)
                     {
                         if (allDependAsset.Contains(dependAsset.AssetPath) == false)
+                        {
                             allDependAsset.Add(dependAsset.AssetPath);
+                        }
                     }
                 }
             }
@@ -179,7 +189,9 @@ namespace YooAsset.Editor
                 if (collectorType == ECollectorType.DependAssetCollector)
                 {
                     if (allDependAsset.Contains(collectAssetInfo.AssetInfo.AssetPath) == false)
+                    {
                         removeList.Add(collectAssetInfo);
+                    }
                 }
             }
 

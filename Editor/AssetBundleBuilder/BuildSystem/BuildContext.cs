@@ -22,11 +22,15 @@ namespace YooAsset.Editor
         public void SetContextObject(IContextObject contextObject)
         {
             if (contextObject == null)
+            {
                 throw new ArgumentNullException("contextObject");
+            }
 
             var type = contextObject.GetType();
             if (_contextObjects.ContainsKey(type))
+            {
                 throw new Exception($"Context object {type} is already existed.");
+            }
 
             _contextObjects.Add(type, contextObject);
         }

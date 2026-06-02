@@ -32,7 +32,9 @@ namespace YooAsset.Editor
             get
             {
                 if (string.IsNullOrEmpty(_fileExtension))
+                {
                     _fileExtension = System.IO.Path.GetExtension(AssetPath);
+                }
                 return _fileExtension;
             }
         }
@@ -56,9 +58,13 @@ namespace YooAsset.Editor
         public bool IsShaderAsset()
         {
             if (AssetType == typeof(UnityEngine.Shader) || AssetType == typeof(UnityEngine.ShaderVariantCollection))
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
 }

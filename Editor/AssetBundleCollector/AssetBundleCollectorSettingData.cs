@@ -56,7 +56,9 @@ namespace YooAsset.Editor
                 {
                     Type type = types[i];
                     if (_cachePackRuleTypes.ContainsKey(type.Name) == false)
+                    {
                         _cachePackRuleTypes.Add(type.Name, type);
+                    }
                 }
             }
 
@@ -81,7 +83,9 @@ namespace YooAsset.Editor
                 {
                     Type type = types[i];
                     if (_cacheFilterRuleTypes.ContainsKey(type.Name) == false)
+                    {
                         _cacheFilterRuleTypes.Add(type.Name, type);
+                    }
                 }
             }
 
@@ -106,7 +110,9 @@ namespace YooAsset.Editor
                 {
                     Type type = types[i];
                     if (_cacheAddressRuleTypes.ContainsKey(type.Name) == false)
+                    {
                         _cacheAddressRuleTypes.Add(type.Name, type);
+                    }
                 }
             }
 
@@ -129,7 +135,9 @@ namespace YooAsset.Editor
                 {
                     Type type = types[i];
                     if (_cacheActiveRuleTypes.ContainsKey(type.Name) == false)
+                    {
                         _cacheActiveRuleTypes.Add(type.Name, type);
+                    }
                 }
             }
 
@@ -152,7 +160,9 @@ namespace YooAsset.Editor
                 {
                     Type type = types[i];
                     if (_cacheIgnoreRuleTypes.ContainsKey(type.Name) == false)
+                    {
                         _cacheIgnoreRuleTypes.Add(type.Name, type);
+                    }
                 }
             }
         }
@@ -163,7 +173,9 @@ namespace YooAsset.Editor
             get
             {
                 if (_setting == null)
+                {
                     _setting = SettingLoader.LoadSettingData<AssetBundleCollectorSetting>();
+                }
                 return _setting;
             }
         }
@@ -268,9 +280,13 @@ namespace YooAsset.Editor
         {
             var attribute = DisplayNameAttributeHelper.GetAttribute<DisplayNameAttribute>(type);
             if (attribute != null && string.IsNullOrEmpty(attribute.DisplayName) == false)
+            {
                 return attribute.DisplayName;
+            }
             else
+            {
                 return name;
+            }
         }
 
         public static bool HasActiveRuleName(string ruleName)
@@ -297,7 +313,9 @@ namespace YooAsset.Editor
         public static IActiveRule GetActiveRuleInstance(string ruleName)
         {
             if (_cacheActiveRuleInstance.TryGetValue(ruleName, out IActiveRule instance))
+            {
                 return instance;
+            }
 
             // 如果不存在创建类的实例
             if (_cacheActiveRuleTypes.TryGetValue(ruleName, out Type type))
@@ -314,7 +332,9 @@ namespace YooAsset.Editor
         public static IAddressRule GetAddressRuleInstance(string ruleName)
         {
             if (_cacheAddressRuleInstance.TryGetValue(ruleName, out IAddressRule instance))
+            {
                 return instance;
+            }
 
             // 如果不存在创建类的实例
             if (_cacheAddressRuleTypes.TryGetValue(ruleName, out Type type))
@@ -331,7 +351,9 @@ namespace YooAsset.Editor
         public static IPackRule GetPackRuleInstance(string ruleName)
         {
             if (_cachePackRuleInstance.TryGetValue(ruleName, out IPackRule instance))
+            {
                 return instance;
+            }
 
             // 如果不存在创建类的实例
             if (_cachePackRuleTypes.TryGetValue(ruleName, out Type type))
@@ -348,7 +370,9 @@ namespace YooAsset.Editor
         public static IFilterRule GetFilterRuleInstance(string ruleName)
         {
             if (_cacheFilterRuleInstance.TryGetValue(ruleName, out IFilterRule instance))
+            {
                 return instance;
+            }
 
             // 如果不存在创建类的实例
             if (_cacheFilterRuleTypes.TryGetValue(ruleName, out Type type))
@@ -365,7 +389,9 @@ namespace YooAsset.Editor
         public static IIgnoreRule GetIgnoreRuleInstance(string ruleName)
         {
             if (_cacheIgnoreRuleInstance.TryGetValue(ruleName, out IIgnoreRule instance))
+            {
                 return instance;
+            }
 
             // 如果不存在创建类的实例
             if (_cacheIgnoreRuleTypes.TryGetValue(ruleName, out Type type))

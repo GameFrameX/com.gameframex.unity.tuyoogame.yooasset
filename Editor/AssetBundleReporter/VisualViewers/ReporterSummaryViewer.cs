@@ -38,7 +38,9 @@ namespace YooAsset.Editor
             // 加载布局文件
             _visualAsset = UxmlLoader.LoadWindowUXML<ReporterSummaryViewer>();
             if (_visualAsset == null)
+            {
                 return;
+            }
 
             _root = _visualAsset.CloneTree();
             _root.style.flexGrow = 1f;
@@ -171,7 +173,9 @@ namespace YooAsset.Editor
         private string ConvertSize(long size)
         {
             if (size == 0)
+            {
                 return "0";
+            }
             return EditorUtility.FormatBytes(size);
         }
     }

@@ -46,7 +46,9 @@ namespace YooAsset.Editor
             RawFileBuildPipeline pipeline = new RawFileBuildPipeline();
             var buildResult = pipeline.Run(buildParameters, true);
             if (buildResult.Success)
+            {
                 EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
+        }
         }
 
         protected override List<Enum> GetSupportBuildModes()

@@ -65,7 +65,9 @@ namespace YooAsset.Editor
                 // 加载布局文件
                 var visualAsset = UxmlLoader.LoadWindowUXML<AssetBundleDebuggerWindow>();
                 if (visualAsset == null)
+                {
                     return;
+                }
 
                 visualAsset.CloneTree(root);
 
@@ -233,7 +235,9 @@ namespace YooAsset.Editor
         private void UpdateFrameView(RemotePlayerSession playerSession, int rangeIndex)
         {
             if (playerSession == null)
+            {
                 return;
+            }
 
             var debugReport = playerSession.GetDebugReport(rangeIndex);
             if (debugReport != null)
@@ -319,9 +323,13 @@ namespace YooAsset.Editor
         {
             var viewMode = (EViewMode)action.userData;
             if (_viewMode == viewMode)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
     }
 }

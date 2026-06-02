@@ -23,9 +23,13 @@ namespace YooAsset.Editor
         public static BuildResult Run(List<IBuildTask> pipeline, BuildContext context)
         {
             if (pipeline == null)
+            {
                 throw new ArgumentNullException("pipeline");
+            }
             if (context == null)
+            {
                 throw new ArgumentNullException("context");
+            }
 
             BuildResult buildResult = new BuildResult();
             buildResult.Success = true;

@@ -17,7 +17,9 @@ namespace YooAsset.Editor
         protected override string[] GetBundleDepends(BuildContext context, string bundleName)
         {
             if (_buildResultContext == null)
+            {
                 _buildResultContext = context.GetContextObject<TaskBuilding_BBP.BuildResultContext>();
+            }
 
             return _buildResultContext.UnityManifest.GetAllDependencies(bundleName);
         }

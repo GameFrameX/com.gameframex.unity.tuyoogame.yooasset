@@ -85,7 +85,9 @@ namespace YooAsset.Editor
         public void PackAsset(BuildAssetInfo buildAsset)
         {
             if (IsContainsAsset(buildAsset.AssetInfo.AssetPath))
+            {
                 throw new System.Exception($"Should never get here ! Asset is existed : {buildAsset.AssetInfo.AssetPath}");
+            }
 
             MainAssets.Add(buildAsset);
         }
@@ -123,14 +125,18 @@ namespace YooAsset.Editor
             foreach (var buildAsset in MainAssets)
             {
                 if (buildAsset.AllDependAssetInfos == null)
+                {
                     continue;
+                }
                 foreach (var dependAssetInfo in buildAsset.AllDependAssetInfos)
                 {
                     // 注意：依赖资源里只添加零依赖资源和冗余资源
                     if (dependAssetInfo.HasBundleName() == false)
                     {
                         if (result.Contains(dependAssetInfo.AssetInfo.AssetPath) == false)
+                        {
                             result.Add(dependAssetInfo.AssetInfo.AssetPath);
+                        }
                     }
                 }
             }

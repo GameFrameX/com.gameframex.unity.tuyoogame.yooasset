@@ -59,9 +59,13 @@ namespace YooAsset.Editor
         public string GetTagsString()
         {
             if (Tags != null)
+            {
                 return String.Join(";", Tags);
+            }
             else
+            {
                 return string.Empty;
+            }
         }
     }
 }

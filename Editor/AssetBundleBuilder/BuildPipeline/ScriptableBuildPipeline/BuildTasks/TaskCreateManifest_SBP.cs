@@ -19,7 +19,9 @@ namespace YooAsset.Editor
         protected override string[] GetBundleDepends(BuildContext context, string bundleName)
         {
             if (_buildResultContext == null)
+            {
                 _buildResultContext = context.GetContextObject<TaskBuilding_SBP.BuildResultContext>();
+            }
 
             if (_buildResultContext.Results.BundleInfos.ContainsKey(bundleName) == false)
             {

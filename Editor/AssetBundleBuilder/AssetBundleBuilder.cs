@@ -19,11 +19,15 @@ namespace YooAsset.Editor
         {
             // 检测构建参数是否为空
             if (buildParameters == null)
+            {
                 throw new Exception($"{nameof(buildParameters)} is null !");
+            }
 
             // 检测构建参数是否为空
             if (buildPipeline.Count == 0)
+            {
                 throw new Exception($"Build pipeline is empty !");
+            }
 
             // 清空旧数据
             _buildContext.ClearAllContext();

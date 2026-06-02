@@ -152,7 +152,9 @@ namespace YooAsset.Editor
                 {
                     int bundleID = GetCachedBundleID(dependBundleName);
                     if (bundleID != mainBundleID)
+                    {
                         dependIDs.Add(bundleID);
+                    }
                 }
                 packageBundle.DependIDs = dependIDs.ToArray();
             }
@@ -195,12 +197,16 @@ namespace YooAsset.Editor
         private void CacheBundleTags(int bundleID, string[] assetTags)
         {
             if (_cacheBundleTags.ContainsKey(bundleID) == false)
+            {
                 _cacheBundleTags.Add(bundleID, new HashSet<string>());
+            }
 
             foreach (var assetTag in assetTags)
             {
                 if (_cacheBundleTags[bundleID].Contains(assetTag) == false)
+                {
                     _cacheBundleTags[bundleID].Add(assetTag);
+                }
             }
         }
 

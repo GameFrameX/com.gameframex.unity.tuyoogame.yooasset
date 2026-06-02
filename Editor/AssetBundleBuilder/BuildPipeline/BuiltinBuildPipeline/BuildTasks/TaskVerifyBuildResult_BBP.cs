@@ -17,7 +17,9 @@ namespace YooAsset.Editor
 
             // 模拟构建模式下跳过验证
             if (buildParameters.BuildMode == EBuildMode.SimulateBuild)
+            {
                 return;
+            }
 
             // 验证构建结果
             if (buildParameters.VerifyBuildingResult)

@@ -92,7 +92,9 @@ namespace YooAsset.Editor
         public CollectResult GetPackageAssets(EBuildMode buildMode, string packageName)
         {
             if (string.IsNullOrEmpty(packageName))
+            {
                 throw new Exception("Build package name is null or empty !");
+            }
 
             // 检测配置合法性
             var package = GetPackage(packageName);
@@ -121,7 +123,9 @@ namespace YooAsset.Editor
             foreach (var package in Packages)
             {
                 if (package.PackageName == packageName)
+                {
                     return package;
+                }
             }
             throw new Exception($"Not found package : {packageName}");
         }

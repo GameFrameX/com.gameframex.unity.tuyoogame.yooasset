@@ -44,7 +44,9 @@ namespace YooAsset.Editor
             // 加载布局文件
             _visualAsset = UxmlLoader.LoadWindowUXML<ReporterBundleListViewer>();
             if (_visualAsset == null)
+            {
                 return;
+            }
 
             _root = _visualAsset.CloneTree();
             _root.style.flexGrow = 1f;
@@ -110,7 +112,9 @@ namespace YooAsset.Editor
                 if (string.IsNullOrEmpty(_searchKeyWord) == false)
                 {
                     if (bundleInfo.BundleName.Contains(_searchKeyWord) == false)
+                    {
                         continue;
+                    }
                 }
                 result.Add(bundleInfo);
             }
@@ -119,23 +123,35 @@ namespace YooAsset.Editor
             if (_sortMode == ESortMode.BundleName)
             {
                 if (_descendingSort)
+                {
                     return result.OrderByDescending(a => a.BundleName).ToList();
+                }
                 else
+                {
                     return result.OrderBy(a => a.BundleName).ToList();
+                }
             }
             else if (_sortMode == ESortMode.BundleSize)
             {
                 if (_descendingSort)
+                {
                     return result.OrderByDescending(a => a.FileSize).ToList();
+                }
                 else
+                {
                     return result.OrderBy(a => a.FileSize).ToList();
+                }
             }
             else if (_sortMode == ESortMode.BundleTags)
             {
                 if (_descendingSort)
+                {
                     return result.OrderByDescending(a => a.GetTagsString()).ToList();
+                }
                 else
+                {
                     return result.OrderBy(a => a.GetTagsString()).ToList();
+                }
             }
             else
             {
@@ -153,23 +169,35 @@ namespace YooAsset.Editor
             if (_sortMode == ESortMode.BundleName)
             {
                 if (_descendingSort)
+                {
                     _topBar1.text = $"Bundle Name ({_bundleListView.itemsSource.Count}) ↓";
+                }
                 else
+                {
                     _topBar1.text = $"Bundle Name ({_bundleListView.itemsSource.Count}) ↑";
+                }
             }
             else if (_sortMode == ESortMode.BundleSize)
             {
                 if (_descendingSort)
+                {
                     _topBar2.text = "Size ↓";
+                }
                 else
+                {
                     _topBar2.text = "Size ↑";
+                }
             }
             else if (_sortMode == ESortMode.BundleTags)
             {
                 if (_descendingSort)
+                {
                     _topBar5.text = "Tags ↓";
+                }
                 else
+                {
                     _topBar5.text = "Tags ↑";
+                }
             }
             else
             {
@@ -290,14 +318,20 @@ namespace YooAsset.Editor
         private void ShowAssetBundleInspector(ReportBundleInfo bundleInfo)
         {
             if (_buildReport.Summary.BuildPipeline == nameof(EBuildPipeline.RawFileBuildPipeline))
+            {
                 return;
+            }
 
             string rootDirectory = Path.GetDirectoryName(_reportFilePath);
             string filePath = $"{rootDirectory}/{bundleInfo.FileName}";
             if (File.Exists(filePath))
+            {
                 Selection.activeObject = AssetBundleRecorder.GetAssetBundle(filePath);
+            }
             else
+            {
                 Selection.activeObject = null;
+            }
         }
         private void TopBar1_clicked()
         {

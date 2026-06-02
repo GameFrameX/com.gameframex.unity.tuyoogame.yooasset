@@ -11,7 +11,9 @@ namespace YooAsset.Editor
         public static void SetElementVisible(VisualElement element, bool visible)
         {
             if (element == null)
+            {
                 return;
+            }
 
             element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
             element.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;

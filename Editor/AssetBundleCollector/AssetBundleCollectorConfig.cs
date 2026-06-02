@@ -48,10 +48,14 @@ namespace YooAsset.Editor
         public static void ImportXmlConfig(string filePath)
         {
             if (File.Exists(filePath) == false)
+            {
                 throw new FileNotFoundException(filePath);
+            }
 
             if (Path.GetExtension(filePath) != ".xml")
+            {
                 throw new Exception($"Only support xml : {filePath}");
+            }
 
             // 加载配置文件
             XmlDocument xmlDoc = new XmlDocument();
@@ -63,9 +67,13 @@ namespace YooAsset.Editor
             if (configVersion != ConfigVersion)
             {
                 if (UpdateXmlConfig(xmlDoc) == false)
+                {
                     throw new Exception($"The config version update failed : {configVersion} -> {ConfigVersion}");
+                }
                 else
+                {
                     Debug.Log($"The config version update succeed : {configVersion} -> {ConfigVersion}");
+                }
             }
 
             // 读取公共配置
@@ -77,11 +85,17 @@ namespace YooAsset.Editor
             {
                 XmlElement commonElement = commonNodeList[0] as XmlElement;
                 if (commonElement.HasAttribute(XmlShowPackageView))
+                {
                     showPackageView = commonElement.GetAttribute(XmlShowPackageView) == "True" ? true : false;
+                }
                 if (commonElement.HasAttribute(XmlShowEditorAlias))
+                {
                     showEditorAlias = commonElement.GetAttribute(XmlShowEditorAlias) == "True" ? true : false;
+                }
                 if (commonElement.HasAttribute(XmlUniqueBundleName))
+                {
                     uniqueBundleName = commonElement.GetAttribute(XmlUniqueBundleName) == "True" ? true : false;
+                }
             }
 
             // 读取包裹配置
@@ -91,9 +105,13 @@ namespace YooAsset.Editor
             {
                 XmlElement packageElement = packageNode as XmlElement;
                 if (packageElement.HasAttribute(XmlPackageName) == false)
+                {
                     throw new Exception($"Not found attribute {XmlPackageName} in {XmlPackage}");
+                }
                 if (packageElement.HasAttribute(XmlPackageDesc) == false)
+                {
                     throw new Exception($"Not found attribute {XmlPackageDesc} in {XmlPackage}");
+                }
 
                 AssetBundleCollectorPackage package = new AssetBundleCollectorPackage();
                 package.PackageName = packageElement.GetAttribute(XmlPackageName);
@@ -110,13 +128,21 @@ namespace YooAsset.Editor
                 {
                     XmlElement groupElement = groupNode as XmlElement;
                     if (groupElement.HasAttribute(XmlGroupActiveRule) == false)
+                    {
                         throw new Exception($"Not found attribute {XmlGroupActiveRule} in {XmlGroup}");
+                    }
                     if (groupElement.HasAttribute(XmlGroupName) == false)
+                    {
                         throw new Exception($"Not found attribute {XmlGroupName} in {XmlGroup}");
+                    }
                     if (groupElement.HasAttribute(XmlGroupDesc) == false)
+                    {
                         throw new Exception($"Not found attribute {XmlGroupDesc} in {XmlGroup}");
+                    }
                     if (groupElement.HasAttribute(XmlAssetTags) == false)
+                    {
                         throw new Exception($"Not found attribute {XmlAssetTags} in {XmlGroup}");
+                    }
 
                     AssetBundleCollectorGroup group = new AssetBundleCollectorGroup();
                     group.ActiveRuleName = groupElement.GetAttribute(XmlGroupActiveRule);
@@ -131,21 +157,37 @@ namespace YooAsset.Editor
                     {
                         XmlElement collectorElement = collectorNode as XmlElement;
                         if (collectorElement.HasAttribute(XmlCollectPath) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlCollectPath} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlCollectorGUID) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlCollectorGUID} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlCollectorType) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlCollectorType} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlAddressRule) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlAddressRule} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlPackRule) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlPackRule} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlFilterRule) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlFilterRule} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlUserData) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlUserData} in {XmlCollector}");
+                        }
                         if (collectorElement.HasAttribute(XmlAssetTags) == false)
+                        {
                             throw new Exception($"Not found attribute {XmlAssetTags} in {XmlCollector}");
+                        }
 
                         AssetBundleCollector collector = new AssetBundleCollector();
                         collector.CollectPath = collectorElement.GetAttribute(XmlCollectPath);
@@ -183,7 +225,9 @@ namespace YooAsset.Editor
         public static void ExportXmlConfig(string savePath)
         {
             if (File.Exists(savePath))
+            {
                 File.Delete(savePath);
+            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -256,7 +300,9 @@ namespace YooAsset.Editor
             XmlElement root = xmlDoc.DocumentElement;
             string configVersion = root.GetAttribute(XmlVersion);
             if (configVersion == ConfigVersion)
+            {
                 return true;
+            }
 
             // v2.0.0 -> v2.1
             if (configVersion == "v2.0.0")
@@ -267,7 +313,9 @@ namespace YooAsset.Editor
                 {
                     XmlElement packageElement = packageNode as XmlElement;
                     if (packageElement.HasAttribute(XmlIgnoreRuleName) == false)
+                    {
                         packageElement.SetAttribute(XmlIgnoreRuleName, nameof(NormalIgnoreRule));
+                    }
                 }
 
                 // 更新版本

@@ -27,7 +27,9 @@ namespace YooAsset.Editor
                     {
                         EditorGUI.indentLevel++;
                         foreach (var asset in assetNames)
+                        {
                             EditorGUILayout.LabelField(asset);
+                        }
                         EditorGUI.indentLevel--;
                     }
 

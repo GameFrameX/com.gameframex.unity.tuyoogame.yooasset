@@ -67,7 +67,9 @@ namespace YooAsset.Editor
                 foreach (var packageBundle in manifest.BundleList)
                 {
                     if (packageBundle.HasTag(tags) == false)
+                    {
                         continue;
+                    }
                     string sourcePath = $"{packageOutputDirectory}/{packageBundle.FileName}";
                     string destPath = $"{buildinRootDirectory}/{packageBundle.FileName}";
                     EditorTools.CopyFile(sourcePath, destPath, true);

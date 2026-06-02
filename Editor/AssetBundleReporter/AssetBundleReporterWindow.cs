@@ -57,7 +57,9 @@ namespace YooAsset.Editor
                 // 加载布局文件
                 var visualAsset = UxmlLoader.LoadWindowUXML<AssetBundleReporterWindow>();
                 if (visualAsset == null)
+                {
                     return;
+                }
 
                 visualAsset.CloneTree(root);
 
@@ -106,7 +108,9 @@ namespace YooAsset.Editor
         {
             string selectFilePath = EditorUtility.OpenFilePanel("导入报告", EditorTools.GetProjectPath(), "json");
             if (string.IsNullOrEmpty(selectFilePath))
+            {
                 return;
+            }
 
             _reportFilePath = selectFilePath;
             string jsonData = FileUtility.ReadAllText(_reportFilePath);
@@ -163,23 +167,35 @@ namespace YooAsset.Editor
         private DropdownMenuAction.Status ViewModeMenuFun0(DropdownMenuAction action)
         {
             if (_viewMode == EViewMode.Summary)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
         private DropdownMenuAction.Status ViewModeMenuFun1(DropdownMenuAction action)
         {
             if (_viewMode == EViewMode.AssetView)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
         private DropdownMenuAction.Status ViewModeMenuFun2(DropdownMenuAction action)
         {
             if (_viewMode == EViewMode.BundleView)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
     }
 }

@@ -57,7 +57,9 @@ namespace YooAsset.Editor
             foreach (var valuePair in _loadedAssetBundles)
             {
                 if (valuePair.Value != null)
+                {
                     valuePair.Value.Unload(true);
+                }
             }
             _loadedAssetBundles.Clear();
         }

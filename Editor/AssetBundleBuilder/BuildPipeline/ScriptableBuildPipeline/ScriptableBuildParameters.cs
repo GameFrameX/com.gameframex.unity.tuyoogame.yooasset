@@ -51,16 +51,26 @@ namespace YooAsset.Editor
             var buildParams = new BundleBuildParameters(BuildTarget, targetGroup, pipelineOutputDirectory);
 
             if (CompressOption == ECompressOption.Uncompressed)
+            {
                 buildParams.BundleCompression = UnityEngine.BuildCompression.Uncompressed;
+            }
             else if (CompressOption == ECompressOption.LZMA)
+            {
                 buildParams.BundleCompression = UnityEngine.BuildCompression.LZMA;
+            }
             else if (CompressOption == ECompressOption.LZ4)
+            {
                 buildParams.BundleCompression = UnityEngine.BuildCompression.LZ4;
+            }
             else
+            {
                 throw new System.NotImplementedException(CompressOption.ToString());
+            }
 
             if (DisableWriteTypeTree)
+            {
                 buildParams.ContentBuildFlags |= UnityEditor.Build.Content.ContentBuildFlags.DisableWriteTypeTree;
+            }
 
             buildParams.UseCache = true;
             buildParams.CacheServerHost = CacheServerHost;

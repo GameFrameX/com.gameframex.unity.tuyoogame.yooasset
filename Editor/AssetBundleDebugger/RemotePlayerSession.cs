@@ -31,7 +31,9 @@ namespace YooAsset.Editor
             {
                 int index = _reportList.Count - 1;
                 if (index < 0)
+                {
                     index = 0;
+                }
                 return index;
             }
         }
@@ -57,10 +59,15 @@ namespace YooAsset.Editor
         public void AddDebugReport(DebugReport report)
         {
             if (report == null)
+            {
                 Debug.LogWarning("Invalid debug report data !");
+                return;
+            }
 
             if (_reportList.Count >= MaxReportCount)
+            {
                 _reportList.RemoveAt(0);
+            }
             _reportList.Add(report);
         }
 
@@ -70,9 +77,13 @@ namespace YooAsset.Editor
         public DebugReport GetDebugReport(int rangeIndex)
         {
             if (_reportList.Count == 0)
+            {
                 return null;
+            }
             if (rangeIndex < 0 || rangeIndex >= _reportList.Count)
+            {
                 return null;
+            }
             return _reportList[rangeIndex];
         }
 
@@ -82,10 +93,14 @@ namespace YooAsset.Editor
         public int ClampRangeIndex(int rangeIndex)
         {
             if (rangeIndex < 0)
+            {
                 return 0;
+            }
 
             if (rangeIndex > MaxRangeValue)
+            {
                 return MaxRangeValue;
+            }
 
             return rangeIndex;
         }

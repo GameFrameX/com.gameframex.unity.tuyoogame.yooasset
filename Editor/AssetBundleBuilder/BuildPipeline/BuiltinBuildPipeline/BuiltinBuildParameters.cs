@@ -41,16 +41,26 @@ namespace YooAsset.Editor
             }
 
             if (CompressOption == ECompressOption.Uncompressed)
+            {
                 opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
+            }
             else if (CompressOption == ECompressOption.LZ4)
+            {
                 opt |= BuildAssetBundleOptions.ChunkBasedCompression;
+            }
 
             if (BuildMode == EBuildMode.ForceRebuild)
+            {
                 opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle; //Force rebuild the asset bundles
+            }
             if (DisableWriteTypeTree)
+            {
                 opt |= BuildAssetBundleOptions.DisableWriteTypeTree; //Do not include type information within the asset bundle (don't write type tree).
+            }
             if (IgnoreTypeTreeChanges)
+            {
                 opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges; //Ignore the type tree changes when doing the incremental build check.
+            }
 
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileName; //Disables Asset Bundle LoadAsset by file name.
             opt |= BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension; //Disables Asset Bundle LoadAsset by file name with extension.			

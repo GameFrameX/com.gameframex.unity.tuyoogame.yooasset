@@ -37,27 +37,39 @@ namespace YooAsset.Editor
             string filePath = bundleInfo.PackageSourceFilePath;
             var buildMode = buildParametersContext.Parameters.BuildMode;
             if (buildMode == EBuildMode.SimulateBuild)
+            {
                 return GetFilePathTempHash(filePath);
+            }
             else
+            {
                 return HashUtility.FileMD5(filePath);
+            }
         }
         protected override string GetBundleFileCRC(BuildBundleInfo bundleInfo, BuildParametersContext buildParametersContext)
         {
             string filePath = bundleInfo.PackageSourceFilePath;
             var buildMode = buildParametersContext.Parameters.BuildMode;
             if (buildMode == EBuildMode.SimulateBuild)
+            {
                 return "00000000"; //8位
+            }
             else
+            {
                 return HashUtility.FileCRC32(filePath);
+            }
         }
         protected override long GetBundleFileSize(BuildBundleInfo bundleInfo, BuildParametersContext buildParametersContext)
         {
             string filePath = bundleInfo.PackageSourceFilePath;
             var buildMode = buildParametersContext.Parameters.BuildMode;
             if (buildMode == EBuildMode.SimulateBuild)
+            {
                 return GetBundleTempSize(bundleInfo);
+            }
             else
+            {
                 return FileUtility.GetFileSize(filePath);
+            }
         }
     }
 }

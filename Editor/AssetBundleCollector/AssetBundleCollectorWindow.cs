@@ -85,7 +85,9 @@ namespace YooAsset.Editor
                 // 加载布局文件
                 var visualAsset = UxmlLoader.LoadWindowUXML<AssetBundleCollectorWindow>();
                 if (visualAsset == null)
+                {
                     return;
+                }
 
                 visualAsset.CloneTree(root);
 
@@ -369,7 +371,9 @@ namespace YooAsset.Editor
             Undo.ClearAll();
 
             if (AssetBundleCollectorSettingData.IsDirty)
+            {
                 AssetBundleCollectorSettingData.SaveFile();
+        }
         }
         public void Update()
         {
@@ -378,14 +382,18 @@ namespace YooAsset.Editor
                 if (AssetBundleCollectorSettingData.IsDirty)
                 {
                     if (_saveButton.enabledSelf == false)
+                    {
                         _saveButton.SetEnabled(true);
+                }
                 }
                 else
                 {
                     if (_saveButton.enabledSelf)
+                    {
                         _saveButton.SetEnabled(false);
                 }
             }
+        }
         }
 
         private void RefreshWindow()
@@ -435,16 +443,24 @@ namespace YooAsset.Editor
         private string FormatListItemCallback(RuleDisplayName ruleDisplayName)
         {
             if (_showEditorAliasToggle.value)
+            {
                 return ruleDisplayName.DisplayName;
+            }
             else
+            {
                 return ruleDisplayName.ClassName;
+        }
         }
         private string FormatSelectedValueCallback(RuleDisplayName ruleDisplayName)
         {
             if (_showEditorAliasToggle.value)
+            {
                 return ruleDisplayName.DisplayName;
+            }
             else
+            {
                 return ruleDisplayName.ClassName;
+        }
         }
 
         // 设置栏相关
@@ -470,9 +486,13 @@ namespace YooAsset.Editor
             }
 
             if (_showPackageToogle.value)
+            {
                 _packageContainer.style.display = DisplayStyle.Flex;
+            }
             else
+            {
                 _packageContainer.style.display = DisplayStyle.None;
+        }
         }
         private void RefreshPackageSetting()
         {
@@ -493,9 +513,13 @@ namespace YooAsset.Editor
                 _showPackageSettings = false;
                 _packageSettingsButton.SetEnabled(false);
                 if (_packageListView.itemsSource.Count == 0)
+                {
                     _packageSettingsButton.text = $"Not Found Any Package !";
+                }
                 else
+                {
                     _packageSettingsButton.text = $"Package Setting";
+            }
             }
 
             if (_showPackageSettings)
@@ -527,9 +551,13 @@ namespace YooAsset.Editor
             }
 
             if (_helpBoxContainer.childCount > 0)
+            {
                 _helpBoxContainer.style.display = DisplayStyle.Flex;
+            }
             else
+            {
                 _helpBoxContainer.style.display = DisplayStyle.None;
+            }
 #endif
         }
 
@@ -567,9 +595,13 @@ namespace YooAsset.Editor
 
             var textField1 = element.Q<Label>("Label1");
             if (string.IsNullOrEmpty(package.PackageDesc))
+            {
                 textField1.text = package.PackageName;
+            }
             else
+            {
                 textField1.text = $"{package.PackageName} ({package.PackageDesc})";
+        }
         }
         private void PackageListView_onSelectionChange(IEnumerable<object> objs)
         {
@@ -601,7 +633,9 @@ namespace YooAsset.Editor
         {
             var selectPackage = _packageListView.selectedItem as AssetBundleCollectorPackage;
             if (selectPackage == null)
+            {
                 return;
+            }
 
             Undo.RecordObject(AssetBundleCollectorSettingData.Setting, "YooAsset.AssetBundleCollectorWindow RemovePackage");
             AssetBundleCollectorSettingData.RemovePackage(selectPackage);
@@ -614,7 +648,9 @@ namespace YooAsset.Editor
         {
             var selectPackage = _packageListView.selectedItem as AssetBundleCollectorPackage;
             if (selectPackage == null)
+            {
                 return;
+            }
 
             _groupListView.Clear();
             _groupListView.ClearSelection();
@@ -645,15 +681,21 @@ namespace YooAsset.Editor
         {
             var selectPackage = _packageListView.selectedItem as AssetBundleCollectorPackage;
             if (selectPackage == null)
+            {
                 return;
+            }
 
             var group = selectPackage.Groups[index];
 
             var textField1 = element.Q<Label>("Label1");
             if (string.IsNullOrEmpty(group.GroupDesc))
+            {
                 textField1.text = group.GroupName;
+            }
             else
+            {
                 textField1.text = $"{group.GroupName} ({group.GroupDesc})";
+            }
 
             // 激活状态
             IActiveRule activeRule = AssetBundleCollectorSettingData.GetActiveRuleInstance(group.ActiveRuleName);
@@ -682,7 +724,9 @@ namespace YooAsset.Editor
         {
             var selectPackage = _packageListView.selectedItem as AssetBundleCollectorPackage;
             if (selectPackage == null)
+            {
                 return;
+            }
 
             Undo.RecordObject(AssetBundleCollectorSettingData.Setting, "YooAsset.AssetBundleCollectorWindow AddGroup");
             AssetBundleCollectorSettingData.CreateGroup(selectPackage, "Default Group");
@@ -692,11 +736,15 @@ namespace YooAsset.Editor
         {
             var selectPackage = _packageListView.selectedItem as AssetBundleCollectorPackage;
             if (selectPackage == null)
+            {
                 return;
+            }
 
             var selectGroup = _groupListView.selectedItem as AssetBundleCollectorGroup;
             if (selectGroup == null)
+            {
                 return;
+            }
 
             Undo.RecordObject(AssetBundleCollectorSettingData.Setting, "YooAsset.AssetBundleCollectorWindow RemoveGroup");
             AssetBundleCollectorSettingData.RemoveGroup(selectPackage, selectGroup);
@@ -708,7 +756,9 @@ namespace YooAsset.Editor
         {
             var selectGroup = _groupListView.selectedItem as AssetBundleCollectorGroup;
             if (selectGroup == null)
+            {
                 return;
+            }
 
             // 填充数据
             _collectorScrollView.Clear();
@@ -843,28 +893,40 @@ namespace YooAsset.Editor
         {
             var selectGroup = _groupListView.selectedItem as AssetBundleCollectorGroup;
             if (selectGroup == null)
+            {
                 return;
+            }
 
             var collector = selectGroup.Collectors[index];
             var collectObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(collector.CollectPath);
             if (collectObject != null)
+            {
                 collectObject.name = collector.CollectPath;
+            }
 
             // 注意：非主资源收集器的标签栏需要被冻结
             var textTags = element.Q<TextField>("TextField1");
             if (collector.CollectorType == ECollectorType.MainAssetCollector)
+            {
                 textTags.SetEnabled(true);
+            }
             else
+            {
                 textTags.SetEnabled(false);
+            }
 
             // Foldout
             var foldout = element.Q<Foldout>("Foldout1");
             foldout.RegisterValueChangedCallback(evt =>
             {
                 if (evt.newValue)
+                {
                     RefreshFoldout(foldout, selectGroup, collector);
+                }
                 else
+                {
                     foldout.Clear();
+                }
             });
 
             // Remove Button
@@ -902,9 +964,13 @@ namespace YooAsset.Editor
                 }
 
                 if (collector.CollectorType == ECollectorType.MainAssetCollector)
+                {
                     textTags.SetEnabled(true);
+                }
                 else
+                {
                     textTags.SetEnabled(false);
+                }
             });
 
             // Address Rule
@@ -1017,7 +1083,9 @@ namespace YooAsset.Editor
 
                         string showInfo = collectAsset.AssetInfo.AssetPath;
                         if (_enableAddressableToogle.value)
+                        {
                             showInfo = $"[{collectAsset.Address}] {collectAsset.AssetInfo.AssetPath}";
+                        }
 
                         var label = new Label();
                         label.text = showInfo;
@@ -1033,7 +1101,9 @@ namespace YooAsset.Editor
         {
             var selectGroup = _groupListView.selectedItem as AssetBundleCollectorGroup;
             if (selectGroup == null)
+            {
                 return;
+            }
 
             Undo.RecordObject(AssetBundleCollectorSettingData.Setting, "YooAsset.AssetBundleCollectorWindow AddCollector");
             AssetBundleCollector collector = new AssetBundleCollector();
@@ -1044,9 +1114,13 @@ namespace YooAsset.Editor
         {
             var selectGroup = _groupListView.selectedItem as AssetBundleCollectorGroup;
             if (selectGroup == null)
+            {
                 return;
+            }
             if (selectCollector == null)
+            {
                 return;
+            }
 
             Undo.RecordObject(AssetBundleCollectorSettingData.Setting, "YooAsset.AssetBundleCollectorWindow RemoveCollector");
             AssetBundleCollectorSettingData.RemoveCollector(selectGroup, selectCollector);
@@ -1058,7 +1132,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _collectorTypeList.Count; i++)
             {
                 if (_collectorTypeList[i] == typeName)
+                {
                     return i;
+            }
             }
             return 0;
         }
@@ -1067,7 +1143,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _addressRuleList.Count; i++)
             {
                 if (_addressRuleList[i].ClassName == ruleName)
+                {
                     return i;
+            }
             }
             return 0;
         }
@@ -1076,7 +1154,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _packRuleList.Count; i++)
             {
                 if (_packRuleList[i].ClassName == ruleName)
+                {
                     return i;
+            }
             }
             return 0;
         }
@@ -1085,7 +1165,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _filterRuleList.Count; i++)
             {
                 if (_filterRuleList[i].ClassName == ruleName)
+                {
                     return i;
+            }
             }
             return 0;
         }
@@ -1094,7 +1176,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _ignoreRuleList.Count; i++)
             {
                 if (_ignoreRuleList[i].ClassName == ruleName)
+                {
                     return _ignoreRuleList[i];
+            }
             }
             return _ignoreRuleList[0];
         }
@@ -1103,7 +1187,9 @@ namespace YooAsset.Editor
             for (int i = 0; i < _activeRuleList.Count; i++)
             {
                 if (_activeRuleList[i].ClassName == ruleName)
+                {
                     return _activeRuleList[i];
+            }
             }
             return _activeRuleList[0];
         }

@@ -26,7 +26,9 @@ namespace YooAsset.Editor
             // 加载布局文件		
             _visualAsset = UxmlLoader.LoadWindowUXML<DebuggerAssetListViewer>();
             if (_visualAsset == null)
+            {
                 return;
+            }
 
             _root = _visualAsset.CloneTree();
             _root.style.flexGrow = 1f;
@@ -85,7 +87,9 @@ namespace YooAsset.Editor
                     if (string.IsNullOrEmpty(searchKeyWord) == false)
                     {
                         if (providerInfo.AssetPath.Contains(searchKeyWord) == false)
+                        {
                             continue;
+                        }
                     }
 
                     providerInfo.PackageName = packageData.PackageName;
@@ -225,9 +229,13 @@ namespace YooAsset.Editor
             // Status
             StyleColor textColor;
             if (providerInfo.Status == EOperationStatus.Failed.ToString())
+            {
                 textColor = new StyleColor(Color.yellow);
+            }
             else
+            {
                 textColor = label1.style.color;
+            }
             var label6 = element.Q<Label>("Label6");
             label6.text = providerInfo.Status.ToString();
             label6.style.color = textColor;

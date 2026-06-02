@@ -44,9 +44,13 @@ namespace YooAsset.Editor
             {
                 var texImporter = AssetImporter.GetAtPath(data.AssetPath) as TextureImporter;
                 if (texImporter != null && texImporter.textureType == TextureImporterType.Sprite)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
             else
             {

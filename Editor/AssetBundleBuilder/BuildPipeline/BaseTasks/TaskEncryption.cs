@@ -15,10 +15,14 @@ namespace YooAsset.Editor
         {
             var encryptionServices = buildParametersContext.Parameters.EncryptionServices;
             if (encryptionServices == null)
+            {
                 return;
+            }
 
             if (encryptionServices.GetType() == typeof(EncryptionNone))
+            {
                 return;
+            }
 
             int progressValue = 0;
             string pipelineOutputDirectory = buildParametersContext.GetPipelineOutputDirectory();

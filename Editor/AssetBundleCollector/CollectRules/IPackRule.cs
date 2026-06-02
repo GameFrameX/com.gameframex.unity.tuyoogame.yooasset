@@ -44,9 +44,13 @@ namespace YooAsset.Editor
             string fullName;
             string bundleName = EditorTools.GetRegularPath(_bundleName).Replace('/', '_').Replace('.', '_').Replace(" ", "_").ToLower();
             if (uniqueBundleName)
+            {
                 fullName = $"{packageName}_{bundleName}.{_bundleExtension}";
+            }
             else
+            {
                 fullName = $"{bundleName}.{_bundleExtension}";
+            }
             return fullName.ToLower();
         }
 
@@ -58,9 +62,13 @@ namespace YooAsset.Editor
             string fullName;
             string bundleName = EditorTools.GetRegularPath(_bundleName).Replace('/', '_').Replace('.', '_').Replace(" ", "_").ToLower();
             if (uniqueBundleName)
+            {
                 fullName = $"{packageName}_share_{bundleName}.{_bundleExtension}";
+            }
             else
+            {
                 fullName = $"share_{bundleName}.{_bundleExtension}";
+            }
             return fullName.ToLower();
         }
     }

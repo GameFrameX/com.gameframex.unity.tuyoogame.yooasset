@@ -62,7 +62,9 @@ namespace YooAsset.Editor
         public static void Serialize(string savePath, BuildReport buildReport)
         {
             if (File.Exists(savePath))
+            {
                 File.Delete(savePath);
+            }
 
             string json = JsonUtility.ToJson(buildReport, true);
             FileUtility.WriteAllText(savePath, json);

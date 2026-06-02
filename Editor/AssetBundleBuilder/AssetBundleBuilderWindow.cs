@@ -36,7 +36,9 @@ namespace YooAsset.Editor
                 // 加载布局文件
                 var visualAsset = UxmlLoader.LoadWindowUXML<AssetBundleBuilderWindow>();
                 if (visualAsset == null)
+                {
                     return;
+                }
 
                 visualAsset.CloneTree(root);
                 _toolbar = root.Q<Toolbar>("Toolbar");
@@ -133,9 +135,13 @@ namespace YooAsset.Editor
         {
             var packageName = (string)action.userData;
             if (_buildPackage == packageName)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
 
         private void PipelineMenuAction(DropdownMenuAction action)
@@ -152,9 +158,13 @@ namespace YooAsset.Editor
         {
             var pipelineType = (EBuildPipeline)action.userData;
             if (_buildPipeline == pipelineType)
+            {
                 return DropdownMenuAction.Status.Checked;
+            }
             else
+            {
                 return DropdownMenuAction.Status.Normal;
+            }
         }
     }
 }

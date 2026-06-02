@@ -63,7 +63,9 @@ namespace YooAsset.Editor
             else
             {
                 if (AssetBundleCollectorSettingData.HasIgnoreRuleName(IgnoreRuleName) == false)
+                {
                     throw new Exception($"Invalid {nameof(IIgnoreRule)} class type : {IgnoreRuleName} in package : {PackageName}");
+                }
             }
 
             foreach (var group in Groups)
@@ -111,9 +113,13 @@ namespace YooAsset.Editor
                 foreach (var collectAsset in temper)
                 {
                     if (result.ContainsKey(collectAsset.AssetInfo.AssetPath) == false)
+                    {
                         result.Add(collectAsset.AssetInfo.AssetPath, collectAsset);
+                    }
                     else
+                    {
                         throw new Exception($"The collecting asset file is existed : {collectAsset.AssetInfo.AssetPath}");
+                    }
                 }
             }
 
@@ -128,12 +134,18 @@ namespace YooAsset.Editor
                         string address = collectInfoPair.Value.Address;
                         string assetPath = collectInfoPair.Value.AssetInfo.AssetPath;
                         if (string.IsNullOrEmpty(address))
+                        {
                             continue;
+                        }
 
                         if (addressTemper.TryGetValue(address, out var existed) == false)
+                        {
                             addressTemper.Add(address, assetPath);
+                        }
                         else
+                        {
                             throw new Exception($"The address is existed : {address} \nAssetPath:\n     {existed}\n     {assetPath}");
+                        }
                     }
                 }
             }
@@ -154,7 +166,9 @@ namespace YooAsset.Editor
                 foreach (var tag in groupTags)
                 {
                     if (result.Contains(tag) == false)
+                    {
                         result.Add(tag);
+                    }
                 }
 
                 foreach (var collector in group.Collectors)
@@ -163,7 +177,9 @@ namespace YooAsset.Editor
                     foreach (var tag in collectorTags)
                     {
                         if (result.Contains(tag) == false)
+                        {
                             result.Add(tag);
+                        }
                     }
                 }
             }

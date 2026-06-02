@@ -40,7 +40,9 @@ namespace YooAsset.Editor
             // 加载布局文件
             _visualAsset = UxmlLoader.LoadWindowUXML<ReporterAssetListViewer>();
             if (_visualAsset == null)
+            {
                 return;
+            }
 
             _root = _visualAsset.CloneTree();
             _root.style.flexGrow = 1f;
@@ -101,7 +103,9 @@ namespace YooAsset.Editor
                 if (string.IsNullOrEmpty(_searchKeyWord) == false)
                 {
                     if (assetInfo.AssetPath.Contains(_searchKeyWord) == false)
+                    {
                         continue;
+                    }
                 }
                 result.Add(assetInfo);
             }
@@ -110,16 +114,24 @@ namespace YooAsset.Editor
             if (_sortMode == ESortMode.AssetPath)
             {
                 if (_descendingSort)
+                {
                     return result.OrderByDescending(a => a.AssetPath).ToList();
+                }
                 else
+                {
                     return result.OrderBy(a => a.AssetPath).ToList();
+                }
             }
             else if (_sortMode == ESortMode.BundleName)
             {
                 if (_descendingSort)
+                {
                     return result.OrderByDescending(a => a.MainBundleName).ToList();
+                }
                 else
+                {
                     return result.OrderBy(a => a.MainBundleName).ToList();
+                }
             }
             else
             {
@@ -135,16 +147,24 @@ namespace YooAsset.Editor
             if (_sortMode == ESortMode.AssetPath)
             {
                 if (_descendingSort)
+                {
                     _topBar1.text = $"Asset Path ({_assetListView.itemsSource.Count}) ↓";
+                }
                 else
+                {
                     _topBar1.text = $"Asset Path ({_assetListView.itemsSource.Count}) ↑";
+                }
             }
             else if (_sortMode == ESortMode.BundleName)
             {
                 if (_descendingSort)
+                {
                     _topBar2.text = "Main Bundle ↓";
+                }
                 else
+                {
                     _topBar2.text = "Main Bundle ↑";
+                }
             }
             else
             {
