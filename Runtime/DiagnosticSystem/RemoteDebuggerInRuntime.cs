@@ -50,7 +50,7 @@ namespace YooAsset
             }
             else
             {
-                throw new NotImplementedException(command.CommandType.ToString());
+                YooLogger.Warning($"Unknown remote command type: {command.CommandType}");
             }
         }
 #endif
