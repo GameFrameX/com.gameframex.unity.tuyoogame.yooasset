@@ -1,3 +1,30 @@
+## [2.9.3](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.2...2.9.3) (2026-06-02)
+
+
+### Bug Fixes
+
+* **buffer:** 移除 Conditional("DEBUG") 使边界检查始终生效 ([5bca514](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/5bca514aa9e81f543026b3d24098a7bf20b34bc7))
+* **cache:** 写入缓存前确保目录存在、失败时回滚并精确删除文件 ([1d5d2bf](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/1d5d2bffec2a4499a3f796c4a2be86b53c9375e1))
+* **debugger:** 未知远程命令改为警告日志而非抛异常 ([757c4dc](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/757c4dc7851efc9ebe005d21c077d3ca00bdaa0c))
+* **download:** FileStream 打开失败时清理并重抛异常 ([b55ba75](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/b55ba7592f0af7ca361c576d064117bffac9ef5f))
+* **download:** UNITY_IPHONE 改为 UNITY_IOS ([d545b8a](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/d545b8a9ea4e49d85979a8744afd5d0228558dc4))
+* **download:** WebRequestCounter 添加线程安全锁 ([532ee51](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/532ee51e019eedb53ffced25e6815e38e22be30d))
+* **download:** 合并下载器前检查对方运行状态 ([d14d78e](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/d14d78ec1da318b6d213d4037829025299832574))
+* **download:** 防止进度计算除零 ([8a7f293](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/8a7f293e1aedf3eeb0f1c18146e0be56b2cfac38))
+* **driver:** 修正拼写错误 LastestUpdateFrame → LatestUpdateFrame ([9b092e8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/9b092e8578d5c0f6c3f8d123576203eb6b5233fc))
+* **driver:** 移除 OnApplicationQuit 的 UNITY_EDITOR 条件编译 ([2ef2044](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/2ef20447c8612ae555c2c4531ab920b4b43b1115))
+* **filesystem:** 文件验证异常时输出警告日志 ([791bda8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/791bda82acd591c69dd8e46554f3745e4cf10213))
+* **operation:** 防止 IsBusy 在 _watch 未初始化时空引用 ([ab7fb15](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/ab7fb15ae3e165b8ec0cdb6b31da6f0a124d7ac6))
+* **package:** 防御性检查改为始终生效并清理失败遗留 ([36ceb1b](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/36ceb1b6f65e8545e798bbe4601519c61c30c3e5))
+* **params:** 使用索引器替代 Dictionary.Add 防止重复 key 异常 ([ff39413](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/ff3941363b01a1aab65340f354102a20edbb617f))
+* **utility:** 修复 ThreadStatic 字段初始化问题 ([354ed84](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/354ed845b784cd5626da3eb2043e8b9b5b64324f))
+* **webfs:** 移除遗留 Debug.LogError 调试输出 ([99b6f39](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/99b6f39a9bba66963f9ecdbb2e381860f75e1c1a))
+
+
+### Performance Improvements
+
+* **report:** 构建报告查找改用字典索引 ([2fcf0b4](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/2fcf0b47c45afcb72fe549c2ab261ff654e8f5cc))
+
 ## [2.9.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.1...2.9.2) (2026-05-28)
 
 
