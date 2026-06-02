@@ -76,6 +76,7 @@ namespace YooAsset
         }
     }
 
+    // 注意：CRC32Algorithm 实例不可跨线程使用。静态 Append() 方法线程安全，但通过 HashAlgorithm 接口（如 ComputeHash）在并发场景下不安全。
     /// <summary>
     /// This is .NET safe implementation of Crc32 algorithm.
     /// Implementation of CRC-32.
