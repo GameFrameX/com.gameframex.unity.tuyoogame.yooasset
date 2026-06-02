@@ -6,7 +6,7 @@ namespace YooAsset
     [UnityEngine.Scripting.Preserve]
     internal class YooAssetsDriver : MonoBehaviour
     {
-        private static int LastestUpdateFrame = 0;
+        private static int LatestUpdateFrame = 0;
 
         [UnityEngine.Scripting.Preserve]
         private void Update()
@@ -27,15 +27,15 @@ namespace YooAsset
         [Conditional("DEBUG")]
         private void DebugCheckDuplicateDriver()
         {
-            if (LastestUpdateFrame > 0)
+            if (LatestUpdateFrame > 0)
             {
-                if (LastestUpdateFrame == Time.frameCount)
+                if (LatestUpdateFrame == Time.frameCount)
                 {
                     YooLogger.Warning($"There are two {nameof(YooAssetsDriver)} in the scene. Please ensure there is always exactly one driver in the scene.");
                 }
             }
 
-            LastestUpdateFrame = Time.frameCount;
+            LatestUpdateFrame = Time.frameCount;
         }
     }
 }
