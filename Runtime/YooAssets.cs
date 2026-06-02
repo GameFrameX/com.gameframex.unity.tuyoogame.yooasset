@@ -12,7 +12,7 @@ namespace YooAsset
     {
         private static bool _isInitialize = false;
         private static GameObject _driver = null;
-        private static readonly List<ResourcePackage> _packages = new List<ResourcePackage>();
+        private static readonly List<ResourcePackage> _packages = new List<ResourcePackage>(16);
 
         /// <summary>
         /// 是否已经初始化
