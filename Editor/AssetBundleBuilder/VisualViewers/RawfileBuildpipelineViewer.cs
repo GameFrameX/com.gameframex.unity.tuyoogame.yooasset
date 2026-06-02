@@ -37,6 +37,7 @@ namespace YooAsset.Editor
             buildParameters.BuildMode = buildMode;
             buildParameters.PackageName = PackageName;
             buildParameters.PackageVersion = GetPackageVersion();
+            // TODO: 硬编码为 true，应改为从构建参数默认值或 UI 配置读取
             buildParameters.VerifyBuildingResult = true;
             buildParameters.FileNameStyle = fileNameStyle;
             buildParameters.BuildinFileCopyOption = buildinFileCopyOption;
@@ -48,7 +49,7 @@ namespace YooAsset.Editor
             if (buildResult.Success)
             {
                 EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
-        }
+            }
         }
 
         protected override List<Enum> GetSupportBuildModes()
