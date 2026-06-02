@@ -35,24 +35,21 @@ namespace YooAsset
                 return;
             }
 
-            if (_isInitialize == false)
-            {
-                YooLogger.Logger = logger;
+            YooLogger.Logger = logger;
 
-                // 创建驱动器
-                _isInitialize = true;
-                _driver = new GameObject($"[{nameof(YooAssets)}]");
-                _driver.AddComponent<YooAssetsDriver>();
-                UnityEngine.Object.DontDestroyOnLoad(_driver);
-                YooLogger.Log($"{nameof(YooAssets)} initialize !");
+            // 创建驱动器
+            _isInitialize = true;
+            _driver = new GameObject($"[{nameof(YooAssets)}]");
+            _driver.AddComponent<YooAssetsDriver>();
+            UnityEngine.Object.DontDestroyOnLoad(_driver);
+            YooLogger.Log($"{nameof(YooAssets)} initialize !");
 
 #if DEBUG
-                // 添加远程调试脚本
-                _driver.AddComponent<RemoteDebuggerInRuntime>();
+            // 添加远程调试脚本
+            _driver.AddComponent<RemoteDebuggerInRuntime>();
 #endif
 
-                OperationSystem.Initialize();
-            }
+            OperationSystem.Initialize();
         }
 
         /// <summary>
