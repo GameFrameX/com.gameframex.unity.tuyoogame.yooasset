@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,6 +11,7 @@ namespace YooAsset
         /// 记录网络请求失败事件的次数
         /// </summary>
         private static readonly Dictionary<string, int> _requestFailedRecorder = new Dictionary<string, int>(1000);
+        private static readonly object _lock = new object();
 
         /// <summary>
         /// 记录请求失败事件
@@ -19,12 +20,15 @@ namespace YooAsset
         public static void RecordRequestFailed(string packageName, string eventName)
         {
             var key = $"{packageName}_{eventName}";
-            if (_requestFailedRecorder.ContainsKey(key) == false)
+            lock (_lock)
             {
-                _requestFailedRecorder.Add(key, 0);
-            }
+                if (_requestFailedRecorder.ContainsKey(key) == false)
+                {
+                    _requestFailedRecorder.Add(key, 0);
+                }
 
-            _requestFailedRecorder[key]++;
+                _requestFailedRecorder[key]++;
+            }
         }
 
         /// <summary>
@@ -34,12 +38,15 @@ namespace YooAsset
         public static int GetRequestFailedCount(string packageName, string eventName)
         {
             var key = $"{packageName}_{eventName}";
-            if (_requestFailedRecorder.ContainsKey(key) == false)
+            lock (_lock)
             {
-                _requestFailedRecorder.Add(key, 0);
-            }
+                if (_requestFailedRecorder.ContainsKey(key) == false)
+                {
+                    _requestFailedRecorder.Add(key, 0);
+                }
 
-            return _requestFailedRecorder[key];
+                return _requestFailedRecorder[key];
+            }
         }
     }
 }
