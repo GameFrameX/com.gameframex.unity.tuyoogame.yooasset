@@ -48,8 +48,9 @@ namespace YooAsset
                     return EFileVerifyResult.Succeed;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                YooLogger.Warning($"File verify exception: {ex.Message}");
                 return EFileVerifyResult.Exception;
             }
         }
