@@ -41,7 +41,7 @@ namespace YooAsset
             return StringUtility.Format("file:///{0}", path);
 #elif UNITY_WEBGL
             return path;
-#elif UNITY_IPHONE
+#elif UNITY_IOS
             return StringUtility.Format("file://{0}", path);
 #elif UNITY_ANDROID
             if (path.StartsWith("jar:file://"))
