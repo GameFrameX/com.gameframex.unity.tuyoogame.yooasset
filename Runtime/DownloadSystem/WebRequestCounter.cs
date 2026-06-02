@@ -1,17 +1,12 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    public class WebRequestCounter
+    public sealed class WebRequestCounter
     {
-        /// <summary>
-        /// 记录网络请求失败事件的次数
-        /// </summary>
-        private static readonly Dictionary<string, int> _requestFailedRecorder = new Dictionary<string, int>(1000);
-        private static readonly object _lock = new object();
+        private static readonly object Lock = new object();
+        private static readonly Dictionary<string, int> RequestFailedRecorder = new Dictionary<string, int>(1000);
 
         /// <summary>
         /// 记录请求失败事件
@@ -20,14 +15,14 @@ namespace YooAsset
         public static void RecordRequestFailed(string packageName, string eventName)
         {
             var key = $"{packageName}_{eventName}";
-            lock (_lock)
+            lock (Lock)
             {
-                if (_requestFailedRecorder.ContainsKey(key) == false)
+                if (RequestFailedRecorder.ContainsKey(key) == false)
                 {
-                    _requestFailedRecorder.Add(key, 0);
+                    RequestFailedRecorder.Add(key, 0);
                 }
 
-                _requestFailedRecorder[key]++;
+                RequestFailedRecorder[key]++;
             }
         }
 
@@ -38,14 +33,14 @@ namespace YooAsset
         public static int GetRequestFailedCount(string packageName, string eventName)
         {
             var key = $"{packageName}_{eventName}";
-            lock (_lock)
+            lock (Lock)
             {
-                if (_requestFailedRecorder.ContainsKey(key) == false)
+                if (RequestFailedRecorder.ContainsKey(key) == false)
                 {
-                    _requestFailedRecorder.Add(key, 0);
+                    RequestFailedRecorder.Add(key, 0);
                 }
 
-                return _requestFailedRecorder[key];
+                return RequestFailedRecorder[key];
             }
         }
     }
