@@ -437,6 +437,7 @@ namespace YooAsset
 
         #region 内部方法
 
+        // 注意：仅限主线程使用，非线程安全
         private readonly BufferWriter _sharedBuffer = new BufferWriter(1024);
 
         [UnityEngine.Scripting.Preserve]
