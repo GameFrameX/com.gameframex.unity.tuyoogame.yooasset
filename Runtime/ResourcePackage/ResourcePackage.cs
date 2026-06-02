@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    public class ResourcePackage
+    public sealed class ResourcePackage
     {
         private bool _isInitialize = false;
         private string _initializeError = string.Empty;
