@@ -12,6 +12,7 @@ namespace YooAsset
             var classType = Type.GetType(parameters.FileSystemClass);
             if (classType == null)
             {
+                // 注意：此方法仅在初始化时调用一次。建议 FileSystemClass 参数使用完整的程序集限定名以避免全量搜索。
                 // 搜索所有已加载的程序集（支持从子包中查找）
                 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
