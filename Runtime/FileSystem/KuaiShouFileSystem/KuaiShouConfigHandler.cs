@@ -31,21 +31,24 @@ using UnityEngine;
 
 #if UNITY_WEBGL && ENABLE_KUAISHOU_MINI_GAME
 
-public class KuaiShouConfigHandler : MonoBehaviour
+namespace YooAsset
 {
-    private float _timer = 0f;
-
-    private void Update()
+    public class KuaiShouConfigHandler : MonoBehaviour
     {
-        _timer += Time.deltaTime;
-        if (!(_timer >= 1f))
+        private float _timer = 0f;
+
+        private void Update()
         {
-            return;
-        }
+            _timer += Time.deltaTime;
+            if (!(_timer >= 1f))
+            {
+                return;
+            }
 #if !UNITY_EDITOR
-        KSWASM.KSBase.PreloadConcurrent(10);
+            KSWASM.KSBase.PreloadConcurrent(10);
 #endif
-        _timer = 0f;
+            _timer = 0f;
+        }
     }
 }
 
