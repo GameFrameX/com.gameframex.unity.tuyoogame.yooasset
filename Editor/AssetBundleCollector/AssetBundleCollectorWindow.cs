@@ -362,8 +362,7 @@ namespace YooAsset.Editor
         }
         public void OnDisable()
         {
-            if (Undo.undoRedoPerformed != null)
-                Undo.undoRedoPerformed -= RefreshWindow;
+            Undo.undoRedoPerformed -= RefreshWindow;
         }
         public void OnDestroy()
         {
@@ -373,7 +372,7 @@ namespace YooAsset.Editor
             if (AssetBundleCollectorSettingData.IsDirty)
             {
                 AssetBundleCollectorSettingData.SaveFile();
-        }
+            }
         }
         public void Update()
         {
@@ -384,16 +383,16 @@ namespace YooAsset.Editor
                     if (_saveButton.enabledSelf == false)
                     {
                         _saveButton.SetEnabled(true);
-                }
+                    }
                 }
                 else
                 {
                     if (_saveButton.enabledSelf)
                     {
                         _saveButton.SetEnabled(false);
+                    }
                 }
             }
-        }
         }
 
         private void RefreshWindow()
@@ -449,7 +448,7 @@ namespace YooAsset.Editor
             else
             {
                 return ruleDisplayName.ClassName;
-        }
+            }
         }
         private string FormatSelectedValueCallback(RuleDisplayName ruleDisplayName)
         {
@@ -460,7 +459,7 @@ namespace YooAsset.Editor
             else
             {
                 return ruleDisplayName.ClassName;
-        }
+            }
         }
 
         // 设置栏相关
@@ -492,7 +491,7 @@ namespace YooAsset.Editor
             else
             {
                 _packageContainer.style.display = DisplayStyle.None;
-        }
+            }
         }
         private void RefreshPackageSetting()
         {
@@ -519,7 +518,7 @@ namespace YooAsset.Editor
                 else
                 {
                     _packageSettingsButton.text = $"Package Setting";
-            }
+                }
             }
 
             if (_showPackageSettings)
@@ -601,7 +600,7 @@ namespace YooAsset.Editor
             else
             {
                 textField1.text = $"{package.PackageName} ({package.PackageDesc})";
-        }
+            }
         }
         private void PackageListView_onSelectionChange(IEnumerable<object> objs)
         {
@@ -1134,7 +1133,7 @@ namespace YooAsset.Editor
                 if (_collectorTypeList[i] == typeName)
                 {
                     return i;
-            }
+                }
             }
             return 0;
         }
@@ -1145,7 +1144,7 @@ namespace YooAsset.Editor
                 if (_addressRuleList[i].ClassName == ruleName)
                 {
                     return i;
-            }
+                }
             }
             return 0;
         }
@@ -1156,7 +1155,7 @@ namespace YooAsset.Editor
                 if (_packRuleList[i].ClassName == ruleName)
                 {
                     return i;
-            }
+                }
             }
             return 0;
         }
@@ -1167,7 +1166,7 @@ namespace YooAsset.Editor
                 if (_filterRuleList[i].ClassName == ruleName)
                 {
                     return i;
-            }
+                }
             }
             return 0;
         }
@@ -1178,7 +1177,7 @@ namespace YooAsset.Editor
                 if (_ignoreRuleList[i].ClassName == ruleName)
                 {
                     return _ignoreRuleList[i];
-            }
+                }
             }
             return _ignoreRuleList[0];
         }
@@ -1189,7 +1188,7 @@ namespace YooAsset.Editor
                 if (_activeRuleList[i].ClassName == ruleName)
                 {
                     return _activeRuleList[i];
-            }
+                }
             }
             return _activeRuleList[0];
         }
