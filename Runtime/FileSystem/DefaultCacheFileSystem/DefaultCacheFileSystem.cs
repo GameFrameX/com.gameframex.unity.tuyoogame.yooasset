@@ -234,10 +234,7 @@ namespace YooAsset
                 return;
             }
 
-            if (assetBundle != null)
-            {
-                assetBundle.Unload(true);
-            }
+            assetBundle.Unload(true);
 
             if (_loadedStream.TryGetValue(bundle.BundleGUID, out var managedStream))
             {
