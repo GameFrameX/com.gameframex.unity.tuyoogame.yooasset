@@ -77,7 +77,7 @@ namespace YooAsset
     [UnityEngine.Scripting.Preserve]
     internal static class StringUtility
     {
-        [ThreadStatic] private static StringBuilder _cacheBuilder = new StringBuilder(2048);
+        [ThreadStatic] private static StringBuilder _cacheBuilder;
 
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, object arg0)
@@ -85,6 +85,11 @@ namespace YooAsset
             if (string.IsNullOrEmpty(format))
             {
                 throw new ArgumentNullException();
+            }
+
+            if (_cacheBuilder == null)
+            {
+                _cacheBuilder = new StringBuilder(2048);
             }
 
             _cacheBuilder.Length = 0;
@@ -100,6 +105,11 @@ namespace YooAsset
                 throw new ArgumentNullException();
             }
 
+            if (_cacheBuilder == null)
+            {
+                _cacheBuilder = new StringBuilder(2048);
+            }
+
             _cacheBuilder.Length = 0;
             _cacheBuilder.AppendFormat(format, arg0, arg1);
             return _cacheBuilder.ToString();
@@ -111,6 +121,11 @@ namespace YooAsset
             if (string.IsNullOrEmpty(format))
             {
                 throw new ArgumentNullException();
+            }
+
+            if (_cacheBuilder == null)
+            {
+                _cacheBuilder = new StringBuilder(2048);
             }
 
             _cacheBuilder.Length = 0;
@@ -129,6 +144,11 @@ namespace YooAsset
             if (args == null)
             {
                 throw new ArgumentNullException();
+            }
+
+            if (_cacheBuilder == null)
+            {
+                _cacheBuilder = new StringBuilder(2048);
             }
 
             _cacheBuilder.Length = 0;
