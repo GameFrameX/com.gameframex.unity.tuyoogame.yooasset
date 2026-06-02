@@ -31,20 +31,23 @@ using UnityEngine;
 
 #if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
 
-public class DouYinConfigHandler : MonoBehaviour
+namespace YooAsset
 {
-    private float _timer = 0f;
-
-    private void Update()
+    public class DouYinConfigHandler : MonoBehaviour
     {
-        _timer += Time.deltaTime;
-        if (!(_timer >= 1f))
-        {
-            return;
-        }
+        private float _timer = 0f;
 
-        TTSDK.TT.PreloadConcurrent(10);
-        _timer = 0f;
+        private void Update()
+        {
+            _timer += Time.deltaTime;
+            if (!(_timer >= 1f))
+            {
+                return;
+            }
+
+            TTSDK.TT.PreloadConcurrent(10);
+            _timer = 0f;
+        }
     }
 }
 
