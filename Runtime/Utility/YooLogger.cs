@@ -3,26 +3,10 @@ using System.Diagnostics;
 
 namespace YooAsset
 {
-    /// <summary>
-    /// 自定义日志处理
-    /// </summary>
-    [UnityEngine.Scripting.Preserve]
-    public interface ILogger
-    {
-        [UnityEngine.Scripting.Preserve]
-        void Log(string message);
-        [UnityEngine.Scripting.Preserve]
-        void Warning(string message);
-        [UnityEngine.Scripting.Preserve]
-        void Error(string message);
-        [UnityEngine.Scripting.Preserve]
-        void Exception(Exception exception);
-    }
-
     [UnityEngine.Scripting.Preserve]
     public static class YooLogger
     {
-        public static ILogger Logger = null;
+        public static YooAsset.ILogger Logger = null;
 
         /// <summary>
         /// 日志
