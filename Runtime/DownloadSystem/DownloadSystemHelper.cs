@@ -2,23 +2,26 @@
 
 namespace YooAsset
 {
-    /// <summary>
-    /// 自定义下载器的请求委托
-    /// </summary>
-    public delegate UnityWebRequest UnityWebRequestDelegate(string url);
-
     [UnityEngine.Scripting.Preserve]
     public class DownloadSystemHelper
     {
-        public static UnityWebRequestDelegate UnityWebRequestCreater = null;
+        private static System.Func<string, UnityWebRequest> _unityWebRequestCreater = null;
+
+        /// <summary>
+        /// 设置自定义的 UnityWebRequest 创建委托
+        /// </summary>
+        public static void SetUnityWebRequestCreater(System.Func<string, UnityWebRequest> creater)
+        {
+            _unityWebRequestCreater = creater;
+        }
 
         [UnityEngine.Scripting.Preserve]
         public static UnityWebRequest NewUnityWebRequestGet(string requestURL)
         {
             UnityWebRequest webRequest;
-            if (UnityWebRequestCreater != null)
+            if (_unityWebRequestCreater != null)
             {
-                webRequest = UnityWebRequestCreater.Invoke(requestURL);
+                webRequest = _unityWebRequestCreater.Invoke(requestURL);
             }
             else
             {
