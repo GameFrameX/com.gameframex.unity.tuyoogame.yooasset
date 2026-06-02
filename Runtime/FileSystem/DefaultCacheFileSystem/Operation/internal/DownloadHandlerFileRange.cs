@@ -33,7 +33,16 @@ namespace YooAsset
                 _localFileSize = fileInfo.Length;
             }
 
-            _fileStream = new FileStream(_fileSavePath, FileMode.Append, FileAccess.Write);
+            try
+            {
+                _fileStream = new FileStream(_fileSavePath, FileMode.Append, FileAccess.Write);
+            }
+            catch
+            {
+                Cleanup();
+                throw;
+            }
+
             _curFileSize = _localFileSize;
         }
 
