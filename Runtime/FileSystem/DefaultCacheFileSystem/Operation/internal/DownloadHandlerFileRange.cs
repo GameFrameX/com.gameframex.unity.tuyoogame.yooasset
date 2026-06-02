@@ -47,9 +47,9 @@ namespace YooAsset
         }
 
         [UnityEngine.Scripting.Preserve]
-        protected override bool ReceiveData(byte[] data, int dataLength)
+        protected override bool ReceiveData(byte[] dataBuffer, int dataLength)
         {
-            if (data == null || dataLength == 0 || _webRequest.responseCode >= 400)
+            if (dataBuffer == null || dataLength == 0 || _webRequest.responseCode >= 400)
             {
                 return false;
             }
@@ -59,7 +59,7 @@ namespace YooAsset
                 return false;
             }
 
-            _fileStream.Write(data, 0, dataLength);
+            _fileStream.Write(dataBuffer, 0, dataLength);
             _curFileSize += dataLength;
             return true;
         }
