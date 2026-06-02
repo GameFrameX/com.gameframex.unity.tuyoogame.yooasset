@@ -197,7 +197,6 @@ namespace YooAsset
         }
 
         [UnityEngine.Scripting.Preserve]
-        [Conditional("DEBUG")]
         private void CheckReaderIndex(int length)
         {
             if (_index + length > Capacity)

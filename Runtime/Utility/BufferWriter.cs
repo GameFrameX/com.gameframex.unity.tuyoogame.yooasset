@@ -211,7 +211,6 @@ namespace YooAsset
         }
 
         [UnityEngine.Scripting.Preserve]
-        [Conditional("DEBUG")]
         private void CheckWriterIndex(int length)
         {
             if (_index + length > Capacity)
