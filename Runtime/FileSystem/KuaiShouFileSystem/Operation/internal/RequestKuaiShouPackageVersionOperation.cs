@@ -1,111 +1,114 @@
-﻿#if UNITY_WEBGL && ENABLE_KUAISHOU_MINI_GAME
+#if UNITY_WEBGL && ENABLE_KUAISHOU_MINI_GAME
 using System;
 using YooAsset;
 
-[UnityEngine.Scripting.Preserve]
-internal class RequestKuaiShouPackageVersionOperation : AsyncOperationBase
+namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    private enum ESteps
+    internal class RequestKuaiShouPackageVersionOperation : AsyncOperationBase
     {
-        None,
-        RequestPackageVersion,
-        Done,
-    }
-
-    private readonly KuaiShouFileSystem _fileSystem;
-    private readonly bool _appendTimeTicks;
-    private readonly int _timeout;
-    private UnityWebTextRequestOperation _webTextRequestOp;
-    private int _requestCount = 0;
-    private ESteps _steps = ESteps.None;
-
-    /// <summary>
-    /// 包裹版本
-    /// </summary>
-    public string PackageVersion { private set; get; }
-
-
-    [UnityEngine.Scripting.Preserve]
-    public RequestKuaiShouPackageVersionOperation(KuaiShouFileSystem fileSystem, bool appendTimeTicks, int timeout)
-    {
-        _fileSystem = fileSystem;
-        _appendTimeTicks = appendTimeTicks;
-        _timeout = timeout;
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnStart()
-    {
-        _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestKuaiShouPackageVersionOperation));
-        _steps = ESteps.RequestPackageVersion;
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnUpdate()
-    {
-        if (_steps == ESteps.None || _steps == ESteps.Done)
+        [UnityEngine.Scripting.Preserve]
+        private enum ESteps
         {
-            return;
+            None,
+            RequestPackageVersion,
+            Done,
         }
 
-        if (_steps == ESteps.RequestPackageVersion)
+        private readonly KuaiShouFileSystem _fileSystem;
+        private readonly bool _appendTimeTicks;
+        private readonly int _timeout;
+        private UnityWebTextRequestOperation _webTextRequestOp;
+        private int _requestCount = 0;
+        private ESteps _steps = ESteps.None;
+
+        /// <summary>
+        /// 包裹版本
+        /// </summary>
+        public string PackageVersion { private set; get; }
+
+
+        [UnityEngine.Scripting.Preserve]
+        public RequestKuaiShouPackageVersionOperation(KuaiShouFileSystem fileSystem, bool appendTimeTicks, int timeout)
         {
-            if (_webTextRequestOp == null)
-            {
-                string fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
-                string url = GetRequestURL(fileName);
-                if (_appendTimeTicks)
-                {
-                    url += $"?time_ticks={DateTime.Now.Ticks}";
-                }
+            _fileSystem = fileSystem;
+            _appendTimeTicks = appendTimeTicks;
+            _timeout = timeout;
+        }
 
-                _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
-                OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
-            }
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnStart()
+        {
+            _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(RequestKuaiShouPackageVersionOperation));
+            _steps = ESteps.RequestPackageVersion;
+        }
 
-            Progress = _webTextRequestOp.Progress;
-            if (_webTextRequestOp.IsDone == false)
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnUpdate()
+        {
+            if (_steps == ESteps.None || _steps == ESteps.Done)
             {
                 return;
             }
 
-            if (_webTextRequestOp.Status == EOperationStatus.Succeed)
+            if (_steps == ESteps.RequestPackageVersion)
             {
-                PackageVersion = _webTextRequestOp.Result;
-                if (string.IsNullOrEmpty(PackageVersion))
+                if (_webTextRequestOp == null)
                 {
-                    _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Wechat package version file content is empty !";
+                    string fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
+                    string url = GetRequestURL(fileName);
+                    if (_appendTimeTicks)
+                    {
+                        url += $"?time_ticks={DateTime.Now.Ticks}";
+                    }
+
+                    _webTextRequestOp = new UnityWebTextRequestOperation(url, _timeout);
+                    OperationSystem.StartOperation(_fileSystem.PackageName, _webTextRequestOp);
+                }
+
+                Progress = _webTextRequestOp.Progress;
+                if (_webTextRequestOp.IsDone == false)
+                {
+                    return;
+                }
+
+                if (_webTextRequestOp.Status == EOperationStatus.Succeed)
+                {
+                    PackageVersion = _webTextRequestOp.Result;
+                    if (string.IsNullOrEmpty(PackageVersion))
+                    {
+                        _steps = ESteps.Done;
+                        Status = EOperationStatus.Failed;
+                        Error = $"Wechat package version file content is empty !";
+                    }
+                    else
+                    {
+                        _steps = ESteps.Done;
+                        Status = EOperationStatus.Succeed;
+                    }
                 }
                 else
                 {
                     _steps = ESteps.Done;
-                    Status = EOperationStatus.Succeed;
+                    Status = EOperationStatus.Failed;
+                    Error = _webTextRequestOp.Error;
+                    WebRequestCounter.RecordRequestFailed(_fileSystem.PackageName, nameof(RequestKuaiShouPackageVersionOperation));
                 }
+            }
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        private string GetRequestURL(string fileName)
+        {
+            // 轮流返回请求地址
+            if (_requestCount % 2 == 0)
+            {
+                return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, "");
             }
             else
             {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = _webTextRequestOp.Error;
-                WebRequestCounter.RecordRequestFailed(_fileSystem.PackageName, nameof(RequestKuaiShouPackageVersionOperation));
+                return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, "");
             }
-        }
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    private string GetRequestURL(string fileName)
-    {
-        // 轮流返回请求地址
-        if (_requestCount % 2 == 0)
-        {
-            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, "");
-        }
-        else
-        {
-            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, "");
         }
     }
 }
