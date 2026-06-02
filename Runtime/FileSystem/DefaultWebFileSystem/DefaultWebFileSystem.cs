@@ -253,14 +253,12 @@ namespace YooAsset
         public string GetWebPackageVersionFilePath()
         {
             var fileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
-            Debug.LogError(FileRoot + "    " + fileName);
             return PathUtility.Combine(FileRoot, fileName);
         }
 
         [UnityEngine.Scripting.Preserve]
         public string GetWebPackageHashFilePath(string packageVersion)
         {
-            Debug.LogError("packageVersion   " + packageVersion);
             var fileName = YooAssetSettingsData.GetPackageHashFileName(PackageName, packageVersion);
             return PathUtility.Combine(FileRoot, fileName);
         }
