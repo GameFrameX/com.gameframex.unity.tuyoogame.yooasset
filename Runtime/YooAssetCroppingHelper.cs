@@ -229,7 +229,6 @@ namespace YooAsset
                 typeof(ThreadSyncContext),
                 typeof(UnityWebDataRequestOperation),
                 typeof(UnityWebFileRequestOperation),
-                typeof(UnityWebRequestDelegate),
                 typeof(UnityWebRequestOperation),
                 typeof(UnityWebTextRequestOperation),
                 typeof(UnloadAllAssetsOperation),

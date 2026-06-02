@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace YooAsset
 {
@@ -216,9 +217,9 @@ namespace YooAsset
         /// 设置下载系统参数，自定义下载请求
         /// </summary>
         [UnityEngine.Scripting.Preserve]
-        public static void SetDownloadSystemUnityWebRequest(UnityWebRequestDelegate createDelegate)
+        public static void SetDownloadSystemUnityWebRequest(System.Func<string, UnityWebRequest> createDelegate)
         {
-            DownloadSystemHelper.UnityWebRequestCreater = createDelegate;
+            DownloadSystemHelper.SetUnityWebRequestCreater(createDelegate);
         }
 
         /// <summary>
