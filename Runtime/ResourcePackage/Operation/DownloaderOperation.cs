@@ -177,7 +177,7 @@ namespace YooAsset
                 {
                     _lastDownloadBytes = downloadBytes;
                     _lastDownloadCount = _cachedDownloadCount;
-                    Progress = (float)_lastDownloadBytes / TotalDownloadBytes;
+                    Progress = TotalDownloadBytes > 0 ? (float)_lastDownloadBytes / TotalDownloadBytes : 0f;
                     var downloadUpdateData = new DownloadUpdateData
                     {
                         PackageName = _packageName,
