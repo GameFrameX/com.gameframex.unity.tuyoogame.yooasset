@@ -86,7 +86,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public void AddParameter(string name, object value)
         {
-            CreateParameters.Add(name, value);
+            CreateParameters[name] = value;
         }
 
 
