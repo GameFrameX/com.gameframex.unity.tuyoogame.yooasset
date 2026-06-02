@@ -1,99 +1,101 @@
-﻿#if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
-using YooAsset;
+#if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
 
-[UnityEngine.Scripting.Preserve]
-internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
+namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    private enum ESteps
+    internal class BGFSLoadPackageManifestOperation : FSLoadPackageManifestOperation
     {
-        None,
-        RequestRemotePackageHash,
-        LoadRemotePackageManifest,
-        Done,
-    }
-
-    private readonly ByteGameFileSystem _fileSystem;
-    private readonly string _packageVersion;
-    private readonly int _timeout;
-    private RequestByteGamePackageHashOperation _requestRemotePackageHashOp;
-    private LoadByteGamePackageManifestOperation _loadRemotePackageManifestOp;
-    private ESteps _steps = ESteps.None;
-
-
-    [UnityEngine.Scripting.Preserve]
-    public BGFSLoadPackageManifestOperation(ByteGameFileSystem fileSystem, string packageVersion, int timeout)
-    {
-        _fileSystem = fileSystem;
-        _packageVersion = packageVersion;
-        _timeout = timeout;
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnStart()
-    {
-        _steps = ESteps.RequestRemotePackageHash;
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnUpdate()
-    {
-        if (_steps == ESteps.None || _steps == ESteps.Done)
+        [UnityEngine.Scripting.Preserve]
+        private enum ESteps
         {
-            return;
+            None,
+            RequestRemotePackageHash,
+            LoadRemotePackageManifest,
+            Done,
         }
 
-        if (_steps == ESteps.RequestRemotePackageHash)
-        {
-            if (_requestRemotePackageHashOp == null)
-            {
-                _requestRemotePackageHashOp = new RequestByteGamePackageHashOperation(_fileSystem, _packageVersion, _timeout);
-                OperationSystem.StartOperation(_fileSystem.PackageName, _requestRemotePackageHashOp);
-            }
+        private readonly ByteGameFileSystem _fileSystem;
+        private readonly string _packageVersion;
+        private readonly int _timeout;
+        private RequestByteGamePackageHashOperation _requestRemotePackageHashOp;
+        private LoadByteGamePackageManifestOperation _loadRemotePackageManifestOp;
+        private ESteps _steps = ESteps.None;
 
-            if (_requestRemotePackageHashOp.IsDone == false)
+
+        [UnityEngine.Scripting.Preserve]
+        public BGFSLoadPackageManifestOperation(ByteGameFileSystem fileSystem, string packageVersion, int timeout)
+        {
+            _fileSystem = fileSystem;
+            _packageVersion = packageVersion;
+            _timeout = timeout;
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnStart()
+        {
+            _steps = ESteps.RequestRemotePackageHash;
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnUpdate()
+        {
+            if (_steps == ESteps.None || _steps == ESteps.Done)
             {
                 return;
             }
 
-            if (_requestRemotePackageHashOp.Status == EOperationStatus.Succeed)
+            if (_steps == ESteps.RequestRemotePackageHash)
             {
-                _steps = ESteps.LoadRemotePackageManifest;
-            }
-            else
-            {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = _requestRemotePackageHashOp.Error;
-            }
-        }
+                if (_requestRemotePackageHashOp == null)
+                {
+                    _requestRemotePackageHashOp = new RequestByteGamePackageHashOperation(_fileSystem, _packageVersion, _timeout);
+                    OperationSystem.StartOperation(_fileSystem.PackageName, _requestRemotePackageHashOp);
+                }
 
-        if (_steps == ESteps.LoadRemotePackageManifest)
-        {
-            if (_loadRemotePackageManifestOp == null)
-            {
-                var packageHash = _requestRemotePackageHashOp.PackageHash;
-                _loadRemotePackageManifestOp = new LoadByteGamePackageManifestOperation(_fileSystem, _packageVersion, packageHash, _timeout);
-                OperationSystem.StartOperation(_fileSystem.PackageName, _loadRemotePackageManifestOp);
-            }
+                if (_requestRemotePackageHashOp.IsDone == false)
+                {
+                    return;
+                }
 
-            Progress = _loadRemotePackageManifestOp.Progress;
-            if (_loadRemotePackageManifestOp.IsDone == false)
-            {
-                return;
+                if (_requestRemotePackageHashOp.Status == EOperationStatus.Succeed)
+                {
+                    _steps = ESteps.LoadRemotePackageManifest;
+                }
+                else
+                {
+                    _steps = ESteps.Done;
+                    Status = EOperationStatus.Failed;
+                    Error = _requestRemotePackageHashOp.Error;
+                }
             }
 
-            if (_loadRemotePackageManifestOp.Status == EOperationStatus.Succeed)
+            if (_steps == ESteps.LoadRemotePackageManifest)
             {
-                _steps = ESteps.Done;
-                Manifest = _loadRemotePackageManifestOp.Manifest;
-                Status = EOperationStatus.Succeed;
-            }
-            else
-            {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = _loadRemotePackageManifestOp.Error;
+                if (_loadRemotePackageManifestOp == null)
+                {
+                    var packageHash = _requestRemotePackageHashOp.PackageHash;
+                    _loadRemotePackageManifestOp = new LoadByteGamePackageManifestOperation(_fileSystem, _packageVersion, packageHash, _timeout);
+                    OperationSystem.StartOperation(_fileSystem.PackageName, _loadRemotePackageManifestOp);
+                }
+
+                Progress = _loadRemotePackageManifestOp.Progress;
+                if (_loadRemotePackageManifestOp.IsDone == false)
+                {
+                    return;
+                }
+
+                if (_loadRemotePackageManifestOp.Status == EOperationStatus.Succeed)
+                {
+                    _steps = ESteps.Done;
+                    Manifest = _loadRemotePackageManifestOp.Manifest;
+                    Status = EOperationStatus.Succeed;
+                }
+                else
+                {
+                    _steps = ESteps.Done;
+                    Status = EOperationStatus.Failed;
+                    Error = _loadRemotePackageManifestOp.Error;
+                }
             }
         }
     }

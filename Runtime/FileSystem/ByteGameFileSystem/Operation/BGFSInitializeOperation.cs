@@ -1,26 +1,28 @@
-﻿#if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
-using YooAsset;
+#if UNITY_WEBGL && ENABLE_DOUYIN_MINI_GAME
 
-[UnityEngine.Scripting.Preserve]
-internal partial class BGFSInitializeOperation : FSInitializeFileSystemOperation
+namespace YooAsset
 {
-    private readonly ByteGameFileSystem _fileSystem;
-
     [UnityEngine.Scripting.Preserve]
-    public BGFSInitializeOperation(ByteGameFileSystem fileSystem)
+    internal partial class BGFSInitializeOperation : FSInitializeFileSystemOperation
     {
-        _fileSystem = fileSystem;
-    }
+        private readonly ByteGameFileSystem _fileSystem;
 
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnStart()
-    {
-        Status = EOperationStatus.Succeed;
-    }
+        [UnityEngine.Scripting.Preserve]
+        public BGFSInitializeOperation(ByteGameFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnUpdate()
-    {
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnStart()
+        {
+            Status = EOperationStatus.Succeed;
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnUpdate()
+        {
+        }
     }
 }
 #endif
