@@ -7,6 +7,9 @@ namespace YooAsset
     {
         private static YooAssetSettings _setting = null;
 
+        /// <summary>
+        /// 获取配置文件
+        /// </summary>
         public static YooAssetSettings Setting
         {
             get
@@ -26,7 +29,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         private static void LoadSettingData()
         {
-            _setting = Resources.Load<YooAssetSettings>("YooAssetSettings");
+            _setting = Resources.Load<YooAssetSettings>(nameof(YooAssetSettings));
             if (_setting == null)
             {
                 YooLogger.Log("YooAsset use default settings.");
