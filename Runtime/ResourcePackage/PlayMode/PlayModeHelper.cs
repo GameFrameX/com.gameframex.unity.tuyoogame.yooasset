@@ -18,7 +18,9 @@ namespace YooAsset
                 {
                     classType = assembly.GetType(parameters.FileSystemClass);
                     if (classType != null)
+                    {
                         break;
+                    }
                 }
             }
 
