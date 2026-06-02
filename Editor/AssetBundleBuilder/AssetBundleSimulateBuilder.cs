@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityEngine;
 
 namespace YooAsset.Editor
 {
@@ -13,54 +12,21 @@ namespace YooAsset.Editor
             string packageVersion = "Simulate";
             BuildResult buildResult;
 
-            if (buildPipelineName == EBuildPipeline.BuiltinBuildPipeline.ToString())
+            if (buildPipelineName == nameof(EBuildPipeline.BuiltinBuildPipeline))
             {
-                BuiltinBuildParameters buildParameters = new BuiltinBuildParameters();
-                buildParameters.BuildOutputRoot = AssetBundleBuilderHelper.GetDefaultBuildOutputRoot();
-                buildParameters.BuildinFileRoot = AssetBundleBuilderHelper.GetStreamingAssetsRoot();
-                buildParameters.BuildPipeline = buildPipelineName;
-                buildParameters.BuildTarget = EditorUserBuildSettings.activeBuildTarget;
-                buildParameters.BuildMode = EBuildMode.SimulateBuild;
-                buildParameters.PackageName = packageName;
-                buildParameters.PackageVersion = packageVersion;
-                buildParameters.FileNameStyle = EFileNameStyle.HashName;
-                buildParameters.BuildinFileCopyOption = EBuildinFileCopyOption.None;
-                buildParameters.BuildinFileCopyParams = string.Empty;
-
+                BuiltinBuildParameters buildParameters = CreateBuildParameters<BuiltinBuildParameters>(buildPipelineName, packageName, packageVersion);
                 BuiltinBuildPipeline pipeline = new BuiltinBuildPipeline();
                 buildResult = pipeline.Run(buildParameters, false);
             }
-            else if (buildPipelineName == EBuildPipeline.ScriptableBuildPipeline.ToString())
+            else if (buildPipelineName == nameof(EBuildPipeline.ScriptableBuildPipeline))
             {
-                ScriptableBuildParameters buildParameters = new ScriptableBuildParameters();
-                buildParameters.BuildOutputRoot = AssetBundleBuilderHelper.GetDefaultBuildOutputRoot();
-                buildParameters.BuildinFileRoot = AssetBundleBuilderHelper.GetStreamingAssetsRoot();
-                buildParameters.BuildPipeline = buildPipelineName;
-                buildParameters.BuildTarget = EditorUserBuildSettings.activeBuildTarget;
-                buildParameters.BuildMode = EBuildMode.SimulateBuild;
-                buildParameters.PackageName = packageName;
-                buildParameters.PackageVersion = packageVersion;
-                buildParameters.FileNameStyle = EFileNameStyle.HashName;
-                buildParameters.BuildinFileCopyOption = EBuildinFileCopyOption.None;
-                buildParameters.BuildinFileCopyParams = string.Empty;
-
+                ScriptableBuildParameters buildParameters = CreateBuildParameters<ScriptableBuildParameters>(buildPipelineName, packageName, packageVersion);
                 ScriptableBuildPipeline pipeline = new ScriptableBuildPipeline();
                 buildResult = pipeline.Run(buildParameters, true);
             }
-            else if (buildPipelineName == EBuildPipeline.RawFileBuildPipeline.ToString())
+            else if (buildPipelineName == nameof(EBuildPipeline.RawFileBuildPipeline))
             {
-                RawFileBuildParameters buildParameters = new RawFileBuildParameters();
-                buildParameters.BuildOutputRoot = AssetBundleBuilderHelper.GetDefaultBuildOutputRoot();
-                buildParameters.BuildinFileRoot = AssetBundleBuilderHelper.GetStreamingAssetsRoot();
-                buildParameters.BuildPipeline = buildPipelineName;
-                buildParameters.BuildTarget = EditorUserBuildSettings.activeBuildTarget;
-                buildParameters.BuildMode = EBuildMode.SimulateBuild;
-                buildParameters.PackageName = packageName;
-                buildParameters.PackageVersion = packageVersion;
-                buildParameters.FileNameStyle = EFileNameStyle.HashName;
-                buildParameters.BuildinFileCopyOption = EBuildinFileCopyOption.None;
-                buildParameters.BuildinFileCopyParams = string.Empty;
-
+                RawFileBuildParameters buildParameters = CreateBuildParameters<RawFileBuildParameters>(buildPipelineName, packageName, packageVersion);
                 RawFileBuildPipeline pipeline = new RawFileBuildPipeline();
                 buildResult = pipeline.Run(buildParameters, true);
             }
@@ -80,6 +46,27 @@ namespace YooAsset.Editor
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 创建通用构建参数
+        /// </summary>
+        private static T CreateBuildParameters<T>(string buildPipelineName, string packageName, string packageVersion) where T : BuildParameters, new()
+        {
+            T buildParameters = new T
+            {
+                BuildOutputRoot = AssetBundleBuilderHelper.GetDefaultBuildOutputRoot(),
+                BuildinFileRoot = AssetBundleBuilderHelper.GetStreamingAssetsRoot(),
+                BuildPipeline = buildPipelineName,
+                BuildTarget = EditorUserBuildSettings.activeBuildTarget,
+                BuildMode = EBuildMode.SimulateBuild,
+                PackageName = packageName,
+                PackageVersion = packageVersion,
+                FileNameStyle = EFileNameStyle.HashName,
+                BuildinFileCopyOption = EBuildinFileCopyOption.None,
+                BuildinFileCopyParams = string.Empty,
+            };
+            return buildParameters;
         }
     }
 }
