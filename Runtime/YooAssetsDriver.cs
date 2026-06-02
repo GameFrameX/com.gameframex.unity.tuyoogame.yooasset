@@ -15,13 +15,11 @@ namespace YooAsset
             YooAssets.Update();
         }
 
-#if UNITY_EDITOR
         [UnityEngine.Scripting.Preserve]
         private void OnApplicationQuit()
         {
             YooAssets.OnApplicationQuit();
         }
-#endif
 
         [UnityEngine.Scripting.Preserve]
         [Conditional("DEBUG")]
