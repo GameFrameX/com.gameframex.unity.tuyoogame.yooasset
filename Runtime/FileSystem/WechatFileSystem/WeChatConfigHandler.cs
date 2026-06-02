@@ -31,20 +31,23 @@ using UnityEngine;
 
 #if UNITY_WEBGL && ENABLE_WECHAT_MINI_GAME
 
-public class WeChatConfigHandler : MonoBehaviour
+namespace YooAsset
 {
-    private float _timer = 0f;
-
-    private void Update()
+    public class WeChatConfigHandler : MonoBehaviour
     {
-        _timer += Time.deltaTime;
-        if (!(_timer >= 1f))
-        {
-            return;
-        }
+        private float _timer = 0f;
 
-        WeChatWASM.WXBase.PreloadConcurrent(10);
-        _timer = 0f;
+        private void Update()
+        {
+            _timer += Time.deltaTime;
+            if (!(_timer >= 1f))
+            {
+                return;
+            }
+
+            WeChatWASM.WXBase.PreloadConcurrent(10);
+            _timer = 0f;
+        }
     }
 }
 
