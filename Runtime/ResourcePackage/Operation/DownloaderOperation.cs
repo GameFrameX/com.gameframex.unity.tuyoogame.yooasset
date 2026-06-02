@@ -100,7 +100,6 @@ namespace YooAsset
             _packageName = packageName;
             _bundleInfoList = downloadList;
             _downloadingMaxNumber = UnityEngine.Mathf.Clamp(downloadingMaxNumber, 1, MAX_LOADER_COUNT);
-            ;
             _failedTryAgain = failedTryAgain;
             _timeout = timeout;
 

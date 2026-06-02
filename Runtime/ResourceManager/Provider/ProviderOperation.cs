@@ -342,7 +342,6 @@ namespace YooAsset
         public void InitSpawnDebugInfo()
         {
             SpawnScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            ;
             SpawnTime = SpawnTimeToString(UnityEngine.Time.realtimeSinceStartup);
         }
 
