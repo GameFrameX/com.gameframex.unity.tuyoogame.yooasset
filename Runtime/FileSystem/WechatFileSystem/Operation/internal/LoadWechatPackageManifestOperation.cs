@@ -1,131 +1,143 @@
-﻿#if UNITY_WEBGL && ENABLE_WECHAT_MINI_GAME
-using YooAsset;
+#if UNITY_WEBGL && ENABLE_WECHAT_MINI_GAME
 
-[UnityEngine.Scripting.Preserve]
-internal class LoadWechatPackageManifestOperation : AsyncOperationBase
+namespace YooAsset
 {
     [UnityEngine.Scripting.Preserve]
-    private enum ESteps
+    internal class LoadWechatPackageManifestOperation : AsyncOperationBase
     {
-        None,
-        RequestFileData,
-        VerifyFileData,
-        LoadManifest,
-        Done,
-    }
-
-    private readonly WechatFileSystem _fileSystem;
-    private readonly string _packageVersion;
-    private readonly string _packageHash;
-    private readonly int _timeout;
-    private UnityWebDataRequestOperation _webDataRequestOp;
-    private DeserializeManifestOperation _deserializer;
-    private int _requestCount = 0;
-    private ESteps _steps = ESteps.None;
-
-    /// <summary>
-    /// 包裹清单
-    /// </summary>
-    public PackageManifest Manifest { private set; get; }
-
-
-    [UnityEngine.Scripting.Preserve]
-    internal LoadWechatPackageManifestOperation(WechatFileSystem fileSystem, string packageVersion, string packageHash, int timeout)
-    {
-        _fileSystem = fileSystem;
-        _packageVersion = packageVersion;
-        _packageHash = packageHash;
-        _timeout = timeout;
-    }
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnStart()
-    {
-        _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(LoadWechatPackageManifestOperation));
-        _steps = ESteps.RequestFileData;
-    }
-    [UnityEngine.Scripting.Preserve]
-    public override void InternalOnUpdate()
-    {
-        if (_steps == ESteps.None || _steps == ESteps.Done)
-            return;
-
-        if (_steps == ESteps.RequestFileData)
+        [UnityEngine.Scripting.Preserve]
+        private enum ESteps
         {
-            if (_webDataRequestOp == null)
-            {
-                string fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
-                string url = GetRequestURL(fileName);
-                _webDataRequestOp = new UnityWebDataRequestOperation(url, _timeout);
-                OperationSystem.StartOperation(_fileSystem.PackageName, _webDataRequestOp);
-            }
+            None,
+            RequestFileData,
+            VerifyFileData,
+            LoadManifest,
+            Done,
+        }
 
-            Progress = _webDataRequestOp.Progress;
-            if (_webDataRequestOp.IsDone == false)
+        private readonly WechatFileSystem _fileSystem;
+        private readonly string _packageVersion;
+        private readonly string _packageHash;
+        private readonly int _timeout;
+        private UnityWebDataRequestOperation _webDataRequestOp;
+        private DeserializeManifestOperation _deserializer;
+        private int _requestCount = 0;
+        private ESteps _steps = ESteps.None;
+
+        /// <summary>
+        /// 包裹清单
+        /// </summary>
+        public PackageManifest Manifest { private set; get; }
+
+
+        [UnityEngine.Scripting.Preserve]
+        internal LoadWechatPackageManifestOperation(WechatFileSystem fileSystem, string packageVersion, string packageHash, int timeout)
+        {
+            _fileSystem = fileSystem;
+            _packageVersion = packageVersion;
+            _packageHash = packageHash;
+            _timeout = timeout;
+        }
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnStart()
+        {
+            _requestCount = WebRequestCounter.GetRequestFailedCount(_fileSystem.PackageName, nameof(LoadWechatPackageManifestOperation));
+            _steps = ESteps.RequestFileData;
+        }
+        [UnityEngine.Scripting.Preserve]
+        public override void InternalOnUpdate()
+        {
+            if (_steps == ESteps.None || _steps == ESteps.Done)
+            {
                 return;
-
-            if (_webDataRequestOp.Status == EOperationStatus.Succeed)
-            {
-                _steps = ESteps.VerifyFileData;
             }
-            else
+
+            if (_steps == ESteps.RequestFileData)
             {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = _webDataRequestOp.Error;
-                WebRequestCounter.RecordRequestFailed(_fileSystem.PackageName, nameof(LoadWechatPackageManifestOperation));
+                if (_webDataRequestOp == null)
+                {
+                    string fileName = YooAssetSettingsData.GetManifestBinaryFileName(_fileSystem.PackageName, _packageVersion);
+                    string url = GetRequestURL(fileName);
+                    _webDataRequestOp = new UnityWebDataRequestOperation(url, _timeout);
+                    OperationSystem.StartOperation(_fileSystem.PackageName, _webDataRequestOp);
+                }
+
+                Progress = _webDataRequestOp.Progress;
+                if (_webDataRequestOp.IsDone == false)
+                {
+                    return;
+                }
+
+                if (_webDataRequestOp.Status == EOperationStatus.Succeed)
+                {
+                    _steps = ESteps.VerifyFileData;
+                }
+                else
+                {
+                    _steps = ESteps.Done;
+                    Status = EOperationStatus.Failed;
+                    Error = _webDataRequestOp.Error;
+                    WebRequestCounter.RecordRequestFailed(_fileSystem.PackageName, nameof(LoadWechatPackageManifestOperation));
+                }
+            }
+
+            if (_steps == ESteps.VerifyFileData)
+            {
+                string fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
+                if (fileHash == _packageHash)
+                {
+                    _steps = ESteps.LoadManifest;
+                }
+                else
+                {
+                    _steps = ESteps.Done;
+                    Status = EOperationStatus.Failed;
+                    Error = "Failed to verify wechat package manifest file!";
+                }
+            }
+
+            if (_steps == ESteps.LoadManifest)
+            {
+                if (_deserializer == null)
+                {
+                    _deserializer = new DeserializeManifestOperation(_webDataRequestOp.Result);
+                    OperationSystem.StartOperation(_fileSystem.PackageName, _deserializer);
+                }
+
+                Progress = _deserializer.Progress;
+                if (_deserializer.IsDone == false)
+                {
+                    return;
+                }
+
+                if (_deserializer.Status == EOperationStatus.Succeed)
+                {
+                    _steps = ESteps.Done;
+                    Manifest = _deserializer.Manifest;
+                    Status = EOperationStatus.Succeed;
+                }
+                else
+                {
+                    _steps = ESteps.Done;
+                    Status = EOperationStatus.Failed;
+                    Error = _deserializer.Error;
+                }
             }
         }
 
-        if (_steps == ESteps.VerifyFileData)
+        [UnityEngine.Scripting.Preserve]
+        private string GetRequestURL(string fileName)
         {
-            string fileHash = HashUtility.BytesMD5(_webDataRequestOp.Result);
-            if (fileHash == _packageHash)
+            // 轮流返回请求地址
+            if (_requestCount % 2 == 0)
             {
-                _steps = ESteps.LoadManifest;
+                return _fileSystem.RemoteServices.GetRemoteMainURL(fileName, _packageVersion);
             }
             else
             {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = "Failed to verify wechat package manifest file!";
+                return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName, _packageVersion);
             }
         }
-
-        if (_steps == ESteps.LoadManifest)
-        {
-            if (_deserializer == null)
-            {
-                _deserializer = new DeserializeManifestOperation(_webDataRequestOp.Result);
-                OperationSystem.StartOperation(_fileSystem.PackageName, _deserializer);
-            }
-
-            Progress = _deserializer.Progress;
-            if (_deserializer.IsDone == false)
-                return;
-
-            if (_deserializer.Status == EOperationStatus.Succeed)
-            {
-                _steps = ESteps.Done;
-                Manifest = _deserializer.Manifest;
-                Status = EOperationStatus.Succeed;
-            }
-            else
-            {
-                _steps = ESteps.Done;
-                Status = EOperationStatus.Failed;
-                Error = _deserializer.Error;
-            }
-        }
-    }
-
-    [UnityEngine.Scripting.Preserve]
-    private string GetRequestURL(string fileName)
-    {
-        // 轮流返回请求地址
-        if (_requestCount % 2 == 0)
-            return _fileSystem.RemoteServices.GetRemoteMainURL(fileName,_packageVersion);
-        else
-            return _fileSystem.RemoteServices.GetRemoteFallbackURL(fileName,_packageVersion);
     }
 }
 #endif
