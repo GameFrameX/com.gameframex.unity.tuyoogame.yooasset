@@ -72,6 +72,15 @@ Then add the package to `dependencies`:
 
 查看 [Releases](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/releases) 了解更新日誌。
 
+
+## 依賴
+
+| 套件 | 說明 |
+|------|------|
+| `com.unity.modules.assetbundle` | 1.0.0 |
+| `com.unity.modules.unitywebrequest` | 1.0.0 |
+| `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
+| `com.unity.scriptablebuildpipeline` | 2.1.0 |
 ## 開源協議
 
 詳見 [LICENSE.md](LICENSE.md) 檔案。

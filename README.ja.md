@@ -72,6 +72,15 @@ Then add the package to `dependencies`:
 
 変更履歴は [Releases](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/releases) をご覧ください。
 
+
+## 依存関係
+
+| パッケージ | 説明 |
+|----------|------|
+| `com.unity.modules.assetbundle` | 1.0.0 |
+| `com.unity.modules.unitywebrequest` | 1.0.0 |
+| `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
+| `com.unity.scriptablebuildpipeline` | 2.1.0 |
 ## ライセンス
 
 詳しくは [LICENSE.md](LICENSE.md) をご参照ください。
