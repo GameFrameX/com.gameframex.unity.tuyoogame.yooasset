@@ -1,3 +1,11 @@
+## [2.9.4](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.3...2.9.4) (2026-06-07)
+
+
+### Bug Fixes
+
+* 统一 LICENSE.md 为 Apache 2.0 标准完整文本 ([e253b66](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/e253b66b39db905e8dab28f629475e0ef0c5b2ab))
+* 补全包规范文件（LICENSE/CHANGELOG/URL 字段/unity 字段） ([db7e0cc](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/db7e0cc9c46f4b84f005cb6a855ffb4a9f51ea3d))
+
 ## [2.9.3](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.2...2.9.3) (2026-06-02)
 
 
