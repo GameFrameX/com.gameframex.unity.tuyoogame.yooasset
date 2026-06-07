@@ -29,16 +29,36 @@ YooAsset は Unity3D 向けのリソース管理システムで、開発チー�
 
 ## クイックスタート
 
-### インストール（いずれかを選択）
+### インストール
 
-1. `manifest.json` の `dependencies` セクションに以下を追加：
-   ```json
-   {"com.gameframex.unity.tuyoogame.yooasset": "https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git"}
-   ```
+Unity プロジェクトの `Packages/manifest.json` を編集し、`scopedRegistries` セクションを追加してください：
 
-2. Unity の Package Manager で `Git URL` を使用してパッケージを追加：https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ]
+}
+```
 
-3. リポジトリをダウンロードして Unity プロジェクトの `Packages` ディレクトリに配置。自動的にロードされます。
+`scopes` は、どのパッケージをこのレジストリから解決するかを制御します。`com.gameframex` で始まるパッケージのみがこのレジストリから取得されます。
+
+Then add the package to `dependencies`:
+
+```json
+{
+  "dependencies": {
+    "com.gameframex.unity.tuyoogame.yooasset": "2.9.3"
+  }
+}
+```
+
 
 ## ドキュメントとリソース
 

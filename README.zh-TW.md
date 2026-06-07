@@ -29,16 +29,36 @@ YooAsset 是一套用於 Unity3D 的資源管理系統，用於幫助研發團�
 
 ## 快速開始
 
-### 安裝方式（任選其一）
+### 安裝
 
-1. 直接在 `manifest.json` 的 `dependencies` 節點下加入以下內容：
-   ```json
-   {"com.gameframex.unity.tuyoogame.yooasset": "https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git"}
-   ```
+編輯 Unity 專案的 `Packages/manifest.json`，添加 `scopedRegistries` 部分：
 
-2. 在 Unity 的 `Packages Manager` 中使用 `Git URL` 的方式添加庫，地址為：https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ]
+}
+```
 
-3. 直接下載倉庫放置到 Unity 專案的 `Packages` 目錄下，會自動載入識別。
+`scopes` 控制哪些套件透過此註冊表解析。只有以 `com.gameframex` 開頭的套件才會從這個註冊表取得。
+
+Then add the package to `dependencies`:
+
+```json
+{
+  "dependencies": {
+    "com.gameframex.unity.tuyoogame.yooasset": "2.9.3"
+  }
+}
+```
+
 
 ## 文檔與資源
 

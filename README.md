@@ -29,16 +29,36 @@ For more information, visit the official repository: https://github.com/tuyoogam
 
 ## Quick Start
 
-### Installation (choose one)
+### Installation
 
-1. Add the following to the `dependencies` section of your `manifest.json`:
-   ```json
-   {"com.gameframex.unity.tuyoogame.yooasset": "https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git"}
-   ```
+Edit your Unity project's `Packages/manifest.json` and add the `scopedRegistries` section:
 
-2. In Unity's Package Manager, use `Git URL` to add the package: https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset.git
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ]
+}
+```
 
-3. Download the repository and place it in your Unity project's `Packages` directory. It will be loaded automatically.
+`scopes` controls which packages are resolved through this registry. Only packages whose names start with `com.gameframex` will be fetched from it.
+
+Then add the package to `dependencies`:
+
+```json
+{
+  "dependencies": {
+    "com.gameframex.unity.tuyoogame.yooasset": "2.9.3"
+  }
+}
+```
+
 
 ## Documentation & Resources
 
