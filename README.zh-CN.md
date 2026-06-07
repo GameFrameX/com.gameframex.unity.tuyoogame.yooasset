@@ -59,7 +59,6 @@ Then add the package to `dependencies`:
 }
 ```
 
-
 ## 文档与资源
 
 - [官方文档](https://gameframex.doc.alianblank.com)
@@ -75,4 +74,4 @@ Then add the package to `dependencies`:
 
 ## 开源协议
 
-本项目基于 MIT 协议开源 - 详见 [LICENSE](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/blob/main/LICENSE) 文件。
+详见 [LICENSE.md](LICENSE.md) 文件。

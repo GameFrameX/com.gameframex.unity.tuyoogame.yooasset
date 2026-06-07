@@ -59,7 +59,6 @@ Then add the package to `dependencies`:
 }
 ```
 
-
 ## Documentation & Resources
 
 - [Official Documentation](https://gameframex.doc.alianblank.com)
@@ -75,4 +74,4 @@ See [Releases](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooa
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/blob/main/LICENSE) file for details.
+See [LICENSE.md](LICENSE.md) for license information.

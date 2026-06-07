@@ -59,7 +59,6 @@ Then add the package to `dependencies`:
 }
 ```
 
-
 ## 문서 및 자료
 
 - [공식 문서](https://gameframex.doc.alianblank.com)
@@ -75,4 +74,4 @@ Then add the package to `dependencies`:
 
 ## 라이선스
 
-이 프로젝트는 MIT 라이선스에 따라 배포됩니다 - 자세한 내용은 [LICENSE](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/blob/main/LICENSE) 파일을 참조하세요.
+자세한 내용은 [LICENSE.md](LICENSE.md) 파일을 참조하세요.
