@@ -1,38 +1,24 @@
-<p align="center">
-  <img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160" />
-</p>
+<div align="center">
 
-<h1 align="center">GameFrameX YooAsset</h1>
+<img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="Game Frame X Logo" width="160" />
 
-<p align="center">
-  <a href="https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/releases">
-    <img src="https://img.shields.io/github/v/release/gameframex/com.gameframex.unity.tuyoogame.yooasset?style=flat-square" alt="Version" />
-  </a>
-  <a href="https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/gameframex/com.gameframex.unity.tuyoogame.yooasset?style=flat-square" alt="License" />
-  </a>
-  <a href="https://gameframex.doc.alianblank.com">
-    <img src="https://img.shields.io/badge/Documentation-online-blue?style=flat-square" alt="Documentation" />
-  </a>
-</p>
+# GameFrameX YooAsset
 
-<p align="center">
-  All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams
-</p>
+[![License](https://img.shields.io/github/license/GameFrameX/com.gameframex.unity.tuyoogame.yooasset)](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/blob/main/LICENSE.md)
+[![Version](https://img.shields.io/github/v/release/GameFrameX/com.gameframex.unity.tuyoogame.yooasset)](https://github.com/GameFrameX/com.gameframex.unity.tuyoogame.yooasset/releases)
+[![Documentation](https://img.shields.io/badge/Documentation-docs-blue)](https://gameframex.doc.alianblank.com)
 
-<p align="center">
-  <a href="https://gameframex.doc.alianblank.com">Documentation</a> ·
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="https://qm.qq.com/q/3dIpogITg">QQ Group</a> ·
-  Language: **English** ·
-  <a href="README.zh-CN.md">简体中文</a> ·
-  <a href="README.zh-TW.md">繁體中文</a> ·
-  <a href="README.ja.md">日本語</a> ·
-  <a href="README.ko.md">한국어</a>
-</p>
+All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams
 
----
+<br />
 
+[Documentation](https://gameframex.doc.alianblank.com) · [Quick Start](#quick-start) · [QQ Group](https://qm.qq.com/q/3dIpogITg)
+
+<br />
+
+**English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+
+</div>
 ## Project Overview
 
 YooAsset is a resource management system for Unity3D that helps development teams quickly deploy and deliver games. It can meet the various needs of commercial games and has been validated by multiple game products with millions of DAU.
