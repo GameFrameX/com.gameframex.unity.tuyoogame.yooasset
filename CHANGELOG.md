@@ -1,3 +1,16 @@
+# [3.0.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.4...3.0.0) (2026-09-11)
+
+
+### Features
+
+* **filesystem:** 移除小游戏平台 FileSystem 支持 ([91fd5f8](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/91fd5f8178ffbcd9518cb2d40c47edff8628562c))
+
+
+### BREAKING CHANGES
+
+* **filesystem:** 移除 WechatFileSystem、KuaiShouFileSystem、
+ByteGameFileSystem 等公开类型，引用这些类型的代码将编译失败。
+
 ## [2.9.4](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.3...2.9.4) (2026-06-07)
 
 
