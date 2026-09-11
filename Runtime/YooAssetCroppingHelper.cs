@@ -17,47 +17,6 @@ namespace YooAsset
         {
             _types = new[]
             {
-#if UNITY_WEBGL
-#if ENABLE_WECHAT_MINI_GAME
-                typeof(WechatFileSystem),
-                typeof(WechatFileSystemCreater),
-                typeof(WXFSRequestPackageVersionOperation),
-                typeof(WXFSLoadPackageManifestOperation),
-                typeof(WXFSLoadBundleOperation),
-                typeof(WXFSInitializeOperation),
-                typeof(WXFSDownloadFileOperation),
-                typeof(RequestWechatPackageVersionOperation),
-                typeof(RequestWechatPackageHashOperation),
-                typeof(LoadWechatPackageManifestOperation),
-#endif
-
-#if ENABLE_KUAISHOU_MINI_GAME
-                typeof(KuaiShouFileSystem),
-                typeof(KuaiShouFileSystemCreater),
-                typeof(KSFSRequestPackageVersionOperation),
-                typeof(KSFSLoadPackageManifestOperation),
-                typeof(KSFSLoadBundleOperation),
-                typeof(KSFSInitializeOperation),
-                typeof(KSFSDownloadFileOperation),
-                typeof(RequestKuaiShouPackageVersionOperation),
-                typeof(RequestKuaiShouPackageHashOperation),
-                typeof(LoadKuaiShouPackageManifestOperation),
-#endif
-
-#if ENABLE_DOUYIN_MINI_GAME
-                typeof(ByteGameFileSystem),
-                typeof(ByteGameFileSystemCreater),
-                typeof(BGFSRequestPackageVersionOperation),
-                typeof(BGFSLoadPackageManifestOperation),
-                typeof(BGFSLoadBundleOperation),
-                typeof(BGFSInitializeOperation),
-                typeof(BGFSDownloadFileOperation),
-                typeof(RequestByteGamePackageVersionOperation),
-                typeof(RequestByteGamePackageHashOperation),
-                typeof(LoadByteGamePackageManifestOperation),
-#endif
-
-#endif
                 typeof(AllAssetsHandle),
                 typeof(ApplicationFootPrint),
                 typeof(AssetHandle),
