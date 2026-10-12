@@ -69,7 +69,6 @@ namespace YooAsset
         UpdatePackageManifestOperation IPlayMode.UpdatePackageManifestAsync(string packageVersion, int timeout)
         {
             var operation = new UpdatePackageManifestImplOperation(this, WebFileSystem, packageVersion, timeout);
-            ;
             OperationSystem.StartOperation(PackageName, operation);
             return operation;
         }

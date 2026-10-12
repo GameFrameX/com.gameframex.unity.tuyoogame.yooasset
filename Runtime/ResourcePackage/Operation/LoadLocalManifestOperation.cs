@@ -149,26 +149,24 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public void SavePackageVersion()
         {
-            if (_impl.ActiveManifest != null)
+            // 离线/编辑器模式没有沙盒文件系统（cacheSystem 为 null），无需记录
+            if (_cacheFileSystem == null || _impl.ActiveManifest == null)
             {
-                var fileName = YooAssetSettingsData.GetPackageVersionFileName(_buildinFileSystem.PackageName);
-                var _manifestFileRoot = PathUtility.Combine(_cacheFileSystem.FileRoot, DefaultCacheFileSystemDefine.ManifestFilesFolderName);
-                var filePath = PathUtility.Combine(_manifestFileRoot, fileName);
+                return;
+            }
 
-                //FileUtility.CreateFileDirectory(filePath);
+            var fileName = YooAssetSettingsData.GetPackageVersionFileName(_buildinFileSystem.PackageName);
+            var filePath = PathUtility.Combine(_cacheFileSystem.FileRoot, fileName);
 
-                //if (!File.Exists(filePath))
-                //    File.Create(filePath).Close();
-
-                //FileInfo fi = new FileInfo(filePath);
-                //FileStream fs = fi.OpenWrite();
-                //byte[] bytes = Encoding.UTF8.GetBytes(_packageVersion);
-                //fs.Write(bytes, 0, bytes.Length);
-                //fs.Flush();
-                //fs.Close();
-                //fs.Dispose();
+            try
+            {
                 FileUtility.WriteAllText(filePath, _packageVersion);
                 Debug.LogWarning("保存沙盒版本文件" + _packageVersion);
+            }
+            catch (Exception e)
+            {
+                // 版本记录仅用于诊断与回退，写入失败不允许中断流程
+                Debug.LogWarning($"保存沙盒版本文件失败:{filePath} {e.Message}");
             }
         }
     }

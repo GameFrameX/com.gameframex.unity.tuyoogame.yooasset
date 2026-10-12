@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace YooAsset
@@ -33,7 +33,6 @@ namespace YooAsset
         private ESteps _steps = ESteps.None;
 
 
-        [UnityEngine.Scripting.Preserve]
         internal UpdatePackageManifestImplOperation(IPlayMode impl, IFileSystem fileSystem, string packageVersion, int timeout)
         {
             _impl = impl;
@@ -114,27 +113,28 @@ namespace YooAsset
             }
         }
 
-        [UnityEngine.Scripting.Preserve]
         public void SavePackageVersion()
         {
-            if (_impl.ActiveManifest != null)
+            if (_impl.ActiveManifest == null)
+                return;
+
+            // 版本记录统一写入沙盒包根目录（与 LoadCachePackageVersionOperation 的读取路径一致，
+            // 也与包内版本文件的目录约定相同）。不能写 _fileSystem.FileRoot：
+            // 离线模式的内置目录在移动端位于 APK 内（只读），Web 模式的根目录也不是可写路径。
+            var fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
+            var recordFileSystem = new DefaultCacheFileSystem();
+            recordFileSystem.OnCreate(_fileSystem.PackageName, null);
+            var filePath = PathUtility.Combine(recordFileSystem.FileRoot, fileName);
+
+            try
             {
-                var fileName = YooAssetSettingsData.GetPackageVersionFileName(_fileSystem.PackageName);
-                var _manifestFileRoot = PathUtility.Combine(_fileSystem.FileRoot, DefaultCacheFileSystemDefine.ManifestFilesFolderName);
-                var filePath = Path.Combine(_manifestFileRoot, fileName);
-
-                //if (!File.Exists(filePath))
-                //    File.Create(filePath).Close();
-
-                //FileInfo fi = new FileInfo(filePath);
-                //FileStream fs = fi.OpenWrite();
-                //byte[] bytes = Encoding.UTF8.GetBytes(_packageVersion);
-                //fs.Write(bytes, 0, bytes.Length);
-                //fs.Flush();
-                //fs.Close();
-                //fs.Dispose();
                 FileUtility.WriteAllText(filePath, _packageVersion);
                 Debug.LogWarning("保存沙盒版本文件" + _packageVersion);
+            }
+            catch (Exception e)
+            {
+                // 版本记录仅用于诊断与回退，写入失败不允许中断补丁流程
+                Debug.LogWarning($"保存沙盒版本文件失败:{filePath} {e.Message}");
             }
         }
     }
