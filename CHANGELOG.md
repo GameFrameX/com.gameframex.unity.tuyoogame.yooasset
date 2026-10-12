@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.0.0...3.0.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **resource-package:** 修正 SavePackageVersion 写入路径与容错 ([6ebe932](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/6ebe9320d3255251bc85b61d9e256e0d885be70a))
+
 # [3.0.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/2.9.4...3.0.0) (2026-09-11)
 
 
