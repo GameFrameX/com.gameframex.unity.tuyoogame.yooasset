@@ -83,6 +83,22 @@ See [Releases](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooa
 | `com.unity.modules.unitywebrequest` | 1.0.0 |
 | `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
 | `com.unity.scriptablebuildpipeline` | 2.1.0 |
+
+## Registry-Based Dispatch (MiniGame Web Play Mode)
+
+Added in 3.1.0. The public API under `Runtime/MiniGame/` decouples mini-game platform adaptation from this host package, keeping it platform-agnostic:
+
+- `IWebPlayModeFileSystemProvider`: provider contract exposing `ChannelName` / `Priority` / `CreateFileSystemParameters`.
+- `WebPlayModeProviderContext`: initialization context carrying `HostServerURL` / `FallbackHostServerURL`.
+- `WebPlayModeFileSystemProviderRegistry`: idempotent registry with `Register` / `Unregister` / `Resolve`, plus the `CreateFileSystemParameters` facade consumed by the asset abstraction layer.
+
+Resolution rules:
+
+- Mutual exclusion: the provider with the highest `Priority` wins; on a tie the first registered provider wins, so only one platform file system is created per initialization.
+- The registry resets in the `SubsystemRegistration` phase, preventing duplicate registration across domain reloads.
+- With no provider registered, the facade falls back to the default WebGL file system.
+- Platform adapter packages (WeChat, Douyin, etc.) self-register their Registrar in `BeforeSceneLoad`, which runs earlier than the first Web play mode initialization — register means dispatch.
+
 ## License
 
 See [LICENSE.md](LICENSE.md) for license information.

@@ -83,6 +83,22 @@ YooAsset은 Unity3D용 리소스 관리 시스템으로, 개발 팀이 게임을
 | `com.unity.modules.unitywebrequest` | 1.0.0 |
 | `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
 | `com.unity.scriptablebuildpipeline` | 2.1.0 |
+
+## 등록 즉 디스패치(등록 기반 분기) (미니게임 WebPlay 모드)
+
+3.1.0에서 추가되었습니다. `Runtime/MiniGame/`의 공개 API가 미니게임 플랫폼 적응을 호스트 패키지에서 분리하여, 호스트 패키지는 플랫폼 비의존 상태를 유지합니다:
+
+- `IWebPlayModeFileSystemProvider`: 어댑터 계약으로, 채널 이름(ChannelName) / `Priority` / `CreateFileSystemParameters`를 제공합니다.
+- `WebPlayModeProviderContext`: 초기화 컨텍스트로, `HostServerURL` / `FallbackHostServerURL`을 전달합니다.
+- `WebPlayModeFileSystemProviderRegistry`: 멱등 레지스트리로, `Register` / `Unregister` / `Resolve`와 asset 추상화 계층이 소비하는 `CreateFileSystemParameters` 퍼사드를 제공합니다.
+
+해석 규칙:
+
+- 상호 배제적 해석: `Priority`가 가장 높은 프로바이더가 선택되며, 우선순위가 같으면 먼저 등록된 프로바이더가 우선합니다. 초기화 시 선택되는 플랫폼 파일 시스템은 하나뿐입니다.
+- 레지스트리는 `SubsystemRegistration` 단계에서 자동으로 리셋되어 도메인 리로드 시 이중 등록을 방지합니다.
+- 등록된 프로바이더가 없으면 퍼사드는 기본 WebGL 파일 시스템으로 폴백합니다.
+- 각 플랫폼 적응 패키지(WeChat, Douyin 등)의 Registrar는 `BeforeSceneLoad`에서 자동 등록되며, 첫 번째 WebPlay 모드 초기화보다 먼저 실행됩니다 — 등록하면 디스패치됩니다.
+
 ## 라이선스
 
 자세한 내용은 [LICENSE.md](LICENSE.md) 파일을 참조하세요.

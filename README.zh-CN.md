@@ -83,6 +83,22 @@ YooAsset 是一套用于 Unity3D 的资源管理系统，用于帮助研发团�
 | `com.unity.modules.unitywebrequest` | 1.0.0 |
 | `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
 | `com.unity.scriptablebuildpipeline` | 2.1.0 |
+
+## 注册即分发机制（小游戏 WebPlay 模式）
+
+3.1.0 新增。`Runtime/MiniGame/` 公共 API 将小游戏平台适配与宿主包解耦，宿主包自身保持平台无关：
+
+- `IWebPlayModeFileSystemProvider`：适配器契约，提供渠道名（ChannelName）/ `Priority` / `CreateFileSystemParameters`。
+- `WebPlayModeProviderContext`：初始化上下文，携带 `HostServerURL` / `FallbackHostServerURL`。
+- `WebPlayModeFileSystemProviderRegistry`：幂等注册表，提供 `Register` / `Unregister` / `Resolve`，以及供 asset 抽象层消费的 `CreateFileSystemParameters` 门面。
+
+解析规则：
+
+- 互斥解析：`Priority` 最高者胜出，同优先级时以注册顺序首个为准，一次初始化只会选中一个平台文件系统。
+- 注册表在 `SubsystemRegistration` 阶段自动 Reset，防止跨域重载时的重复注册。
+- 无任何注册时，门面回落到默认 WebGL 文件系统。
+- 各平台适配包（微信、抖音等）的 Registrar 在 `BeforeSceneLoad` 自注册，早于首次 WebPlay 模式初始化——注册即分发。
+
 ## 开源协议
 
 详见 [LICENSE.md](LICENSE.md) 文件。

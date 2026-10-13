@@ -83,6 +83,22 @@ YooAsset は Unity3D 向けのリソース管理システムで、開発チー�
 | `com.unity.modules.unitywebrequest` | 1.0.0 |
 | `com.unity.modules.unitywebrequestassetbundle` | 1.0.0 |
 | `com.unity.scriptablebuildpipeline` | 2.1.0 |
+
+## 登録即ディスパッチ機構（ミニゲーム WebPlay モード）
+
+3.1.0 で追加。`Runtime/MiniGame/` のパブリック API により、ミニゲームプラットフォーム適応をホストパッケージから分離し、ホスト側はプラットフォーム非依存を保ちます：
+
+- `IWebPlayModeFileSystemProvider`：アダプター契約。チャネル名（ChannelName）/ `Priority` / `CreateFileSystemParameters` を提供します。
+- `WebPlayModeProviderContext`：初期化コンテキスト。`HostServerURL` / `FallbackHostServerURL` を保持します。
+- `WebPlayModeFileSystemProviderRegistry`：冪等なレジストリ。`Register` / `Unregister` / `Resolve` に加え、asset 抽象層が利用する `CreateFileSystemParameters` ファサードを提供します。
+
+解決ルール：
+
+- 相互排他的な解決：`Priority` が最も高いプロバイダーが選択され、優先度が同じ場合は先に登録されたものが優先されます。初期化ごとに選択されるプラットフォームファイルシステムは 1 つだけです。
+- レジストリは `SubsystemRegistration` フェーズで自動的にリセットされ、ドメインリロードに伴う二重登録を防ぎます。
+- 登録がない場合、ファサードはデフォルトの WebGL ファイルシステムへフォールバックします。
+- 各プラットフォーム適応パッケージ（WeChat、Douyin など）の Registrar は `BeforeSceneLoad` で自己登録され、初回の WebPlay モード初期化より前に実行されます——登録すればディスパッチされます。
+
 ## ライセンス
 
 詳しくは [LICENSE.md](LICENSE.md) をご参照ください。
