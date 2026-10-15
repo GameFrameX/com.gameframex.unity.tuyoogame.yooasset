@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.0.1...3.1.0) (2026-10-15)
+
+
+### Bug Fixes
+
+* **runtime:** 补全 Preserve 防裁剪标注并修正全量清单删除遗漏 ([9acaca5](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/9acaca5339d62be488c99e87f120244779e16b50))
+
+
+### Features
+
+* **minigame:** 新增小游戏平台适配注册表三件套 ([ce566e6](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/ce566e60ae8c58467205db30386e4abf2dd336cf))
+
 ## [3.0.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.0.0...3.0.1) (2026-10-12)
 
 
