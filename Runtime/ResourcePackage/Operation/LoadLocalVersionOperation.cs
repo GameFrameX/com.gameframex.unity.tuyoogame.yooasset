@@ -9,6 +9,7 @@
         /// <summary>
         /// 当前本地的最新版本
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageVersion { protected set; get; }
     }
 

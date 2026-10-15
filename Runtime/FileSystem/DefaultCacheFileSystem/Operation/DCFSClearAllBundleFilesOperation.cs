@@ -73,6 +73,8 @@ namespace YooAsset
 
                 if (_allBundleGUIDs.Count == 0)
                 {
+                    // 清理 bundle 缓存的同时删除清单与版本记录，保持沙盒状态一致
+                    _fileSystem.DeleteAllManifestFiles();
                     _steps = ESteps.Done;
                     Status = EOperationStatus.Succeed;
                 }

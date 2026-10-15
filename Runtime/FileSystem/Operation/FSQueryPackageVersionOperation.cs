@@ -6,6 +6,7 @@
         /// <summary>
         /// 资源版本
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageVersion { set; get; }
     }
 }

@@ -12,11 +12,13 @@ namespace YooAsset
         /// <summary>
         /// 主机服务器URL
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string HostServerURL { get; }
 
         /// <summary>
         /// 备用主机服务器URL
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FallbackHostServerURL { get; }
 
         [UnityEngine.Scripting.Preserve]

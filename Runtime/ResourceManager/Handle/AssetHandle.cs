@@ -88,6 +88,7 @@ namespace YooAsset
         /// <summary>
         /// 资源对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public UnityEngine.Object AssetObject
         {
             get

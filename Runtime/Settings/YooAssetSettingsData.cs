@@ -10,6 +10,7 @@ namespace YooAsset
         /// <summary>
         /// 获取配置文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static YooAssetSettings Setting
         {
             get

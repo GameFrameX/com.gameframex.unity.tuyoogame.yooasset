@@ -11,6 +11,7 @@ namespace YooAsset
         /// <summary>
         /// 包裹名
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { set; get; }
 
         /// <summary>

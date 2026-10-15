@@ -9,6 +9,7 @@
         /// <summary>
         /// 当前最新的包裹版本
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageVersion { protected set; get; }
     }
 

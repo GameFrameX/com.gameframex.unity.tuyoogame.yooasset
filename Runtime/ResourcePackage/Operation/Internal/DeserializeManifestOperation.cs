@@ -28,6 +28,7 @@ namespace YooAsset
         /// <summary>
         /// 解析的清单实例
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public PackageManifest Manifest { private set; get; }
 
         [UnityEngine.Scripting.Preserve]

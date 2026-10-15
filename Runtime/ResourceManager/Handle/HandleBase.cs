@@ -45,6 +45,7 @@ namespace YooAsset
         /// <summary>
         /// 当前状态
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public EOperationStatus Status
         {
             get
@@ -61,6 +62,7 @@ namespace YooAsset
         /// <summary>
         /// 最近的错误信息
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string LastError
         {
             get
@@ -77,6 +79,7 @@ namespace YooAsset
         /// <summary>
         /// 加载进度
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public float Progress
         {
             get
@@ -93,6 +96,7 @@ namespace YooAsset
         /// <summary>
         /// 加载耗时
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public long Duration
         {
             get
@@ -109,6 +113,7 @@ namespace YooAsset
         /// <summary>
         /// 是否加载完毕
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsDone
         {
             get
@@ -125,6 +130,7 @@ namespace YooAsset
         /// <summary>
         /// 句柄是否有效
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsValid
         {
             get
@@ -187,6 +193,7 @@ namespace YooAsset
         /// <summary>
         /// 异步操作任务
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public System.Threading.Tasks.Task Task
         {
             get { return Provider.Task; }

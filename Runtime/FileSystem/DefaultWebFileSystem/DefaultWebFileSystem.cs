@@ -14,6 +14,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public class FileWrapper
         {
+            [UnityEngine.Scripting.Preserve]
             public string FileName { private set; get; }
 
             [UnityEngine.Scripting.Preserve]
@@ -30,11 +31,13 @@ namespace YooAsset
         /// <summary>
         /// 包裹名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 文件根目录
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FileRoot
         {
             get { return _webPackageRoot; }
@@ -43,6 +46,7 @@ namespace YooAsset
         /// <summary>
         /// 文件数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int FileCount
         {
             get { return 0; }
@@ -53,6 +57,7 @@ namespace YooAsset
         /// <summary>
         /// 禁用Unity的网络缓存
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool DisableUnityWebCache { private set; get; } = false;
 
         #endregion

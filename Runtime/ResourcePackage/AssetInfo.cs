@@ -9,16 +9,19 @@
         /// <summary>
         /// 所属包裹
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 资源类型
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public System.Type AssetType { private set; get; }
 
         /// <summary>
         /// 错误信息
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string Error { private set; get; }
 
 
@@ -50,6 +53,7 @@
         /// <summary>
         /// 身份是否无效
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsInvalid
         {
             get { return _packageAsset == null; }
@@ -58,6 +62,7 @@
         /// <summary>
         /// 可寻址地址
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string Address
         {
             get
@@ -74,6 +79,7 @@
         /// <summary>
         /// 资源路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string AssetPath
         {
             get

@@ -21,26 +21,31 @@ namespace YooAsset
         /// <summary>
         /// 优先级
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public uint Priority { set; get; } = 0;
 
         /// <summary>
         /// 状态
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public EOperationStatus Status { get; protected set; } = EOperationStatus.None;
 
         /// <summary>
         /// 错误信息
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string Error { get; protected set; }
 
         /// <summary>
         /// 处理进度
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public float Progress { get; protected set; }
 
         /// <summary>
         /// 是否已经完成
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsDone
         {
             get { return Status == EOperationStatus.Failed || Status == EOperationStatus.Succeed; }
@@ -68,6 +73,7 @@ namespace YooAsset
         /// <summary>
         /// 异步操作任务
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public Task Task
         {
             get

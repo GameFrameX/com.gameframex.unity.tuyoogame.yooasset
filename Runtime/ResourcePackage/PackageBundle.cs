@@ -51,16 +51,19 @@ namespace YooAsset
         /// <summary>
         /// 所属的包裹名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 所属的构建管线
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string BuildPipeline { private set; get; }
 
         /// <summary>
         /// 资源包GUID
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string BundleGUID
         {
             get { return FileHash; }
@@ -71,6 +74,7 @@ namespace YooAsset
         /// </summary>
         private string _fileName;
 
+        [UnityEngine.Scripting.Preserve]
         public string FileName
         {
             get
@@ -89,6 +93,7 @@ namespace YooAsset
         /// </summary>
         private string _fileExtension;
 
+        [UnityEngine.Scripting.Preserve]
         public string FileExtension
         {
             get

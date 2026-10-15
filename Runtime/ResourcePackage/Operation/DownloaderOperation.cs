@@ -50,16 +50,19 @@ namespace YooAsset
         /// <summary>
         /// 统计的下载文件总数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int TotalDownloadCount { private set; get; }
 
         /// <summary>
         /// 统计的下载文件的总大小
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public long TotalDownloadBytes { private set; get; }
 
         /// <summary>
         /// 当前已经完成的下载总数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int CurrentDownloadCount
         {
             get { return _lastDownloadCount; }
@@ -68,6 +71,7 @@ namespace YooAsset
         /// <summary>
         /// 当前已经完成的下载总大小
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public long CurrentDownloadBytes
         {
             get { return _lastDownloadBytes; }
@@ -76,21 +80,25 @@ namespace YooAsset
         /// <summary>
         /// 当下载器结束（无论成功或失败）
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public OnDownloadOver OnDownloadOverCallback { set; get; }
 
         /// <summary>
         /// 当下载进度发生变化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public OnDownloadProgress OnDownloadProgressCallback { set; get; }
 
         /// <summary>
         /// 当某个文件下载失败
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public OnDownloadError OnDownloadErrorCallback { set; get; }
 
         /// <summary>
         /// 当开始下载某个文件
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public OnStartDownloadFile OnStartDownloadFileCallback { set; get; }
 
 

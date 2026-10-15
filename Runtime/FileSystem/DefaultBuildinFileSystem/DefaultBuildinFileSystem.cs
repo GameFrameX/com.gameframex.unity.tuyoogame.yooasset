@@ -52,6 +52,7 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public class FileWrapper
         {
+            [UnityEngine.Scripting.Preserve]
             public string FileName { private set; get; }
 
             [UnityEngine.Scripting.Preserve]
@@ -70,11 +71,13 @@ namespace YooAsset
         /// <summary>
         /// 包裹名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 文件根目录
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FileRoot
         {
             get { return _packageRoot; }
@@ -83,6 +86,7 @@ namespace YooAsset
         /// <summary>
         /// 文件数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int FileCount
         {
             get { return _wrappers.Count; }
@@ -93,21 +97,25 @@ namespace YooAsset
         /// <summary>
         /// 自定义参数：初始化的时候缓存文件校验级别
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public EFileVerifyLevel FileVerifyLevel { private set; get; } = EFileVerifyLevel.Middle;
 
         /// <summary>
         /// 自定义参数：数据文件追加文件格式
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool AppendFileExtension { private set; get; } = false;
 
         /// <summary>
         /// 自定义参数：原生文件构建管线
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool RawFileBuildPipeline { private set; get; } = false;
 
         /// <summary>
         ///  自定义参数：解密方法类
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public IDecryptionServices DecryptionServices { private set; get; }
 
         #endregion

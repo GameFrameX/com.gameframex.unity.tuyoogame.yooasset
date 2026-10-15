@@ -13,11 +13,13 @@ namespace YooAsset
         /// <summary>
         /// 包裹名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 文件根目录
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FileRoot
         {
             get { return _packageRoot; }
@@ -26,6 +28,7 @@ namespace YooAsset
         /// <summary>
         /// 文件数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int FileCount
         {
             get { return 0; }

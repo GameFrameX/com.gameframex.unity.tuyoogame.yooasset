@@ -26,6 +26,7 @@ namespace YooAsset
         /// <summary>
         /// 初始化状态
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public EOperationStatus InitializeStatus
         {
             get { return _initializeStatus; }

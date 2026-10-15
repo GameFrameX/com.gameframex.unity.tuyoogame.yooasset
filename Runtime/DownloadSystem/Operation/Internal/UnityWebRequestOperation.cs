@@ -30,6 +30,7 @@ namespace YooAsset
         protected float _latestDownloadRealtime;
         private bool _isAbort = false;
 
+        [UnityEngine.Scripting.Preserve]
         public string URL
         {
             get { return _requestURL; }

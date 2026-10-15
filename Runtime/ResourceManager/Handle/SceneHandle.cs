@@ -69,6 +69,7 @@ namespace YooAsset
         /// <summary>
         /// 场景名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string SceneName
         {
             get
@@ -85,6 +86,7 @@ namespace YooAsset
         /// <summary>
         /// 场景对象
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public Scene SceneObject
         {
             get

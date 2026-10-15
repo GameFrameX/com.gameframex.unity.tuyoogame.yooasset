@@ -17,11 +17,13 @@ namespace YooAsset
         /// <summary>
         /// 异步操作的最小时间片段
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static long MaxTimeSlice { set; get; } = long.MaxValue;
 
         /// <summary>
         /// 处理器是否繁忙
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static bool IsBusy
         {
             get

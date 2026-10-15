@@ -17,6 +17,7 @@ namespace YooAsset
         /// <summary>
         /// 是否已经初始化
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static bool Initialized
         {
             get { return _isInitialize; }

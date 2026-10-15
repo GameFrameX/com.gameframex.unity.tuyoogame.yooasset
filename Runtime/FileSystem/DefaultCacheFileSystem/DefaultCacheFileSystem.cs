@@ -16,9 +16,13 @@ namespace YooAsset
         [UnityEngine.Scripting.Preserve]
         public class FileWrapper
         {
+            [UnityEngine.Scripting.Preserve]
             public string InfoFilePath { private set; get; }
+            [UnityEngine.Scripting.Preserve]
             public string DataFilePath { private set; get; }
+            [UnityEngine.Scripting.Preserve]
             public string DataFileCRC { private set; get; }
+            [UnityEngine.Scripting.Preserve]
             public long DataFileSize { private set; get; }
 
             [UnityEngine.Scripting.Preserve]
@@ -46,11 +50,13 @@ namespace YooAsset
         /// <summary>
         /// 包裹名称
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string PackageName { private set; get; }
 
         /// <summary>
         /// 文件根目录
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FileRoot
         {
             get { return _packageRoot; }
@@ -59,6 +65,7 @@ namespace YooAsset
         /// <summary>
         /// 文件数量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int FileCount
         {
             get { return _wrappers.Count; }
@@ -69,36 +76,43 @@ namespace YooAsset
         /// <summary>
         /// 自定义参数：远程服务接口
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public IRemoteServices RemoteServices { private set; get; } = null;
 
         /// <summary>
         /// 自定义参数：初始化的时候缓存文件校验级别
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public EFileVerifyLevel FileVerifyLevel { private set; get; } = EFileVerifyLevel.Middle;
 
         /// <summary>
         /// 自定义参数：数据文件追加文件格式
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool AppendFileExtension { private set; get; } = false;
 
         /// <summary>
         /// 自定义参数：原生文件构建管线
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool RawFileBuildPipeline { private set; get; } = false;
 
         /// <summary>
         /// 自定义参数：启用断点续传的最小尺寸
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public long ResumeDownloadMinimumSize { private set; get; } = long.MaxValue;
 
         /// <summary>
         /// 自定义参数：断点续传下载器关注的错误码
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public List<long> ResumeDownloadResponseCodes { private set; get; } = null;
 
         /// <summary>
         ///  自定义参数：解密方法类
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public IDecryptionServices DecryptionServices { private set; get; }
 
         #endregion
@@ -679,14 +693,32 @@ namespace YooAsset
         }
 
         /// <summary>
-        /// 删除所有清单文件
+        /// 删除所有清单文件与沙盒版本记录
         /// </summary>
+        /// <remarks>
+        /// 全量清理时清单与版本记录必须一起删除，否则本地回退会读到资源已被清除的版本。
+        /// </remarks>
         [UnityEngine.Scripting.Preserve]
         public void DeleteAllManifestFiles()
         {
-            if (Directory.Exists(_manifestFileRoot))
+            try
             {
-                Directory.Delete(_manifestFileRoot, true);
+                if (Directory.Exists(_manifestFileRoot))
+                {
+                    Directory.Delete(_manifestFileRoot, true);
+                }
+
+                // 同时删除沙盒包根目录的版本记录文件
+                var versionFileName = YooAssetSettingsData.GetPackageVersionFileName(PackageName);
+                var versionFilePath = PathUtility.Combine(_packageRoot, versionFileName);
+                if (File.Exists(versionFilePath))
+                {
+                    File.Delete(versionFilePath);
+                }
+            }
+            catch (Exception e)
+            {
+                YooLogger.Error($"Failed to delete manifest files ! {e.Message}");
             }
         }
 

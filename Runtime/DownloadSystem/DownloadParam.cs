@@ -9,16 +9,19 @@
         /// <summary>
         /// 导入的本地文件路径
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string ImportFilePath { set; get; }
 
         /// <summary>
         /// 主资源地址
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string MainURL { set; get; }
 
         /// <summary>
         /// 备用资源地址
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FallbackURL { set; get; }
 
         [UnityEngine.Scripting.Preserve]

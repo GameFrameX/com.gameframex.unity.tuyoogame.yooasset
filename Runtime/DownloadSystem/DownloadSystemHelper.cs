@@ -10,6 +10,7 @@ namespace YooAsset
         /// <summary>
         /// 设置自定义的 UnityWebRequest 创建委托
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public static void SetUnityWebRequestCreater(System.Func<string, UnityWebRequest> creater)
         {
             _unityWebRequestCreater = creater;

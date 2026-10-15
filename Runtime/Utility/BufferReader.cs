@@ -21,6 +21,7 @@ namespace YooAsset
         /// <summary>
         /// 是否有效
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public bool IsValid
         {
             get
@@ -39,6 +40,7 @@ namespace YooAsset
         /// <summary>
         /// 缓冲区容量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int Capacity
         {
             get { return _buffer.Length; }

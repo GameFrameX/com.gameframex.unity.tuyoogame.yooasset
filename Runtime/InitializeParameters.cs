@@ -65,11 +65,13 @@ namespace YooAsset
         /// 格式: "namespace.class,assembly"
         /// 格式: "命名空间.类型名,程序集"
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string FileSystemClass { private set; get; }
 
         /// <summary>
         /// 文件系统的根目录
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string RootDirectory { private set; get; }
 
 

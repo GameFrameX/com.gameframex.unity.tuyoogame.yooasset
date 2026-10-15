@@ -12,6 +12,7 @@ namespace YooAsset
         /// <summary>
         /// 请求结果
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public string Result { private set; get; }
 
 

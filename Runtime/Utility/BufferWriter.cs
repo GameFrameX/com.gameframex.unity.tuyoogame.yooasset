@@ -25,6 +25,7 @@ namespace YooAsset
         /// <summary>
         /// 缓冲区容量
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public int Capacity
         {
             get { return _buffer.Length; }
