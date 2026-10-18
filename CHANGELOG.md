@@ -1,3 +1,15 @@
+# [3.2.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.1.0...3.2.0) (2026-10-18)
+
+
+### Bug Fixes
+
+* **filesystem:** web 目录缺失时降级为空目录 ([449ae20](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/449ae204e86e81ed7db1419cd6943640a48f70cb))
+
+
+### Features
+
+* **filesystem:** 新增 FileSystemOption 直载重试参数抽象基类 ([7546508](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/75465087b19b0f5281da08b73ba93931c482561d))
+
 # [3.1.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.0.1...3.1.0) (2026-10-15)
 
 
