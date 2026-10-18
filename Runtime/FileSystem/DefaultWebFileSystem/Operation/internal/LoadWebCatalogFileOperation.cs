@@ -51,17 +51,17 @@ namespace YooAsset
                 var catalog = Resources.Load<DefaultBuildinFileCatalog>(catalogFilePath);
                 if (catalog == null)
                 {
-                    _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Failed to load web catalog file : {catalogFilePath}";
+                    // 目录文件不存在时按空目录处理，未记录的文件会回退到 Web 根目录加载，不能让启动流程失效。
+                    YooLogger.Warning($"Failed to load web catalog file, use empty catalog : {catalogFilePath}");
+                    MarkEmptyCatalogDone();
                     return;
                 }
 
                 if (catalog.PackageName != _fileSystem.PackageName)
                 {
-                    _steps = ESteps.Done;
-                    Status = EOperationStatus.Failed;
-                    Error = $"Web catalog file package name {catalog.PackageName} cannot match the file system package name {_fileSystem.PackageName}";
+                    // 包名不匹配说明目录文件属于其它包裹，同样按空目录处理，避免打断初始化流程。
+                    YooLogger.Warning($"Web catalog file package name {catalog.PackageName} cannot match the file system package name {_fileSystem.PackageName}, use empty catalog");
+                    MarkEmptyCatalogDone();
                     return;
                 }
 
@@ -76,6 +76,14 @@ namespace YooAsset
                 _steps = ESteps.Done;
                 Status = EOperationStatus.Succeed;
             }
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        private void MarkEmptyCatalogDone()
+        {
+            YooLogger.Log($"Package '{_fileSystem.PackageName}' catalog files count : 0");
+            _steps = ESteps.Done;
+            Status = EOperationStatus.Succeed;
         }
     }
 }
