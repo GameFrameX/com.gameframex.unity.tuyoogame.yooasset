@@ -15,6 +15,19 @@ namespace YooAsset
         private static readonly List<ResourcePackage> _packages = new List<ResourcePackage>(16);
 
         /// <summary>
+        /// 会话边界对称重置（编辑器关闭 Domain Reload 的快速进 Play）：清空包注册表与
+        /// 驱动标记，等价于全新 Domain 初始状态。上个 Play 会话的 ResourcePackage 实例
+        /// 依赖的 Unity 对象已随场景销毁，只残留托管引用，直接丢弃交由 GC 回收。
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSessionStatics()
+        {
+            _packages.Clear();
+            _isInitialize = false;
+            _driver = null;
+        }
+
+        /// <summary>
         /// 是否已经初始化
         /// </summary>
         [UnityEngine.Scripting.Preserve]

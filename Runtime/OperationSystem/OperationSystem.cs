@@ -15,6 +15,19 @@ namespace YooAsset
         private static long _frameTime;
 
         /// <summary>
+        /// 会话边界对称重置（编辑器关闭 Domain Reload 的快速进 Play）：清空残留异步操作
+        /// 与计时器，等价于全新 Domain 初始状态（Initialize 会在新会话重建计时器）。
+        /// </summary>
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSessionStatics()
+        {
+            _operations.Clear();
+            _newList.Clear();
+            _watch = null;
+            _frameTime = 0;
+        }
+
+        /// <summary>
         /// 异步操作的最小时间片段
         /// </summary>
         [UnityEngine.Scripting.Preserve]
