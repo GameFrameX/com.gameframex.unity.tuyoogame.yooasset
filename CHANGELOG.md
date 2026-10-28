@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.2.0...3.2.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* **runtime:** 关闭 Domain Reload 时清空静态残留状态 ([8aa540f](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/8aa540f291c30c0cdee87b5ea269337a3e1c938c))
+
 # [3.2.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.1.0...3.2.0) (2026-10-18)
 
 
