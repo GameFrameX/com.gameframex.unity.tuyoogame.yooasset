@@ -1,3 +1,10 @@
+## [3.2.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.2.1...3.2.2) (2026-11-10)
+
+
+### Bug Fixes
+
+* **tuyoogame.yooasset:** 添加完整 link.xml 防代码裁剪保护 ([713f391](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/713f391af31e3e72237e9e45d1aef50d54b15e19))
+
 ## [3.2.1](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.2.0...3.2.1) (2026-10-28)
 
 
