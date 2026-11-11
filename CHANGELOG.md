@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.2.2...3.3.0) (2026-11-11)
+
+
+### Features
+
+* **yooasset:** Web 文件系统解析输出日志 ([20a47f4](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/commit/20a47f445b5be5b82646649f43a3c6f80c5fd755))
+
 ## [3.2.2](https://github.com/gameframex/com.gameframex.unity.tuyoogame.yooasset/compare/3.2.1...3.2.2) (2026-11-10)
 
 
