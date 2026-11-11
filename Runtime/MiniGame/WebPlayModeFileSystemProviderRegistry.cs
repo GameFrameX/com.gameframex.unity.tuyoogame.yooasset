@@ -109,11 +109,15 @@ namespace YooAsset
             var provider = Resolve();
             if (provider == null)
             {
-                return FileSystemParameters.CreateDefaultWebFileSystemParameters();
+                var defaultParameters = FileSystemParameters.CreateDefaultWebFileSystemParameters();
+                YooLogger.Warning($"Web play mode file system provider is not registered, fallback to default web file system : {defaultParameters.FileSystemClass}");
+                return defaultParameters;
             }
 
             var context = new WebPlayModeProviderContext(hostServerURL, fallbackHostServerURL);
-            return provider.CreateFileSystemParameters(context);
+            var fileSystemParameters = provider.CreateFileSystemParameters(context);
+            YooLogger.Log($"Web play mode file system : provider '{provider.ChannelName}' (Priority {provider.Priority}), file system '{fileSystemParameters.FileSystemClass}', root directory '{fileSystemParameters.RootDirectory}'.");
+            return fileSystemParameters;
         }
     }
 }
